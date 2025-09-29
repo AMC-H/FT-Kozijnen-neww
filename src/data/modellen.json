@@ -1,0 +1,410 @@
+{
+  "ramen": [
+    {
+      "naam": "Draaikiep bovenlicht kiep",
+      "afbeelding": "https://nsmzfzdvesacindbgkdq.supabase.co/storage/v1/object/public/kozijnen-photos/draaikiep-bovenlicht-kiep-.png",
+      "velden": ["materiaal", "breedte", "hoogte", "kleurBinnen", "kleurBuiten", "kleurBewegendeDelen", "glasoptie", "profielKeuze", "draairichting", "hor", "aanslag", "opmerkingen", "fotoUpload"]
+    },
+    {
+      "naam": "Draaikiep bovenlicht vast",
+      "afbeelding": "https://nsmzfzdvesacindbgkdq.supabase.co/storage/v1/object/public/kozijnen-photos/draaikiep-bovenlicht-vast-.png",
+      "velden": ["materiaal", "breedte", "hoogte", "kleurBinnen", "kleurBuiten", "kleurBewegendeDelen", "glasoptie", "profielKeuze", "aanslag", "opmerkingen", "fotoUpload"]
+    },
+    {
+      "naam": "Draaikiep draai stolp",
+      "afbeelding": "https://nsmzfzdvesacindbgkdq.supabase.co/storage/v1/object/public/kozijnen-photos/draaikiep-draai-stolp .png",
+      "velden": ["materiaal", "breedte", "hoogte", "kleurBinnen", "kleurBuiten", "kleurBewegendeDelen", "glasoptie", "profielKeuze", "draairichting", "hor", "hangEnSluitwerk", "aanslag", "opmerkingen", "fotoUpload"]
+    },
+    {
+      "naam": "Draaikiep draaikiep draaikiep",
+      "afbeelding": "https://nsmzfzdvesacindbgkdq.supabase.co/storage/v1/object/public/kozijnen-photos/draaikiep-draaikiep-draaikiep.png",
+      "velden": ["materiaal", "breedte", "hoogte", "kleurBinnen", "kleurBuiten", "kleurBewegendeDelen", "glasoptie", "profielKeuze", "draairichting", "hor", "hangEnSluitwerk", "aanslag", "opmerkingen", "fotoUpload"]
+    },
+    {
+      "naam": "Draaikiep draaikiep",
+      "afbeelding": "https://nsmzfzdvesacindbgkdq.supabase.co/storage/v1/object/public/kozijnen-photos/draaikiep-draaikiep.png",
+      "velden": ["materiaal", "breedte", "hoogte", "kleurBinnen", "kleurBuiten", "kleurBewegendeDelen", "glasoptie", "profielKeuze", "draairichting", "hor", "hangEnSluitwerk", "aanslag", "opmerkingen", "fotoUpload"]
+    },
+    {
+      "naam": "Draaikiep kozijn",
+      "afbeelding": "https://nsmzfzdvesacindbgkdq.supabase.co/storage/v1/object/public/kozijnen-photos/draaikiep-kozijn.png",
+      "velden": ["materiaal", "breedte", "hoogte", "kleurBinnen", "kleurBuiten", "kleurBewegendeDelen", "glasoptie", "profielKeuze", "draairichting", "hor", "hangEnSluitwerk", "aanslag", "opmerkingen", "fotoUpload"]
+    },
+    {
+      "naam": "Draaikiep vast draaikiep",
+      "afbeelding": "https://nsmzfzdvesacindbgkdq.supabase.co/storage/v1/object/public/kozijnen-photos/draaikiep-vast-draaikiep.png",
+      "velden": ["materiaal", "breedte", "hoogte", "kleurBinnen", "kleurBuiten", "kleurBewegendeDelen", "glasoptie", "profielKeuze", "draairichting", "hor", "hangEnSluitwerk", "aanslag", "opmerkingen", "fotoUpload"]
+    },
+    {
+      "naam": "Draaikiep vast met borstwering",
+      "afbeelding": "https://nsmzfzdvesacindbgkdq.supabase.co/storage/v1/object/public/kozijnen-photos/draaikiep-vast-met-borstwering.png",
+      "velden": ["materiaal", "breedte", "hoogte", "kleurBinnen", "kleurBuiten", "kleurBewegendeDelen", "glasoptie", "profielKeuze", "draairichting", "hor", "aanslag", "opmerkingen", "fotoUpload"]
+    },
+    {
+      "naam": "Draaikiep vast vast",
+      "afbeelding": "https://nsmzfzdvesacindbgkdq.supabase.co/storage/v1/object/public/kozijnen-photos/draaikiep-vast-vast-.png",
+      "velden": ["materiaal", "breedte", "hoogte", "kleurBinnen", "kleurBuiten", "kleurBewegendeDelen", "glasoptie", "profielKeuze", "aanslag", "opmerkingen", "fotoUpload"]
+    },
+    {
+      "naam": "Draaikiep vast",
+      "afbeelding": "https://nsmzfzdvesacindbgkdq.supabase.co/storage/v1/object/public/kozijnen-photos/draaikiep-vast.png",
+      "velden": ["materiaal", "breedte", "hoogte", "kleurBinnen", "kleurBuiten", "kleurBewegendeDelen", "glasoptie", "profielKeuze", "aanslag", "opmerkingen", "fotoUpload"]
+    },
+    {
+      "naam": "Kiep kiep kozijn",
+      "afbeelding": "https://nsmzfzdvesacindbgkdq.supabase.co/storage/v1/object/public/kozijnen-photos/kiep-kiep-kozijn.png",
+      "velden": ["materiaal", "breedte", "hoogte", "kleurBinnen", "kleurBuiten", "kleurBewegendeDelen", "glasoptie", "profielKeuze", "draairichting", "hor", "aanslag", "opmerkingen", "fotoUpload"]
+    },
+    {
+      "naam": "Kiep kozijn",
+      "afbeelding": "https://nsmzfzdvesacindbgkdq.supabase.co/storage/v1/object/public/kozijnen-photos/kiep-kozijn-.png",
+      "velden": ["materiaal", "breedte", "hoogte", "kleurBinnen", "kleurBuiten", "kleurBewegendeDelen", "glasoptie", "profielKeuze", "draairichting", "hor", "aanslag", "opmerkingen", "fotoUpload"]
+    },
+    {
+      "naam": "Kiep vast kozijn",
+      "afbeelding": "https://nsmzfzdvesacindbgkdq.supabase.co/storage/v1/object/public/kozijnen-photos/kiep-vast-kozijn.png",
+      "velden": ["materiaal", "breedte", "hoogte", "kleurBinnen", "kleurBuiten", "kleurBewegendeDelen", "glasoptie", "profielKeuze", "aanslag", "opmerkingen", "fotoUpload"]
+    },
+    {
+      "naam": "Vast bovenlicht kiep",
+      "afbeelding": "https://nsmzfzdvesacindbgkdq.supabase.co/storage/v1/object/public/kozijnen-photos/vast-bovenlicht-kiep-.png",
+      "velden": ["materiaal", "breedte", "hoogte", "kleurBinnen", "kleurBuiten", "kleurBewegendeDelen", "glasoptie", "profielKeuze", "draairichting", "hor", "aanslag", "opmerkingen", "fotoUpload"]
+    },
+    {
+      "naam": "Vast draaikiep vast",
+      "afbeelding": "https://nsmzfzdvesacindbgkdq.supabase.co/storage/v1/object/public/kozijnen-photos/vast-draaikiep-vast.png",
+      "velden": ["materiaal", "breedte", "hoogte", "kleurBinnen", "kleurBuiten", "kleurBewegendeDelen", "glasoptie", "profielKeuze", "draairichting", "hor", "aanslag", "opmerkingen", "fotoUpload"]
+    },
+    {
+      "naam": "Vast kozijn met borstwering",
+      "afbeelding": "https://nsmzfzdvesacindbgkdq.supabase.co/storage/v1/object/public/kozijnen-photos/vast-kozijn-met-borstwering-.png",
+      "velden": ["materiaal", "breedte", "hoogte", "kleurBinnen", "kleurBuiten", "kleurBewegendeDelen", "glasoptie", "profielKeuze", "aanslag", "opmerkingen", "fotoUpload"]
+    },
+    {
+      "naam": "Vast kozijn",
+      "afbeelding": "https://nsmzfzdvesacindbgkdq.supabase.co/storage/v1/object/public/kozijnen-photos/vast-kozijn.png",
+      "velden": ["materiaal", "breedte", "hoogte", "kleurBinnen", "kleurBuiten", "kleurBewegendeDelen", "glasoptie", "profielKeuze", "aanslag", "opmerkingen", "fotoUpload"]
+    },
+    {
+      "naam": "Vast vast vast",
+      "afbeelding": "https://nsmzfzdvesacindbgkdq.supabase.co/storage/v1/object/public/kozijnen-photos/vast-vast-vast-.png",
+      "velden": ["materiaal", "breedte", "hoogte", "kleurBinnen", "kleurBuiten", "kleurBewegendeDelen", "glasoptie", "profielKeuze", "aanslag", "opmerkingen", "fotoUpload"]
+    },
+    {
+      "naam": "Vast vast",
+      "afbeelding": "https://nsmzfzdvesacindbgkdq.supabase.co/storage/v1/object/public/kozijnen-photos/vast-vast.png",
+      "velden": ["materiaal", "breedte", "hoogte", "kleurBinnen", "kleurBuiten", "kleurBewegendeDelen", "glasoptie", "profielKeuze", "aanslag", "opmerkingen", "fotoUpload"]
+    }
+  ],
+  "buitendeuren": [
+    {
+      "naam": "Achterdeur met borstwering",
+      "afbeelding": "https://nsmzfzdvesacindbgkdq.supabase.co/storage/v1/object/public/kozijnen-photos/achterdeur-met-borstwering.png",
+      "type": "kunststof",
+      "velden": ["materiaal", "breedte", "hoogte", "kleurBinnen", "kleurBuiten", "glasoptie", "dorpel", "draairichting", "hangEnSluitwerk", "aanslag", "opmerkingen", "fotoUpload"]
+    },
+    {
+      "naam": "Achterdeur met bovenlicht",
+      "afbeelding": "https://nsmzfzdvesacindbgkdq.supabase.co/storage/v1/object/public/kozijnen-photos/achterdeur-met-bovenlicht-.png",
+      "type": "kunststof",
+      "velden": ["materiaal", "breedte", "hoogte", "kleurBinnen", "kleurBuiten", "glasoptie", "dorpel", "draairichting", "hangEnSluitwerk", "aanslag", "opmerkingen", "fotoUpload"]
+    },
+    {
+      "naam": "Achterdeur",
+      "afbeelding": "https://nsmzfzdvesacindbgkdq.supabase.co/storage/v1/object/public/kozijnen-photos/achterdeur.png",
+      "type": "kunststof",
+      "velden": ["materiaal", "breedte", "hoogte", "kleurBinnen", "kleurBuiten", "glasoptie", "dorpel", "draairichting", "hangEnSluitwerk", "aanslag", "opmerkingen", "fotoUpload"]
+    },
+    {
+      "naam": "Dubbele tuindeur met zijlichten",
+      "afbeelding": "https://nsmzfzdvesacindbgkdq.supabase.co/storage/v1/object/public/kozijnen-photos/dubbele-tuindeur-met-zijlichten.png",
+      "type": "tuindeur",
+      "velden": ["materiaal", "breedte", "hoogte", "kleurBinnen", "kleurBuiten", "glasoptie", "draairichting", "hangEnSluitwerk", "aanslag", "opmerkingen", "fotoUpload"]
+    },
+    {
+      "naam": "Dubbele tuindeur",
+      "afbeelding": "https://nsmzfzdvesacindbgkdq.supabase.co/storage/v1/object/public/kozijnen-photos/dubbele-tuindeur.png",
+      "type": "tuindeur",
+      "velden": ["materiaal", "breedte", "hoogte", "kleurBinnen", "kleurBuiten", "glasoptie", "draairichting", "hangEnSluitwerk", "aanslag", "opmerkingen", "fotoUpload"]
+    },
+    {
+      "naam": "Kunststof deur 02",
+      "afbeelding": "https://nsmzfzdvesacindbgkdq.supabase.co/storage/v1/object/public/kozijnen-photos/model-kunststof-deuren-02.jpg",
+      "type": "kunststof-deuren",
+      "velden": ["breedte", "hoogte", "kleurBinnen", "kleurBuiten", "glasoptie", "dorpel", "draairichting", "hangEnSluitwerk", "aanslag", "opmerkingen", "fotoUpload"]
+    },
+    {
+      "naam": "Kunststof deur 03",
+      "afbeelding": "https://nsmzfzdvesacindbgkdq.supabase.co/storage/v1/object/public/kozijnen-photos/model-kunststof-deuren-03.jpg",
+      "type": "kunststof-deuren",
+      "velden": ["breedte", "hoogte", "kleurBinnen", "kleurBuiten", "glasoptie", "dorpel", "draairichting", "hangEnSluitwerk", "aanslag", "opmerkingen", "fotoUpload"]
+    },
+    {
+      "naam": "Kunststof deur 04",
+      "afbeelding": "https://nsmzfzdvesacindbgkdq.supabase.co/storage/v1/object/public/kozijnen-photos/model-kunststof-deuren-04.jpg",
+      "type": "kunststof-deuren",
+      "velden": ["breedte", "hoogte", "kleurBinnen", "kleurBuiten", "glasoptie", "dorpel", "draairichting", "hangEnSluitwerk", "aanslag", "opmerkingen", "fotoUpload"]
+    },
+    {
+      "naam": "Kunststof deur 05",
+      "afbeelding": "https://nsmzfzdvesacindbgkdq.supabase.co/storage/v1/object/public/kozijnen-photos/model-kunststof-deuren-05.jpg",
+      "type": "kunststof-deuren",
+      "velden": ["breedte", "hoogte", "kleurBinnen", "kleurBuiten", "glasoptie", "dorpel", "draairichting", "hangEnSluitwerk", "aanslag", "opmerkingen", "fotoUpload"]
+    },
+    {
+      "naam": "Kunststof deur 06",
+      "afbeelding": "https://nsmzfzdvesacindbgkdq.supabase.co/storage/v1/object/public/kozijnen-photos/model-kunststof-deuren-06.jpg",
+      "type": "kunststof-deuren",
+      "velden": ["breedte", "hoogte", "kleurBinnen", "kleurBuiten", "glasoptie", "dorpel", "draairichting", "hangEnSluitwerk", "aanslag", "opmerkingen", "fotoUpload"]
+    },
+    {
+      "naam": "Kunststof deur 07",
+      "afbeelding": "https://nsmzfzdvesacindbgkdq.supabase.co/storage/v1/object/public/kozijnen-photos/model-kunststof-deuren-07.jpg",
+      "type": "kunststof-deuren",
+      "velden": ["breedte", "hoogte", "kleurBinnen", "kleurBuiten", "glasoptie", "dorpel", "draairichting", "hangEnSluitwerk", "aanslag", "opmerkingen", "fotoUpload"]
+    },
+    {
+      "naam": "Kunststof deur 08",
+      "afbeelding": "https://nsmzfzdvesacindbgkdq.supabase.co/storage/v1/object/public/kozijnen-photos/model-kunststof-deuren-08.jpg",
+      "type": "kunststof-deuren",
+      "velden": ["breedte", "hoogte", "kleurBinnen", "kleurBuiten", "glasoptie", "dorpel", "draairichting", "hangEnSluitwerk", "aanslag", "opmerkingen", "fotoUpload"]
+    },
+    {
+      "naam": "Kunststof deur 09",
+      "afbeelding": "https://nsmzfzdvesacindbgkdq.supabase.co/storage/v1/object/public/kozijnen-photos/model-kunststof-deuren-09.jpg",
+      "type": "kunststof-deuren",
+      "velden": ["breedte", "hoogte", "kleurBinnen", "kleurBuiten", "glasoptie", "dorpel", "draairichting", "hangEnSluitwerk", "aanslag", "opmerkingen", "fotoUpload"]
+    },
+    {
+      "naam": "Kunststof deur 10",
+      "afbeelding": "https://nsmzfzdvesacindbgkdq.supabase.co/storage/v1/object/public/kozijnen-photos/model-kunststof-deuren-10.jpg",
+      "type": "kunststof-deuren",
+      "velden": ["breedte", "hoogte", "kleurBinnen", "kleurBuiten", "glasoptie", "dorpel", "draairichting", "hangEnSluitwerk", "aanslag", "opmerkingen", "fotoUpload"]
+    },
+    {
+      "naam": "Kunststof deur 11",
+      "afbeelding": "https://nsmzfzdvesacindbgkdq.supabase.co/storage/v1/object/public/kozijnen-photos/model-kunststof-deuren-11.jpg",
+      "type": "kunststof-deuren",
+      "velden": ["breedte", "hoogte", "kleurBinnen", "kleurBuiten", "glasoptie", "dorpel", "draairichting", "hangEnSluitwerk", "aanslag", "opmerkingen", "fotoUpload"]
+    },
+    {
+      "naam": "Kunststof deur 12",
+      "afbeelding": "https://nsmzfzdvesacindbgkdq.supabase.co/storage/v1/object/public/kozijnen-photos/model-kunststof-deuren-12.jpg",
+      "type": "kunststof-deuren",
+      "velden": ["breedte", "hoogte", "kleurBinnen", "kleurBuiten", "glasoptie", "dorpel", "draairichting", "hangEnSluitwerk", "aanslag", "opmerkingen", "fotoUpload"]
+    },
+    {
+      "naam": "Kunststof deur 13",
+      "afbeelding": "https://nsmzfzdvesacindbgkdq.supabase.co/storage/v1/object/public/kozijnen-photos/model-kunststof-deuren-13.jpg",
+      "type": "kunststof-deuren",
+      "velden": ["breedte", "hoogte", "kleurBinnen", "kleurBuiten", "glasoptie", "dorpel", "draairichting", "hangEnSluitwerk", "aanslag", "opmerkingen", "fotoUpload"]
+    },
+    {
+      "naam": "Kunststof deur 14",
+      "afbeelding": "https://nsmzfzdvesacindbgkdq.supabase.co/storage/v1/object/public/kozijnen-photos/model-kunststof-deuren-14.jpg",
+      "type": "kunststof-deuren",
+      "velden": ["breedte", "hoogte", "kleurBinnen", "kleurBuiten", "glasoptie", "dorpel", "draairichting", "hangEnSluitwerk", "aanslag", "opmerkingen", "fotoUpload"]
+    },
+    {
+      "naam": "Kunststof deur 15",
+      "afbeelding": "https://nsmzfzdvesacindbgkdq.supabase.co/storage/v1/object/public/kozijnen-photos/model-kunststof-deuren-15.jpg",
+      "type": "kunststof-deuren",
+      "velden": ["breedte", "hoogte", "kleurBinnen", "kleurBuiten", "glasoptie", "dorpel", "draairichting", "hangEnSluitwerk", "aanslag", "opmerkingen", "fotoUpload"]
+    },
+    {
+      "naam": "Kunststof deur 16",
+      "afbeelding": "https://nsmzfzdvesacindbgkdq.supabase.co/storage/v1/object/public/kozijnen-photos/model-kunststof-deuren-16.jpg",
+      "type": "kunststof-deuren",
+      "velden": ["breedte", "hoogte", "kleurBinnen", "kleurBuiten", "glasoptie", "dorpel", "draairichting", "hangEnSluitwerk", "aanslag", "opmerkingen", "fotoUpload"]
+    },
+    {
+      "naam": "Kunststof deur 17",
+      "afbeelding": "https://nsmzfzdvesacindbgkdq.supabase.co/storage/v1/object/public/kozijnen-photos/model-kunststof-deuren-17.jpg",
+      "type": "kunststof-deuren",
+      "velden": ["breedte", "hoogte", "kleurBinnen", "kleurBuiten", "glasoptie", "dorpel", "draairichting", "hangEnSluitwerk", "aanslag", "opmerkingen", "fotoUpload"]
+    },
+    {
+      "naam": "Kunststof deur 18",
+      "afbeelding": "https://nsmzfzdvesacindbgkdq.supabase.co/storage/v1/object/public/kozijnen-photos/model-kunststof-deuren-18.jpg",
+      "type": "kunststof-deuren",
+      "velden": ["breedte", "hoogte", "kleurBinnen", "kleurBuiten", "glasoptie", "dorpel", "draairichting", "hangEnSluitwerk", "aanslag", "opmerkingen", "fotoUpload"]
+    },
+    {
+      "naam": "Kunststof deur 19",
+      "afbeelding": "https://nsmzfzdvesacindbgkdq.supabase.co/storage/v1/object/public/kozijnen-photos/model-kunststof-deuren-19.jpg",
+      "type": "kunststof-deuren",
+      "velden": ["breedte", "hoogte", "kleurBinnen", "kleurBuiten", "glasoptie", "dorpel", "draairichting", "hangEnSluitwerk", "aanslag", "opmerkingen", "fotoUpload"]
+    },
+    {
+      "naam": "Kunststof deur 20",
+      "afbeelding": "https://nsmzfzdvesacindbgkdq.supabase.co/storage/v1/object/public/kozijnen-photos/model-kunststof-deuren-20.jpg",
+      "type": "kunststof-deuren",
+      "velden": ["breedte", "hoogte", "kleurBinnen", "kleurBuiten", "glasoptie", "dorpel", "draairichting", "hangEnSluitwerk", "aanslag", "opmerkingen", "fotoUpload"]
+    },
+    {
+      "naam": "Kunststof deur 21",
+      "afbeelding": "https://nsmzfzdvesacindbgkdq.supabase.co/storage/v1/object/public/kozijnen-photos/model-kunststof-deuren-21.jpg",
+      "type": "kunststof-deuren",
+      "velden": ["breedte", "hoogte", "kleurBinnen", "kleurBuiten", "glasoptie", "dorpel", "draairichting", "hangEnSluitwerk", "aanslag", "opmerkingen", "fotoUpload"]
+    },
+    {
+      "naam": "Kunststof deur 22",
+      "afbeelding": "https://nsmzfzdvesacindbgkdq.supabase.co/storage/v1/object/public/kozijnen-photos/model-kunststof-deuren-22.jpg",
+      "type": "kunststof-deuren",
+      "velden": ["breedte", "hoogte", "kleurBinnen", "kleurBuiten", "glasoptie", "dorpel", "draairichting", "hangEnSluitwerk", "aanslag", "opmerkingen", "fotoUpload"]
+    },
+    {
+      "naam": "Kunststof deur 23",
+      "afbeelding": "https://nsmzfzdvesacindbgkdq.supabase.co/storage/v1/object/public/kozijnen-photos/model-kunststof-deuren-23.jpg",
+      "type": "kunststof-deuren",
+      "velden": ["breedte", "hoogte", "kleurBinnen", "kleurBuiten", "glasoptie", "dorpel", "draairichting", "hangEnSluitwerk", "aanslag", "opmerkingen", "fotoUpload"]
+    },
+    {
+      "naam": "Kunststof deur 24",
+      "afbeelding": "https://nsmzfzdvesacindbgkdq.supabase.co/storage/v1/object/public/kozijnen-photos/model-kunststof-deuren-24.jpg",
+      "type": "kunststof-deuren",
+      "velden": ["breedte", "hoogte", "kleurBinnen", "kleurBuiten", "glasoptie", "dorpel", "draairichting", "hangEnSluitwerk", "aanslag", "opmerkingen", "fotoUpload"]
+    },
+    {
+      "naam": "Kunststof deur 25",
+      "afbeelding": "https://nsmzfzdvesacindbgkdq.supabase.co/storage/v1/object/public/kozijnen-photos/model-kunststof-deuren-25.jpg",
+      "type": "kunststof-deuren",
+      "velden": ["breedte", "hoogte", "kleurBinnen", "kleurBuiten", "glasoptie", "dorpel", "draairichting", "hangEnSluitwerk", "aanslag", "opmerkingen", "fotoUpload"]
+    },
+    {
+      "naam": "Kunststof deur 26",
+      "afbeelding": "https://nsmzfzdvesacindbgkdq.supabase.co/storage/v1/object/public/kozijnen-photos/model-kunststof-deuren-26.jpg",
+      "type": "kunststof-deuren",
+      "velden": ["breedte", "hoogte", "kleurBinnen", "kleurBuiten", "glasoptie", "dorpel", "draairichting", "hangEnSluitwerk", "aanslag", "opmerkingen", "fotoUpload"]
+    },
+    {
+      "naam": "Kunststof deur 27",
+      "afbeelding": "https://nsmzfzdvesacindbgkdq.supabase.co/storage/v1/object/public/kozijnen-photos/model-kunststof-deuren-27.jpg",
+      "type": "kunststof-deuren",
+      "velden": ["breedte", "hoogte", "kleurBinnen", "kleurBuiten", "glasoptie", "dorpel", "draairichting", "hangEnSluitwerk", "aanslag", "opmerkingen", "fotoUpload"]
+    },
+    {
+      "naam": "Kunststof deur 28",
+      "afbeelding": "https://nsmzfzdvesacindbgkdq.supabase.co/storage/v1/object/public/kozijnen-photos/model-kunststof-deuren-28.jpg",
+      "type": "kunststof-deuren",
+      "velden": ["breedte", "hoogte", "kleurBinnen", "kleurBuiten", "glasoptie", "dorpel", "draairichting", "hangEnSluitwerk", "aanslag", "opmerkingen", "fotoUpload"]
+    },
+    {
+      "naam": "Kunststof deur 29",
+      "afbeelding": "https://nsmzfzdvesacindbgkdq.supabase.co/storage/v1/object/public/kozijnen-photos/model-kunststof-deuren-29.jpg",
+      "type": "kunststof-deuren",
+      "velden": ["breedte", "hoogte", "kleurBinnen", "kleurBuiten", "glasoptie", "dorpel", "draairichting", "hangEnSluitwerk", "aanslag", "opmerkingen", "fotoUpload"]
+    },
+    {
+      "naam": "Kunststof deur 30",
+      "afbeelding": "https://nsmzfzdvesacindbgkdq.supabase.co/storage/v1/object/public/kozijnen-photos/model-kunststof-deuren-30.jpg",
+      "type": "kunststof-deuren",
+      "velden": ["breedte", "hoogte", "kleurBinnen", "kleurBuiten", "glasoptie", "dorpel", "draairichting", "hangEnSluitwerk", "aanslag", "opmerkingen", "fotoUpload"]
+    },
+    {
+      "naam": "Kunststof deur 31",
+      "afbeelding": "https://nsmzfzdvesacindbgkdq.supabase.co/storage/v1/object/public/kozijnen-photos/model-kunststof-deuren-31.jpg",
+      "type": "kunststof-deuren",
+      "velden": ["breedte", "hoogte", "kleurBinnen", "kleurBuiten", "glasoptie", "dorpel", "draairichting", "hangEnSluitwerk", "aanslag", "opmerkingen", "fotoUpload"]
+    },
+    {
+      "naam": "Kunststof deur 32",
+      "afbeelding": "https://nsmzfzdvesacindbgkdq.supabase.co/storage/v1/object/public/kozijnen-photos/model-kunststof-deuren-32.jpg",
+      "type": "kunststof-deuren",
+      "velden": ["breedte", "hoogte", "kleurBinnen", "kleurBuiten", "glasoptie", "dorpel", "draairichting", "hangEnSluitwerk", "aanslag", "opmerkingen", "fotoUpload"]
+    },
+    {
+      "naam": "Kunststof deur 33",
+      "afbeelding": "https://nsmzfzdvesacindbgkdq.supabase.co/storage/v1/object/public/kozijnen-photos/model-kunststof-deuren-33.jpg",
+      "type": "kunststof-deuren",
+      "velden": ["breedte", "hoogte", "kleurBinnen", "kleurBuiten", "glasoptie", "dorpel", "draairichting", "hangEnSluitwerk", "aanslag", "opmerkingen", "fotoUpload"]
+    },
+    {
+      "naam": "Kunststof deur 34",
+      "afbeelding": "https://nsmzfzdvesacindbgkdq.supabase.co/storage/v1/object/public/kozijnen-photos/model-kunststof-deuren-34.jpg",
+      "type": "kunststof-deuren",
+      "velden": ["breedte", "hoogte", "kleurBinnen", "kleurBuiten", "glasoptie", "dorpel", "draairichting", "hangEnSluitwerk", "aanslag", "opmerkingen", "fotoUpload"]
+    },
+    {
+      "naam": "Kunststof deur 35",
+      "afbeelding": "https://nsmzfzdvesacindbgkdq.supabase.co/storage/v1/object/public/kozijnen-photos/model-kunststof-deuren-35.jpg",
+      "type": "kunststof-deuren",
+      "velden": ["breedte", "hoogte", "kleurBinnen", "kleurBuiten", "glasoptie", "dorpel", "draairichting", "hangEnSluitwerk", "aanslag", "opmerkingen", "fotoUpload"]
+    },
+    {
+      "naam": "Kunststof deur 36",
+      "afbeelding": "https://nsmzfzdvesacindbgkdq.supabase.co/storage/v1/object/public/kozijnen-photos/model-kunststof-deuren-36.jpg",
+      "type": "kunststof-deuren",
+      "velden": ["breedte", "hoogte", "kleurBinnen", "kleurBuiten", "glasoptie", "dorpel", "draairichting", "hangEnSluitwerk", "aanslag", "opmerkingen", "fotoUpload"]
+    },
+    {
+      "naam": "Kunststof deur 37",
+      "afbeelding": "https://nsmzfzdvesacindbgkdq.supabase.co/storage/v1/object/public/kozijnen-photos/model-kunststof-deuren-37.jpg",
+      "type": "kunststof-deuren",
+      "velden": ["breedte", "hoogte", "kleurBinnen", "kleurBuiten", "glasoptie", "dorpel", "draairichting", "hangEnSluitwerk", "aanslag", "opmerkingen", "fotoUpload"]
+    },
+    {
+      "naam": "Kunststof deur 38",
+      "afbeelding": "https://nsmzfzdvesacindbgkdq.supabase.co/storage/v1/object/public/kozijnen-photos/model-kunststof-deuren-38.jpg",
+      "type": "kunststof-deuren",
+      "velden": ["breedte", "hoogte", "kleurBinnen", "kleurBuiten", "glasoptie", "dorpel", "draairichting", "hangEnSluitwerk", "aanslag", "opmerkingen", "fotoUpload"]
+    },
+    {
+      "naam": "Kunststof deur 39",
+      "afbeelding": "https://nsmzfzdvesacindbgkdq.supabase.co/storage/v1/object/public/kozijnen-photos/model-kunststof-deuren-39.jpg",
+      "type": "kunststof-deuren",
+      "velden": ["breedte", "hoogte", "kleurBinnen", "kleurBuiten", "glasoptie", "dorpel", "draairichting", "hangEnSluitwerk", "aanslag", "opmerkingen", "fotoUpload"]
+    },
+    {
+      "naam": "Kunststof deur 40",
+      "afbeelding": "https://nsmzfzdvesacindbgkdq.supabase.co/storage/v1/object/public/kozijnen-photos/model-kunststof-deuren-40.jpg",
+      "type": "kunststof-deuren",
+      "velden": ["breedte", "hoogte", "kleurBinnen", "kleurBuiten", "glasoptie", "dorpel", "draairichting", "hangEnSluitwerk", "aanslag", "opmerkingen", "fotoUpload"]
+    },
+    {
+      "naam": "Voordeur",
+      "afbeelding": "https://nsmzfzdvesacindbgkdq.supabase.co/storage/v1/object/public/kozijnen-photos/voordeur-.png",
+      "type": "kunststof",
+      "velden": ["materiaal", "breedte", "hoogte", "kleurBinnen", "kleurBuiten", "glasoptie", "dorpel", "draairichting", "hangEnSluitwerk", "aanslag", "opmerkingen", "fotoUpload"]
+    },
+    {
+      "naam": "Voordeur met bovenlicht",
+      "afbeelding": "https://nsmzfzdvesacindbgkdq.supabase.co/storage/v1/object/public/kozijnen-photos/voordeur-met-bovenlicht-.png",
+      "type": "kunststof",
+      "velden": ["materiaal", "breedte", "hoogte", "kleurBinnen", "kleurBuiten", "glasoptie", "dorpel", "draairichting", "hangEnSluitwerk", "aanslag", "opmerkingen", "fotoUpload"]
+    },
+    {
+      "naam": "Voordeur met zijlicht",
+      "afbeelding": "https://nsmzfzdvesacindbgkdq.supabase.co/storage/v1/object/public/kozijnen-photos/voordeur-met-zijlicht-.png",
+      "type": "kunststof",
+      "velden": ["materiaal", "breedte", "hoogte", "kleurBinnen", "kleurBuiten", "glasoptie", "dorpel", "draairichting", "hangEnSluitwerk", "aanslag", "opmerkingen", "fotoUpload"]
+    }
+  ],
+  "schuifsystemen": [
+    {
+      "naam": "Dubbele hef schuifpui",
+      "afbeelding": "https://nsmzfzdvesacindbgkdq.supabase.co/storage/v1/object/public/kozijnen-photos/dubbele-hef-schuifpui-.png",
+      "velden": ["materiaal", "breedte", "hoogte", "kleurBinnen", "kleurBuiten", "glasoptie", "profielKeuze", "dorpel", "schuifrichting", "aantalDelen", "hangEnSluitwerk", "hor", "aanslag", "opmerkingen", "fotoUpload"]
+    },
+    {
+      "naam": "Hef schuifpui",
+      "afbeelding": "https://nsmzfzdvesacindbgkdq.supabase.co/storage/v1/object/public/kozijnen-photos/hef-schuifpui.png",
+      "velden": ["materiaal", "breedte", "hoogte", "kleurBinnen", "kleurBuiten", "glasoptie", "profielKeuze", "dorpel", "schuifrichting", "hangEnSluitwerk", "hor", "aanslag", "opmerkingen", "fotoUpload"]
+    },
+    {
+      "naam": "Harmonica deur 3 delig",
+      "afbeelding": "https://nsmzfzdvesacindbgkdq.supabase.co/storage/v1/object/public/kozijnen-photos/harmonica-deur-3-delig-.png",
+      "velden": ["materiaal", "breedte", "hoogte", "kleurBinnen", "kleurBuiten", "glasoptie", "aantalDelen", "hangEnSluitwerk", "aanslag", "opmerkingen", "fotoUpload"]
+    },
+    {
+      "naam": "Harmonica deur 4 delig",
+      "afbeelding": "https://nsmzfzdvesacindbgkdq.supabase.co/storage/v1/object/public/kozijnen-photos/harmonica-deur-4-delig-.png",
+      "velden": ["materiaal", "breedte", "hoogte", "kleurBinnen", "kleurBuiten", "glasoptie", "aantalDelen", "hangEnSluitwerk", "aanslag", "opmerkingen", "fotoUpload"]
+    },
+    {
+      "naam": "Harmonica deur 5 delig",
+      "afbeelding": "https://nsmzfzdvesacindbgkdq.supabase.co/storage/v1/object/public/kozijnen-photos/harmonica-deur-5-delig-.png",
+      "velden": ["materiaal", "breedte", "hoogte", "kleurBinnen", "kleurBuiten", "glasoptie", "aantalDelen", "hangEnSluitwerk", "aanslag", "opmerkingen", "fotoUpload"]
+    }
+  ]
+}
