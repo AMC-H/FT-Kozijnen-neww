@@ -111,7 +111,6 @@ function buildGroupedColorOptions(materialLabel?: string): ColorGroup[] {
   }
   return [{ label: 'RAL-kleuren', options: ral }]
 }
-
 /* Custom dropdown met swatches */
 function ColorPickerSelect({
   value, onChange, groups, placeholder = 'Kies kleur',
@@ -213,8 +212,7 @@ const Configurator: React.FC = () => {
   const [photoIds, setPhotoIds] = useState<string[]>([])
   const [loading, setLoading] = useState(false)
   const [despiroPanel, setDespiroPanel] = useState<DespiroPanel | null>(null)
-
-  // Check for URL parameters on component mount
+    // Check for URL parameters on component mount
   useEffect(() => {
     const ekolinePanel = searchParams.get('ekolinePanel')
     const ekolineVariant = searchParams.get('ekolineVariant')
@@ -380,8 +378,7 @@ const Configurator: React.FC = () => {
       setLoading(false)
     }
   }
-
-  const renderField = (field: string) => {
+    const renderField = (field: string) => {
     const colorGroups = buildGroupedColorOptions(formData.materiaal)
 
     switch (field) {
@@ -529,8 +526,7 @@ const Configurator: React.FC = () => {
             </select>
           </div>
         )
-
-      case 'draairichting':
+              case 'draairichting':
         return (
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">Draairichting</label>
@@ -682,8 +678,7 @@ const Configurator: React.FC = () => {
         return category
     }
   }
-
-  // If we have a selected model, show configuration form
+    // If we have a selected model, show configuration form
   if (selectedModel) {
     return (
       <div className="min-h-screen bg-gray-50 py-8">
@@ -787,35 +782,95 @@ const Configurator: React.FC = () => {
   }
 
   // If category is selected but no model, show model selection
-  if ((selectedCategory === 'kunststof-deuren-panels' || selectedCategory === 'basic-deuren-panels' || selectedCategory === 'tuindeuren-panels') && !selectedModel) {
-    // Show panel selection based on category
+  if (
+    (selectedCategory === 'kunststof-deuren-panels' ||
+      selectedCategory === 'basic-deuren-panels' ||
+      selectedCategory === 'tuindeuren-panels') &&
+    !selectedModel
+  ) {
     let filteredDeuren
     let categoryTitle
-    
+
     if (selectedCategory === 'kunststof-deuren-panels') {
-      filteredDeuren = modellen.buitendeuren.filter(d => d.type === 'kunststof-deuren')
+      filteredDeuren = modellen.buitendeuren.filter((d) => d.type === 'kunststof-deuren')
       categoryTitle = 'kunststof deur model'
     } else if (selectedCategory === 'tuindeuren-panels') {
-      filteredDeuren = modellen.buitendeuren.filter(d => d.type === 'tuindeur')
+      filteredDeuren = modellen.buitendeuren.filter((d) => d.type === 'tuindeur')
       categoryTitle = 'tuindeur model'
     } else {
-      filteredDeuren = modellen.buitendeuren.filter(d => d.type === 'kunststof' || !d.type)
+      filteredDeuren = modellen.buitendeuren.filter((d) => d.type === 'kunststof' || !d.type)
       categoryTitle = 'basic deur model'
     }
-    
+
+    // *** Alleen voor BASIC DEUREN: grid in plaats van carrousel ***
+    if (selectedCategory === 'basic-deuren-panels') {
+      return (
+        <div className="min-h-screen bg-gray-50 py-8">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-8">
+              <h1 className="text-3xl font-bold text-gray-900 mb-4">
+                Kies een basic deur model
+              </h1>
+              <button
+                onClick={() => setSelectedCategory('buitendeuren')}
+                className="text-primary-600 hover:text-primary-800 transition-colors"
+              >
+                ← Terug naar categorieën
+              </button>
+            </div>
+
+            <div className="bg-white rounded-lg shadow-lg p-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {filteredDeuren.map((model, idx) => (
+                  <div
+                    key={idx}
+                    onClick={() => setSelectedModel(model)}
+                    className="border-2 border-gray-200 rounded-lg p-6 bg-white cursor-pointer group transition-all duration-300 hover:shadow-2xl hover:scale-105"
+                    style={{ transition: 'box-shadow 0.3s, transform 0.3s' }}
+                  >
+                    <div className="text-center">
+                      <div
+                        className="mb-4 flex items-center justify-center"
+                        style={{ height: '256px' }}
+                      >
+                        <ImageWithFallback
+                          src={model.afbeelding}
+                          alt={model.naam}
+                          className="max-w-full max-h-full object-contain"
+                          style={{ width: '100%', height: '100%' }}
+                        />
+                      </div>
+                      <h3 className="text-lg font-semibold text-gray-900 group-hover:text-primary-600 transition-colors mb-2">
+                        {model.naam}
+                      </h3>
+                      <button
+                        className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg transition-all duration-300 mt-3"
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          setSelectedModel(model)
+                        }}
+                      >
+                        Selecteer dit model
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      )
+    }
+        // Voor andere deurcategorieën: blijf carrousel tonen!
     return (
       <div className="min-h-screen bg-gray-50 py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-gray-900 mb-4">Kies een {categoryTitle}</h1>
+            <h1 className="text-3xl font-bold text-gray-900 mb-4">
+              Kies een {categoryTitle}
+            </h1>
             <button
-              onClick={() => {
-                if (selectedCategory === 'tuindeuren-panels') {
-                  setSelectedCategory('buitendeuren')
-                } else {
-                  setSelectedCategory('buitendeuren')
-                }
-              }}
+              onClick={() => setSelectedCategory('buitendeuren')}
               className="text-primary-600 hover:text-primary-800 transition-colors"
             >
               ← Terug naar categorieën
@@ -838,15 +893,23 @@ const Configurator: React.FC = () => {
               {filteredDeuren.length > 1 && (
                 <>
                   <button
-                    onClick={() => setCurrentModelIndex(prev => prev > 0 ? prev - 1 : filteredDeuren.length - 1)}
+                    onClick={() =>
+                      setCurrentModelIndex((prev) =>
+                        prev > 0 ? prev - 1 : filteredDeuren.length - 1
+                      )
+                    }
                     className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-90 hover:bg-opacity-100 rounded-full p-3 shadow-lg transition-all duration-300 z-20 hover:scale-110"
                     aria-label="Vorig model"
                   >
                     <ChevronLeft className="h-6 w-6 text-gray-700" />
                   </button>
-                  
+
                   <button
-                    onClick={() => setCurrentModelIndex(prev => prev < filteredDeuren.length - 1 ? prev + 1 : 0)}
+                    onClick={() =>
+                      setCurrentModelIndex((prev) =>
+                        prev < filteredDeuren.length - 1 ? prev + 1 : 0
+                      )
+                    }
                     className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-90 hover:bg-opacity-100 rounded-full p-3 shadow-lg transition-all duration-300 z-20 hover:scale-110"
                     aria-label="Volgend model"
                   >
@@ -862,7 +925,9 @@ const Configurator: React.FC = () => {
                 {filteredDeuren[currentModelIndex]?.naam || 'Geen model geselecteerd'}
               </h3>
               <button
-                onClick={() => setSelectedModel(filteredDeuren[currentModelIndex])}
+                onClick={() =>
+                  setSelectedModel(filteredDeuren[currentModelIndex])
+                }
                 disabled={!filteredDeuren[currentModelIndex]}
                 className="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-semibold py-4 px-8 rounded-lg transition-all duration-300 transform hover:scale-105 flex items-center space-x-2 mx-auto"
               >
@@ -1076,8 +1141,7 @@ const Configurator: React.FC = () => {
       </div>
     )
   }
-
-  // Default: Category Selection
+    // Default: Category Selection
   return (
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
