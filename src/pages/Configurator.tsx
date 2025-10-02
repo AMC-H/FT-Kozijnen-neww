@@ -701,12 +701,12 @@ const Configurator: React.FC = () => {
             </div>
 
             {/* Model Image */}
-            <div className="mb-8 bg-gray-100 rounded-lg p-6 text-center">
-              <div className="relative">
+            <div className="mb-8 text-center">
+              <div className="relative flex items-center justify-center" style={{ height: '350px' }}>
                 <img
                   src={selectedModel.afbeelding}
                   alt={selectedModel.naam}
-                  className="max-w-full max-h-48 mx-auto object-contain"
+                  className="max-w-full max-h-full mx-auto object-contain"
                   onError={(e) => {
                     const target = e.target as HTMLImageElement
                     target.src = 'https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=400'
