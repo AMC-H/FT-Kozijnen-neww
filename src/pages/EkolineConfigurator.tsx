@@ -3,9 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { ArrowLeft, ChevronLeft, ChevronRight, Check } from 'lucide-react'
 import { supabase } from '../lib/supabase'
 
-const SUPABASE_IMG_URL =
-  import.meta.env.VITE_SUPABASE_URL +
-  '/storage/v1/object/public/kozijnen-photos/'
+const SUPABASE_IMG_URL = `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/kozijnen-photos/`
 
 interface PanelConfig {
   paneelnummer: number
@@ -35,7 +33,6 @@ const EkolineConfigurator: React.FC = () => {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [currentIndex, setCurrentIndex] = useState(0)
-  // Formulier state
   const [showConfig, setShowConfig] = useState(false)
   const [formData, setFormData] = useState<any>({})
   const [opleggingKleur, setOpleggingKleur] = useState<'inox' | 'zwart' | ''>('')
@@ -62,19 +59,17 @@ const EkolineConfigurator: React.FC = () => {
     }
   }
 
-  // Filter panelen op basis van variant: alleen met afbeelding van dat type
   const filteredPanelen = panelen.filter((p) =>
     variant === 'met' ? !!p.afbeelding_met : !!p.afbeelding_zonder
   )
 
   useEffect(() => {
-    // Reset index als te hoog na filteren
     if (currentIndex > filteredPanelen.length - 1) setCurrentIndex(0)
   }, [variant, filteredPanelen.length])
 
   const currentPanel = filteredPanelen[currentIndex] || null
 
-  // --- ENKEL base-url + bestandsnaam uit kolom ---
+  // ENKEL base-url + bestandsnaam uit kolom (geen submap!)
   const getPanelImageUrl = (p: PanelConfig | null) =>
     p
       ? SUPABASE_IMG_URL +
@@ -85,7 +80,7 @@ const EkolineConfigurator: React.FC = () => {
     if (variant === newVariant) return
     setVariant(newVariant)
     setCurrentIndex(0)
-    setOpleggingKleur('') // reset kleurkeuze bij variantwissel
+    setOpleggingKleur('')
   }
 
   const goToPrevious = () => {
@@ -103,7 +98,6 @@ const EkolineConfigurator: React.FC = () => {
     setShowConfig(true)
   }
 
-  // Materiaal en afmetingen tonen
   const materiaalInfo = currentPanel
     ? [
         currentPanel.beschikbaar_pvc && {
@@ -124,7 +118,6 @@ const EkolineConfigurator: React.FC = () => {
       ].filter(Boolean)
     : []
 
-  // Handler voor formulier velden
   const handleFormChange = (field: string, value: any) => {
     setFormData((prev: any) => ({
       ...prev,
@@ -132,7 +125,6 @@ const EkolineConfigurator: React.FC = () => {
     }))
   }
 
-  // (Demo) submit
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     alert('Gegevens klaar voor verzending:\n' + JSON.stringify({
@@ -190,7 +182,6 @@ const EkolineConfigurator: React.FC = () => {
     )
   }
 
-  // --- CONFIGURATIE FORMULIER ---
   if (showConfig && currentPanel) {
     return (
       <div className="min-h-screen bg-gray-50 py-8">
@@ -215,7 +206,6 @@ const EkolineConfigurator: React.FC = () => {
               />
             </div>
             <form className="space-y-6" onSubmit={handleSubmit}>
-              {/* Materiaal keuze */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Materiaal *</label>
                 <select
@@ -230,7 +220,6 @@ const EkolineConfigurator: React.FC = () => {
                   {currentPanel.beschikbaar_hout && <option value="Hout">Hout</option>}
                 </select>
               </div>
-              {/* Afmetingen - dynamisch per materiaal */}
               {formData.materiaal && (
                 <div className="grid grid-cols-2 gap-4">
                   <div>
@@ -275,8 +264,6 @@ const EkolineConfigurator: React.FC = () => {
                   </div>
                 </div>
               )}
-
-              {/* Alleen als gekozen variant 'met' is: extra optie voor kleur oplegging */}
               {variant === 'met' && (
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Kleur oplegging *</label>
@@ -292,8 +279,6 @@ const EkolineConfigurator: React.FC = () => {
                   </select>
                 </div>
               )}
-
-              {/* Overige velden alleen als gewenst */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Opmerkingen</label>
                 <textarea
@@ -321,7 +306,6 @@ const EkolineConfigurator: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div>
             <h1 className="text-3xl font-bold text-gray-900">Ekoline Panelen</h1>
@@ -335,9 +319,7 @@ const EkolineConfigurator: React.FC = () => {
             <span>Terug naar configurator</span>
           </button>
         </div>
-
         <div className="bg-white rounded-xl shadow-lg p-6 md:p-8">
-          {/* Variant Toggle */}
           <div className="flex justify-center mb-8">
             <div className="bg-gray-100 rounded-lg p-1 flex">
               <button
@@ -362,12 +344,9 @@ const EkolineConfigurator: React.FC = () => {
               </button>
             </div>
           </div>
-
-          {/* Panel Display */}
           <div className="text-center mb-8">
             <div className="relative w-full max-w-4xl mx-auto h-96 overflow-hidden">
               <div className="flex items-center justify-center h-full relative">
-                {/* Carousel Arrows */}
                 <button
                   onClick={goToPrevious}
                   className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-90 hover:bg-opacity-100 rounded-full p-3 shadow-lg transition-all duration-300 z-20 hover:scale-110"
@@ -409,8 +388,6 @@ const EkolineConfigurator: React.FC = () => {
               </div>
             </div>
           </div>
-
-          {/* Select Panel Button */}
           <div className="text-center">
             <button
               onClick={handleSelectPanel}
@@ -422,29 +399,6 @@ const EkolineConfigurator: React.FC = () => {
           </div>
         </div>
       </div>
-
-      {/* Ekoline Information Section */}
-      <section className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-8">
-            <img 
-              src="/ekoline-panels-overview.png" 
-              alt="Ekoline panelen overzicht" 
-              className="w-full max-w-6xl mx-auto rounded-lg"
-            />
-          </div>
-          <div className="max-w-4xl mx-auto space-y-6 text-gray-600 text-lg leading-relaxed">
-            <p>
-              EkoLine-panelen zijn beschikbaar in een versie zonder opleggingen, met INOX-opleggingen en met zwarte 
-              opleggingen.
-            </p>
-            <p>
-              EkoLine is een esthetische collectie van deurpanelen. De klant krijgt onder meer de mogelijkheid deuren te fabriceren 
-              volgens zijn eigen ontwerp, waarbij de beste constructieve oplossingen worden aangehouden.
-            </p>
-          </div>
-        </div>
-      </section>
     </div>
   )
 }
