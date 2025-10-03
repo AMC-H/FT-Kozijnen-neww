@@ -1,171 +1,128 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { ArrowLeft, ArrowRight, ChevronLeft, ChevronRight, Check } from 'lucide-react'
+import { ArrowLeft, ChevronLeft, ChevronRight, Check } from 'lucide-react'
 import { supabase } from '../lib/supabase'
 
-const EkolineOverviewImage = 'https://images.pexels.com/photos/1396122/pexels-photo-1396122.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
+const SUPABASE_IMG_URL =
+  import.meta.env.VITE_SUPABASE_URL +
+  '/storage/v1/object/public/kozijnen-photos/'
 
-interface EkolinePanel {
-  number: string
-  variant: 'met' | 'zonder'
-  url: string
+const EkolineOverviewImage =
+  'https://images.pexels.com/photos/1396122/pexels-photo-1396122.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
+
+interface PanelConfig {
+  paneelnummer: number
+  afbeelding_met: string | null
+  afbeelding_zonder: string | null
+  beschikbaar_pvc: boolean
+  beschikbaar_alu: boolean
+  beschikbaar_hout: boolean
+  pvc_breedte_min_mm: number | null
+  pvc_breedte_max_mm: number | null
+  pvc_hoogte_min_mm: number | null
+  pvc_hoogte_max_mm: number | null
+  alu_breedte_min_mm: number | null
+  alu_breedte_max_mm: number | null
+  alu_hoogte_min_mm: number | null
+  alu_hoogte_max_mm: number | null
+  hout_breedte_min_mm: number | null
+  hout_breedte_max_mm: number | null
+  hout_hoogte_min_mm: number | null
+  hout_hoogte_max_mm: number | null
 }
 
 const EkolineConfigurator: React.FC = () => {
   const navigate = useNavigate()
-  
-  // Debug log to confirm component is rendering
-  console.log('🔍 EkolineConfigurator component is rendering')
-  console.log('🔍 Current working directory should contain:', '/home/project/public/ekoline-panels-overview.png')
-  
   const [variant, setVariant] = useState<'met' | 'zonder'>('met')
-  const [availableMet, setAvailableMet] = useState<{ number: string; path: string }[]>([])
-  const [availableZonder, setAvailableZonder] = useState<{ number: string; path: string }[]>([])
-  const [currentIndex, setCurrentIndex] = useState(0)
+  const [panelen, setPanelen] = useState<PanelConfig[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [currentIndex, setCurrentIndex] = useState(0)
 
   useEffect(() => {
-    loadAvailablePanels()
+    loadPanelen()
   }, [])
 
-  const loadAvailablePanels = async () => {
+  const loadPanelen = async () => {
     try {
       setLoading(true)
       setError(null)
-      
-      console.log('🔍 EKOLINE DEBUG: Loading panels from panelen_config table...')
-      
-      // Fetch panel configuration from panelen_config table
-      const { data: panelConfigs, error } = await supabase
+      const { data, error } = await supabase
         .from('panelen_config')
-        .select('paneelnummer, afbeelding_met, afbeelding_zonder')
+        .select('*')
         .order('paneelnummer', { ascending: true })
-      
-      if (error) {
-        console.error('🔍 EKOLINE DEBUG: Error fetching panel configs:', error)
-        setError(`Fout bij het laden van paneel configuraties: ${error.message}`)
-        return
-      }
-      
-      if (!panelConfigs || panelConfigs.length === 0) {
-        console.log('🔍 EKOLINE DEBUG: No panel configs found in database')
-        setError('Geen paneel configuraties gevonden in database')
-        return
-      }
-      
-      console.log('🔍 EKOLINE DEBUG: Panel configs from database:', panelConfigs)
-      
-      // Build met and zonder panels arrays from database data
-      const metPanels: { number: string; path: string }[] = []
-      const zonderPanels: { number: string; path: string }[] = []
-      
-      panelConfigs.forEach(config => {
-        const panelNumber = config.paneelnummer.toString().padStart(2, '0')
-        
-        // Add to met panels if afbeelding_met exists
-        if (config.afbeelding_met) {
-          metPanels.push({
-            number: panelNumber,
-            path: config.afbeelding_met
-          })
-          console.log(`🔍 EKOLINE DEBUG: Added MET panel ${panelNumber}: ${config.afbeelding_met}`)
-        }
-        
-        // Add to zonder panels if afbeelding_zonder exists
-        if (config.afbeelding_zonder) {
-          zonderPanels.push({
-            number: panelNumber,
-            path: config.afbeelding_zonder
-          })
-          console.log(`🔍 EKOLINE DEBUG: Added ZONDER panel ${panelNumber}: ${config.afbeelding_zonder}`)
-        }
-      })
-      
-      console.log('🔍 EKOLINE DEBUG: Final met panels:', metPanels)
-      console.log('🔍 EKOLINE DEBUG: Final zonder panels:', zonderPanels)
-      
-      setAvailableMet(metPanels)
-      setAvailableZonder(zonderPanels)
-      
-      // Set initial index to 0 if panels are available
-      if (metPanels.length > 0) {
-        console.log('🔍 EKOLINE DEBUG: Setting initial index to 0')
-        setCurrentIndex(0)
-      }
-
-    } catch (error) {
-      console.error('🔍 EKOLINE DEBUG: Catch block error:', error)
-      setError(`Er ging iets mis bij het laden van de panelen: ${error instanceof Error ? error.message : 'Onbekende fout'}`)
+      if (error) throw error
+      setPanelen(data || [])
+      setCurrentIndex(0)
+    } catch (e: any) {
+      setError(e?.message || 'Fout bij laden panelen')
     } finally {
-      console.log('🔍 EKOLINE DEBUG: Loading finished, setting loading to false')
       setLoading(false)
     }
   }
 
-  const getCurrentPanels = () => {
-    return variant === 'met' ? availableMet : availableZonder
-  }
+  // Filter panelen op basis van variant: alleen met afbeelding van dat type
+  const filteredPanelen = panelen.filter((p) =>
+    variant === 'met' ? !!p.afbeelding_met : !!p.afbeelding_zonder
+  )
 
-  const getCurrentPanel = () => {
-    const panels = getCurrentPanels()
-    return panels[currentIndex] || null
-  }
+  useEffect(() => {
+    // Reset index als te hoog na filteren
+    if (currentIndex > filteredPanelen.length - 1) setCurrentIndex(0)
+  }, [variant, filteredPanelen.length])
 
-  const getPreviousPanel = () => {
-    const panels = getCurrentPanels()
-    if (panels.length === 0) return null
-    const prevIndex = currentIndex > 0 ? currentIndex - 1 : panels.length - 1
-    return panels[prevIndex] || null
-  }
+  const currentPanel = filteredPanelen[currentIndex] || null
 
-  const getNextPanel = () => {
-    const panels = getCurrentPanels()
-    if (panels.length === 0) return null
-    const nextIndex = currentIndex < panels.length - 1 ? currentIndex + 1 : 0
-    return panels[nextIndex] || null
-  }
-
-  const getPanelImageUrl = (panelData: { number: string; path: string } | null) => {
-    if (!panelData) return ''
-    // panelData.path contains the filename directly from database
-    return `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/kozijnen-photos/${panelData.path}`
-  }
+  const getPanelImageUrl = (p: PanelConfig | null) =>
+    p
+      ? SUPABASE_IMG_URL +
+        (variant === 'met' ? p.afbeelding_met : p.afbeelding_zonder)
+      : ''
 
   const handleVariantChange = (newVariant: 'met' | 'zonder') => {
+    if (variant === newVariant) return
     setVariant(newVariant)
-    
-    // Check if current panel exists in new variant
-    const currentPanel = getCurrentPanel()
-    const newPanels = newVariant === 'met' ? availableMet : availableZonder
-    
-    if (currentPanel && !newPanels.find(p => p.number === currentPanel.number)) {
-      // Current panel doesn't exist in new variant, jump to first available
-      setCurrentIndex(0)
-    } else if (currentPanel) {
-      // Find the index of current panel in new variant
-      const newIndex = newPanels.findIndex(p => p.number === currentPanel.number)
-      setCurrentIndex(newIndex >= 0 ? newIndex : 0)
-    }
+    setCurrentIndex(0)
   }
 
-  const handlePrevious = () => {
-    const panels = getCurrentPanels()
-    setCurrentIndex(prev => prev > 0 ? prev - 1 : panels.length - 1)
+  const goToPrevious = () => {
+    setCurrentIndex((prev) =>
+      prev > 0 ? prev - 1 : filteredPanelen.length - 1
+    )
   }
-
-  const handleNext = () => {
-    const panels = getCurrentPanels()
-    setCurrentIndex(prev => prev < panels.length - 1 ? prev + 1 : 0)
+  const goToNext = () => {
+    setCurrentIndex((prev) =>
+      prev < filteredPanelen.length - 1 ? prev + 1 : 0
+    )
   }
 
   const handleSelectPanel = () => {
-    const currentPanel = getCurrentPanel()
-    if (currentPanel) {
-      // Navigate back to configurator with ekoline parameters
-      navigate(`/configurator?ekolinePanel=${currentPanel.number}&ekolineVariant=${variant}`)
-    }
+    if (currentPanel)
+      navigate(
+        `/configurator?ekolinePanel=${currentPanel.paneelnummer}&ekolineVariant=${variant}`
+      )
   }
+
+  // Materiaal en afmetingen tonen
+  const materiaalInfo = currentPanel
+    ? [
+        currentPanel.beschikbaar_pvc && {
+          label: 'PVC',
+          breedte: [currentPanel.pvc_breedte_min_mm, currentPanel.pvc_breedte_max_mm],
+          hoogte: [currentPanel.pvc_hoogte_min_mm, currentPanel.pvc_hoogte_max_mm],
+        },
+        currentPanel.beschikbaar_alu && {
+          label: 'Aluminium',
+          breedte: [currentPanel.alu_breedte_min_mm, currentPanel.alu_breedte_max_mm],
+          hoogte: [currentPanel.alu_hoogte_min_mm, currentPanel.alu_hoogte_max_mm],
+        },
+        currentPanel.beschikbaar_hout && {
+          label: 'Hout',
+          breedte: [currentPanel.hout_breedte_min_mm, currentPanel.hout_breedte_max_mm],
+          hoogte: [currentPanel.hout_hoogte_min_mm, currentPanel.hout_hoogte_max_mm],
+        },
+      ].filter(Boolean)
+    : []
 
   if (loading) {
     return (
@@ -196,14 +153,13 @@ const EkolineConfigurator: React.FC = () => {
     )
   }
 
-  const currentPanels = getCurrentPanels()
-  const currentPanel = getCurrentPanel()
-
-  if (currentPanels.length === 0) {
+  if (filteredPanelen.length === 0) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <p className="text-gray-600 mb-4">Geen panelen beschikbaar voor variant "{variant}"</p>
+          <p className="text-gray-600 mb-4">
+            Geen panelen beschikbaar voor variant "{variant}"
+          </p>
           <button
             onClick={() => navigate('/configurator')}
             className="bg-primary-600 text-white px-6 py-3 rounded-lg hover:bg-primary-700 transition-colors"
@@ -245,7 +201,7 @@ const EkolineConfigurator: React.FC = () => {
                     : 'text-gray-600 hover:text-gray-800'
                 }`}
               >
-                Met overlay
+                Met INOX oplegging
               </button>
               <button
                 onClick={() => handleVariantChange('zonder')}
@@ -255,7 +211,7 @@ const EkolineConfigurator: React.FC = () => {
                     : 'text-gray-600 hover:text-gray-800'
                 }`}
               >
-                Zonder overlay
+                Zonder INOX oplegging
               </button>
             </div>
           </div>
@@ -263,59 +219,24 @@ const EkolineConfigurator: React.FC = () => {
           {/* Panel Display */}
           <div className="text-center mb-8">
             <div className="relative w-full max-w-4xl mx-auto h-96 overflow-hidden">
-              {/* Carousel Container */}
               <div className="flex items-center justify-center h-full relative">
-                {/* Previous Panel (Left) */}
-                <div className="absolute left-0 w-1/4 h-full flex items-center justify-center opacity-50 scale-75 transition-all duration-300">
-                  {getPreviousPanel() && (
-                    <img
-                      src={getPanelImageUrl(getPreviousPanel())}
-                      alt={`Vorig paneel ${getPreviousPanel()?.number}`}
-                      className="max-w-full max-h-full object-contain rounded-lg shadow-md"
-                      onError={(e) => {
-                        console.error(`Failed to load previous panel image`)
-                      }}
-                    />
-                  )}
-                </div>
-
-                {/* Current Panel (Center) */}
-                <div className="w-3/4 h-full flex items-center justify-center z-10">
-                  <img
-                    src={getPanelImageUrl(getCurrentPanel())}
-                    alt={`Ekoline paneel ${getCurrentPanel()?.number} ${variant} overlay`}
-                    className="max-w-full max-h-full object-contain rounded-lg shadow-xl"
-                    onError={(e) => {
-                      console.error(`Failed to load image for panel ${getCurrentPanel()?.number} variant ${variant}`)
-                    }}
-                  />
-                </div>
-
-                {/* Next Panel (Right) */}
-                <div className="absolute right-0 w-1/4 h-full flex items-center justify-center opacity-50 scale-75 transition-all duration-300">
-                  {getNextPanel() && (
-                    <img
-                      src={getPanelImageUrl(getNextPanel())}
-                      alt={`Volgend paneel ${getNextPanel()?.number}`}
-                      className="max-w-full max-h-full object-contain rounded-lg shadow-md"
-                      onError={(e) => {
-                        console.error(`Failed to load next panel image`)
-                      }}
-                    />
-                  )}
-                </div>
-
-                {/* Navigation Arrows */}
+                {/* Carousel Arrows */}
                 <button
-                  onClick={handlePrevious}
+                  onClick={goToPrevious}
                   className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-90 hover:bg-opacity-100 rounded-full p-3 shadow-lg transition-all duration-300 z-20 hover:scale-110"
                   aria-label="Vorig paneel"
                 >
                   <ChevronLeft className="h-6 w-6 text-gray-700" />
                 </button>
-                
+                <div className="w-full flex items-center justify-center z-10">
+                  <img
+                    src={getPanelImageUrl(currentPanel)}
+                    alt={`Ekoline paneel ${currentPanel?.paneelnummer} ${variant} overlay`}
+                    className="max-w-full max-h-full object-contain rounded-lg shadow-xl"
+                  />
+                </div>
                 <button
-                  onClick={handleNext}
+                  onClick={goToNext}
                   className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-90 hover:bg-opacity-100 rounded-full p-3 shadow-lg transition-all duration-300 z-20 hover:scale-110"
                   aria-label="Volgend paneel"
                 >
@@ -323,11 +244,22 @@ const EkolineConfigurator: React.FC = () => {
                 </button>
               </div>
             </div>
-            
             <div className="mt-4">
               <h3 className="text-xl font-semibold text-gray-900">
-                Paneel {currentPanel?.number} - {variant === 'met' ? 'Met' : 'Zonder'} overlay
+                Ekoline {currentPanel?.paneelnummer} - {variant === 'met' ? 'Met INOX oplegging' : 'Zonder INOX oplegging'}
               </h3>
+              <div className="text-gray-500 text-sm mb-2 space-y-1 mt-2">
+                {materiaalInfo.length === 0 ? (
+                  <div>Geen materialen beschikbaar voor dit paneel</div>
+                ) : (
+                  materiaalInfo.map((m: any) => (
+                    <div key={m.label}>
+                      <span className="font-medium">{m.label}:</span>{' '}
+                      {m.breedte[0]}–{m.breedte[1]} mm breed, {m.hoogte[0]}–{m.hoogte[1]} mm hoog
+                    </div>
+                  ))
+                )}
+              </div>
             </div>
           </div>
 
@@ -341,8 +273,6 @@ const EkolineConfigurator: React.FC = () => {
               <span>Kies dit paneel</span>
             </button>
           </div>
-
-          {/* Ekoline Overview Image */}
         </div>
       </div>
 
@@ -361,7 +291,6 @@ const EkolineConfigurator: React.FC = () => {
               EkoLine-panelen zijn beschikbaar in een versie zonder opleggingen, met INOX-opleggingen en met zwarte 
               opleggingen.
             </p>
-            
             <p>
               EkoLine is een esthetische collectie van deurpanelen. De klant krijgt onder meer de mogelijkheid deuren te fabriceren 
               volgens zijn eigen ontwerp, waarbij de beste constructieve oplossingen worden aangehouden.
