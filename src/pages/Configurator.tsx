@@ -111,6 +111,7 @@ function buildGroupedColorOptions(materialLabel?: string): ColorGroup[] {
   }
   return [{ label: 'RAL-kleuren', options: ral }]
 }
+
 /* Custom dropdown met swatches */
 function ColorPickerSelect({
   value, onChange, groups, placeholder = 'Kies kleur',
@@ -212,7 +213,8 @@ const Configurator: React.FC = () => {
   const [photoIds, setPhotoIds] = useState<string[]>([])
   const [loading, setLoading] = useState(false)
   const [despiroPanel, setDespiroPanel] = useState<DespiroPanel | null>(null)
-    // Check for URL parameters on component mount
+
+  // Check for URL parameters on component mount
   useEffect(() => {
     const ekolinePanel = searchParams.get('ekolinePanel')
     const ekolineVariant = searchParams.get('ekolineVariant')
@@ -378,7 +380,8 @@ const Configurator: React.FC = () => {
       setLoading(false)
     }
   }
-    const renderField = (field: string) => {
+
+  const renderField = (field: string) => {
     const colorGroups = buildGroupedColorOptions(formData.materiaal)
 
     switch (field) {
@@ -526,7 +529,8 @@ const Configurator: React.FC = () => {
             </select>
           </div>
         )
-              case 'draairichting':
+
+      case 'draairichting':
         return (
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">Draairichting</label>
@@ -678,7 +682,8 @@ const Configurator: React.FC = () => {
         return category
     }
   }
-    // If we have a selected model, show configuration form
+
+  // If we have a selected model, show configuration form
   if (selectedModel) {
     return (
       <div className="min-h-screen bg-gray-50 py-8">
@@ -781,7 +786,7 @@ const Configurator: React.FC = () => {
     )
   }
 
-  // If category is selected but no model, show model selection
+  // --- MODELSELECTIE EN GRID/CARROUSEL LOGICA AANGEPAST HIERONDER! ---
   if (
     (selectedCategory === 'kunststof-deuren-panels' ||
       selectedCategory === 'basic-deuren-panels' ||
@@ -802,14 +807,17 @@ const Configurator: React.FC = () => {
       categoryTitle = 'basic deur model'
     }
 
-    // *** Alleen voor BASIC DEUREN: grid in plaats van carrousel ***
-    if (selectedCategory === 'basic-deuren-panels') {
+    // --- HIER DE GEWENSTE AANPASSING: GRID VOOR BASIC EN TUINDEUREN ---
+    if (
+      selectedCategory === 'basic-deuren-panels' ||
+      selectedCategory === 'tuindeuren-panels'
+    ) {
       return (
         <div className="min-h-screen bg-gray-50 py-8">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-8">
               <h1 className="text-3xl font-bold text-gray-900 mb-4">
-                Kies een basic deur model
+                Kies een {selectedCategory === 'basic-deuren-panels' ? 'basic deur model' : 'tuindeur model'}
               </h1>
               <button
                 onClick={() => setSelectedCategory('buitendeuren')}
@@ -861,7 +869,7 @@ const Configurator: React.FC = () => {
         </div>
       )
     }
-        // Voor andere deurcategorieën: blijf carrousel tonen!
+    // Voor kunststof deuren: carrousel
     return (
       <div className="min-h-screen bg-gray-50 py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
