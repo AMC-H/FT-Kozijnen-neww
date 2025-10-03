@@ -74,6 +74,7 @@ const EkolineConfigurator: React.FC = () => {
 
   const currentPanel = filteredPanelen[currentIndex] || null
 
+  // --- ENKEL base-url + bestandsnaam uit kolom ---
   const getPanelImageUrl = (p: PanelConfig | null) =>
     p
       ? SUPABASE_IMG_URL +
