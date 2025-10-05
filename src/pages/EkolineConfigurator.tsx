@@ -74,6 +74,7 @@ const EkolineConfigurator: React.FC = () => {
   const getPanelImageUrl = (p: PanelConfig | null) => {
     if (!p) return ''
     const filename = variant === 'met' ? p.afbeelding_met : p.afbeelding_zonder
+    if (!filename) return ''
     const url = SUPABASE_IMG_URL + filename + `?v=${p.paneelnummer}`
     return url
   }
