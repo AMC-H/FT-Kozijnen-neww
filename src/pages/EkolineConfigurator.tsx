@@ -30,6 +30,25 @@ interface PanelConfig {
   hout_hoogte_max_mm: number | null
 }
 
+const GLASOPTIES = [
+  { value: "hr++", label: "HR++ glas" },
+  { value: "mat", label: "Mat glas" },
+  { value: "triple", label: "Triple glas" }
+];
+
+const SLUITWERKOPTIES = [
+  { value: "standaard", label: "Standaard hang- en sluitwerk" },
+  { value: "veiligheid", label: "Veiligheidsslot" },
+  { value: "meerpunt", label: "Meerpuntssluiting" },
+  { value: "antiinbraak", label: "Anti-inbraak beslag" },
+  { value: "comfort", label: "Comfort hang- en sluitwerk" }
+];
+
+const DORPELOPTIES = [
+  { value: "ja", label: "Ja" },
+  { value: "nee", label: "Nee" }
+];
+
 const EkolineConfigurator: React.FC = () => {
   const navigate = useNavigate()
   const [variant, setVariant] = useState<'met' | 'zonder'>('met')
@@ -57,7 +76,7 @@ const EkolineConfigurator: React.FC = () => {
       setPanelen(data || [])
       setCurrentIndex(0)
     } catch (e: any) {
-      setError(e?.message || 'Fout bij laden panelen')
+      setError(e?.message || 'Fout bij laden deuren')
     } finally {
       setLoading(false)
     }
@@ -115,7 +134,7 @@ const EkolineConfigurator: React.FC = () => {
   const materiaalInfo = currentPanel
     ? [
         currentPanel.beschikbaar_pvc && {
-          label: 'PVC',
+          label: 'Kunststof',
           breedte: [currentPanel.pvc_breedte_min_mm, currentPanel.pvc_breedte_max_mm],
           hoogte: [currentPanel.pvc_hoogte_min_mm, currentPanel.pvc_hoogte_max_mm],
         },
@@ -149,61 +168,40 @@ const EkolineConfigurator: React.FC = () => {
     }, null, 2))
   }
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Ekoline deuren laden...</p>
-        </div>
-      </div>
-    )
-  }
-
-  if (error) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-            {error}
-          </div>
-          <button
-            onClick={() => navigate('/configurator')}
-            className="bg-primary-600 text-white px-6 py-3 rounded-lg hover:bg-primary-700 transition-colors"
-          >
-            Terug naar configurator
-          </button>
-        </div>
-      </div>
-    )
-  }
-
-  if (filteredPanelen.length === 0) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <p className="text-gray-600 mb-4">
-            Geen deuren beschikbaar voor variant "{variant}"
-          </p>
-          <button
-            onClick={() => navigate('/configurator')}
-            className="bg-primary-600 text-white px-6 py-3 rounded-lg hover:bg-primary-700 transition-colors"
-          >
-            Terug naar configurator
-          </button>
-        </div>
-      </div>
-    )
-  }
-
+  // ----------------- Dynamisch formulier -----------------
   if (showConfig && currentPanel) {
+    // Materiaal-opties per paneel
+    const materiaalOpties = [
+      currentPanel.beschikbaar_pvc && { value: 'kunststof', label: 'Kunststof' },
+      currentPanel.beschikbaar_alu && { value: 'aluminium', label: 'Aluminium' },
+      currentPanel.beschikbaar_hout && { value: 'hout', label: 'Hout' },
+    ].filter(Boolean);
+
+    // Dynamische min/max per gekozen materiaal
+    const breedteMin =
+      formData.materiaal === 'kunststof' ? currentPanel.pvc_breedte_min_mm :
+      formData.materiaal === 'aluminium' ? currentPanel.alu_breedte_min_mm :
+      formData.materiaal === 'hout' ? currentPanel.hout_breedte_min_mm : 400;
+    const breedteMax =
+      formData.materiaal === 'kunststof' ? currentPanel.pvc_breedte_max_mm :
+      formData.materiaal === 'aluminium' ? currentPanel.alu_breedte_max_mm :
+      formData.materiaal === 'hout' ? currentPanel.hout_breedte_max_mm : 3000;
+    const hoogteMin =
+      formData.materiaal === 'kunststof' ? currentPanel.pvc_hoogte_min_mm :
+      formData.materiaal === 'aluminium' ? currentPanel.alu_hoogte_min_mm :
+      formData.materiaal === 'hout' ? currentPanel.hout_hoogte_min_mm : 400;
+    const hoogteMax =
+      formData.materiaal === 'kunststof' ? currentPanel.pvc_hoogte_max_mm :
+      formData.materiaal === 'aluminium' ? currentPanel.alu_hoogte_max_mm :
+      formData.materiaal === 'hout' ? currentPanel.hout_hoogte_max_mm : 3000;
+
     return (
       <div className="min-h-screen bg-gray-50 py-8">
         <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="bg-white rounded-xl shadow-lg p-6 md:p-8">
             <div className="flex items-center justify-between mb-6">
               <h1 className="text-2xl font-bold text-gray-900">
-                Ekoline {currentPanel.paneelnummer} configureren
+                Ekoline deur {currentPanel.paneelnummer} configureren
               </h1>
               <button
                 onClick={() => setShowConfig(false)}
@@ -224,20 +222,22 @@ const EkolineConfigurator: React.FC = () => {
               />
             </div>
             <form className="space-y-6" onSubmit={handleSubmit}>
+              {/* Materiaal */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Materiaal *</label>
                 <select
                   value={formData.materiaal || ''}
                   onChange={(e) => handleFormChange('materiaal', e.target.value)}
-                  className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full border border-gray-300 rounded-lg p-3"
                   required
                 >
                   <option value="">Kies materiaal</option>
-                  {currentPanel.beschikbaar_pvc && <option value="PVC">PVC</option>}
-                  {currentPanel.beschikbaar_alu && <option value="Aluminium">Aluminium</option>}
-                  {currentPanel.beschikbaar_hout && <option value="Hout">Hout</option>}
+                  {materiaalOpties.map((m: any) => (
+                    <option key={m.value} value={m.value}>{m.label}</option>
+                  ))}
                 </select>
               </div>
+              {/* Maten */}
               {formData.materiaal && (
                 <div className="grid grid-cols-2 gap-4">
                   <div>
@@ -246,16 +246,9 @@ const EkolineConfigurator: React.FC = () => {
                       type="number"
                       value={formData.breedte || ''}
                       onChange={e => handleFormChange('breedte', e.target.value)}
-                      min={
-                        formData.materiaal === 'PVC' ? currentPanel.pvc_breedte_min_mm :
-                        formData.materiaal === 'Aluminium' ? currentPanel.alu_breedte_min_mm :
-                        formData.materiaal === 'Hout' ? currentPanel.hout_breedte_min_mm : undefined
-                      }
-                      max={
-                        formData.materiaal === 'PVC' ? currentPanel.pvc_breedte_max_mm :
-                        formData.materiaal === 'Aluminium' ? currentPanel.alu_breedte_max_mm :
-                        formData.materiaal === 'Hout' ? currentPanel.hout_breedte_max_mm : undefined
-                      }
+                      min={breedteMin}
+                      max={breedteMax}
+                      placeholder={`Tussen ${breedteMin} en ${breedteMax} mm`}
                       className="w-full border border-gray-300 rounded-lg p-3"
                       required
                     />
@@ -266,22 +259,61 @@ const EkolineConfigurator: React.FC = () => {
                       type="number"
                       value={formData.hoogte || ''}
                       onChange={e => handleFormChange('hoogte', e.target.value)}
-                      min={
-                        formData.materiaal === 'PVC' ? currentPanel.pvc_hoogte_min_mm :
-                        formData.materiaal === 'Aluminium' ? currentPanel.alu_hoogte_min_mm :
-                        formData.materiaal === 'Hout' ? currentPanel.hout_hoogte_min_mm : undefined
-                      }
-                      max={
-                        formData.materiaal === 'PVC' ? currentPanel.pvc_hoogte_max_mm :
-                        formData.materiaal === 'Aluminium' ? currentPanel.alu_hoogte_max_mm :
-                        formData.materiaal === 'Hout' ? currentPanel.hout_hoogte_max_mm : undefined
-                      }
+                      min={hoogteMin}
+                      max={hoogteMax}
+                      placeholder={`Tussen ${hoogteMin} en ${hoogteMax} mm`}
                       className="w-full border border-gray-300 rounded-lg p-3"
                       required
                     />
                   </div>
                 </div>
               )}
+              {/* Glasoptie */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Glasoptie *</label>
+                <select
+                  value={formData.glasoptie || ''}
+                  onChange={e => handleFormChange('glasoptie', e.target.value)}
+                  className="w-full border border-gray-300 rounded-lg p-3"
+                  required
+                >
+                  <option value="">Kies glasoptie</option>
+                  {GLASOPTIES.map(opt => (
+                    <option key={opt.value} value={opt.value}>{opt.label}</option>
+                  ))}
+                </select>
+              </div>
+              {/* Dorpel */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Dorpel *</label>
+                <select
+                  value={formData.dorpel || ''}
+                  onChange={e => handleFormChange('dorpel', e.target.value)}
+                  className="w-full border border-gray-300 rounded-lg p-3"
+                  required
+                >
+                  <option value="">Kies dorpel</option>
+                  {DORPELOPTIES.map(opt => (
+                    <option key={opt.value} value={opt.value}>{opt.label}</option>
+                  ))}
+                </select>
+              </div>
+              {/* Sluitwerk */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Hang- en sluitwerk *</label>
+                <select
+                  value={formData.sluitwerk || ''}
+                  onChange={e => handleFormChange('sluitwerk', e.target.value)}
+                  className="w-full border border-gray-300 rounded-lg p-3"
+                  required
+                >
+                  <option value="">Kies hang- en sluitwerk</option>
+                  {SLUITWERKOPTIES.map(opt => (
+                    <option key={opt.value} value={opt.value}>{opt.label}</option>
+                  ))}
+                </select>
+              </div>
+              {/* Kleur oplegging voor variant met */}
               {variant === 'met' && (
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Kleur oplegging *</label>
@@ -297,6 +329,7 @@ const EkolineConfigurator: React.FC = () => {
                   </select>
                 </div>
               )}
+              {/* Opmerkingen */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Opmerkingen</label>
                 <textarea
@@ -304,7 +337,22 @@ const EkolineConfigurator: React.FC = () => {
                   onChange={e => handleFormChange('opmerkingen', e.target.value)}
                   className="w-full border border-gray-300 rounded-lg p-3"
                   rows={3}
+                  placeholder="Eventuele opmerkingen of speciale wensen…"
                 />
+              </div>
+              {/* Foto-upload */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Foto's uploaden</label>
+                <input
+                  type="file"
+                  multiple
+                  accept="image/png, image/jpeg"
+                  className="w-full border border-gray-300 rounded-lg p-3"
+                  onChange={e =>
+                    handleFormChange('fotos', e.target.files ? Array.from(e.target.files) : [])
+                  }
+                />
+                <p className="text-xs text-gray-500 mt-1">PNG, JPG tot 8MB per foto, max 5 foto's</p>
               </div>
               <button
                 type="submit"
@@ -317,6 +365,7 @@ const EkolineConfigurator: React.FC = () => {
           </div>
         </div>
       </div>
+    </div>
     )
   }
 
@@ -421,7 +470,7 @@ const EkolineConfigurator: React.FC = () => {
             </div>
             <div className="mt-4">
               <h3 className="text-xl font-semibold text-gray-900">
-                Ekoline {currentPanel?.paneelnummer} - {variant === 'met' ? 'Met INOX oplegging' : 'Zonder INOX oplegging'}
+                Ekoline deur {currentPanel?.paneelnummer} - {variant === 'met' ? 'Met INOX oplegging' : 'Zonder INOX oplegging'}
               </h3>
               <div className="text-gray-500 text-sm mb-2 space-y-1 mt-2">
                 {materiaalInfo.length === 0 ? (
