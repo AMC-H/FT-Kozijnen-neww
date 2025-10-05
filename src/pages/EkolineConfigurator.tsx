@@ -154,7 +154,7 @@ const EkolineConfigurator: React.FC = () => {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Ekoline panelen laden...</p>
+          <p className="text-gray-600">Ekoline deuren laden...</p>
         </div>
       </div>
     )
@@ -183,7 +183,7 @@ const EkolineConfigurator: React.FC = () => {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <p className="text-gray-600 mb-4">
-            Geen panelen beschikbaar voor variant "{variant}"
+            Geen deuren beschikbaar voor variant "{variant}"
           </p>
           <button
             onClick={() => navigate('/configurator')}
@@ -209,14 +209,14 @@ const EkolineConfigurator: React.FC = () => {
                 onClick={() => setShowConfig(false)}
                 className="text-gray-600 hover:text-gray-800 transition-colors"
               >
-                <ArrowLeft className="h-5 w-5 inline" /> Terug naar panelen
+                <ArrowLeft className="h-5 w-5 inline" /> Terug naar deuren
               </button>
             </div>
             <div className="text-center mb-5">
               <img
                 key={`${currentPanel.paneelnummer}-${variant}`}
                 src={getPanelImageUrl(currentPanel)}
-                alt={`Ekoline paneel ${currentPanel.paneelnummer} ${variant}`}
+                alt={`Ekoline deur ${currentPanel.paneelnummer} ${variant}`}
                 className="max-w-full max-h-64 mx-auto object-contain rounded-lg shadow-xl"
                 onError={(e) => {
                   e.currentTarget.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Crect fill="%23f3f4f6" width="400" height="300"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" dy=".3em" fill="%236b7280" font-family="sans-serif" font-size="18"%3EAfbeelding niet beschikbaar%3C/text%3E%3C/svg%3E';
@@ -326,8 +326,8 @@ const EkolineConfigurator: React.FC = () => {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Ekoline Panelen</h1>
-            <p className="text-gray-600">Kies uw gewenste paneel design</p>
+            <h1 className="text-3xl font-bold text-gray-900">Ekoline Deuren</h1>
+            <p className="text-gray-600">Kies uw gewenste deur design</p>
           </div>
           <button
             onClick={() => navigate('/configurator')}
@@ -368,7 +368,7 @@ const EkolineConfigurator: React.FC = () => {
                 <button
                   onClick={goToPrevious}
                   className="flex-shrink-0 bg-white hover:bg-gray-50 rounded-full p-3 shadow-lg transition-all duration-300 hover:scale-110 z-20"
-                  aria-label="Vorig paneel"
+                  aria-label="Vorige deur"
                 >
                   <ChevronLeft className="h-6 w-6 text-gray-700" />
                 </button>
@@ -390,7 +390,7 @@ const EkolineConfigurator: React.FC = () => {
                     <img
                       key={`${currentPanel?.paneelnummer}-${variant}`}
                       src={getPanelImageUrl(currentPanel)}
-                      alt={`Ekoline paneel ${currentPanel?.paneelnummer} ${variant}`}
+                      alt={`Ekoline deur ${currentPanel?.paneelnummer} ${variant}`}
                       className="w-full h-full object-contain rounded-lg shadow-2xl bg-white p-4"
                       onError={(e) => {
                         e.currentTarget.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Crect fill="%23f3f4f6" width="400" height="300"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" dy=".3em" fill="%236b7280" font-family="sans-serif" font-size="18"%3EAfbeelding niet beschikbaar%3C/text%3E%3C/svg%3E';
@@ -413,7 +413,7 @@ const EkolineConfigurator: React.FC = () => {
                 <button
                   onClick={goToNext}
                   className="flex-shrink-0 bg-white hover:bg-gray-50 rounded-full p-3 shadow-lg transition-all duration-300 hover:scale-110 z-20"
-                  aria-label="Volgend paneel"
+                  aria-label="Volgende deur"
                 >
                   <ChevronRight className="h-6 w-6 text-gray-700" />
                 </button>
@@ -425,7 +425,7 @@ const EkolineConfigurator: React.FC = () => {
               </h3>
               <div className="text-gray-500 text-sm mb-2 space-y-1 mt-2">
                 {materiaalInfo.length === 0 ? (
-                  <div>Geen materialen beschikbaar voor dit paneel</div>
+                  <div>Geen materialen beschikbaar voor deze deur</div>
                 ) : (
                   materiaalInfo.map((m: any) => (
                     <div key={m.label}>
@@ -443,7 +443,7 @@ const EkolineConfigurator: React.FC = () => {
               className="bg-green-600 hover:bg-green-700 text-white font-semibold py-4 px-8 rounded-lg transition-all duration-300 transform hover:scale-105 flex items-center space-x-2 mx-auto"
             >
               <Check className="h-5 w-5" />
-              <span>Kies dit paneel</span>
+              <span>Kies deze deur</span>
             </button>
           </div>
         </div>
