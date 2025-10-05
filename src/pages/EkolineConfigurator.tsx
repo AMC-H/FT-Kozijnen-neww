@@ -114,11 +114,21 @@ const EkolineConfigurator: React.FC = () => {
   }, [panelen, variant])
 
   const filteredPanelen = panelen.filter((p) => {
-    const filename = variant === 'met' ? p.afbeelding_met : p.afbeelding_zonder
-    if (!filename) return false
-    if (validating) return true
-    return loadedImages.has(filename) && !failedImages.has(filename)
-  })
+  let variantAllowed = false
+  let filename = ''
+
+  if (variant === 'met') {
+    variantAllowed = p.heeft_variant_met === true
+    filename = p.afbeelding_met || ''
+  } else if (variant === 'zonder') {
+    variantAllowed = p.heeft_variant_zonder === true
+    filename = p.afbeelding_zonder || ''
+  }
+
+  if (!variantAllowed || !filename) return false
+  if (validating) return true
+  return loadedImages.has(filename) && !failedImages.has(filename)
+})
 
   useEffect(() => {
     if (!validating && filteredPanelen.length > 0 && currentIndex >= filteredPanelen.length) {
