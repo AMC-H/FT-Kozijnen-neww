@@ -5,7 +5,6 @@ import { supabase } from '../lib/supabase'
 
 const SUPABASE_IMG_URL = 'https://nsmzfzdvesacindbgkdq.supabase.co/storage/v1/object/public/kozijnen-photos/'
 
-// Paneel-nummers die uitgesloten moeten worden per variant:
 const UITGESLOTEN_MET = [9,11,30,55,62,72,73,74,75,109,110,111,112,134,140,141,142,143,144]
 const UITGESLOTEN_ZONDER = [59,60,61,63,64,65,66,67,68,69,70,71,93,96,120,137]
 
@@ -131,26 +130,6 @@ const EkolineConfigurator: React.FC = () => {
     setShowConfig(true)
   }
 
-  const materiaalInfo = currentPanel
-    ? [
-        currentPanel.beschikbaar_pvc && {
-          label: 'Kunststof',
-          breedte: [currentPanel.pvc_breedte_min_mm, currentPanel.pvc_breedte_max_mm],
-          hoogte: [currentPanel.pvc_hoogte_min_mm, currentPanel.pvc_hoogte_max_mm],
-        },
-        currentPanel.beschikbaar_alu && {
-          label: 'Aluminium',
-          breedte: [currentPanel.alu_breedte_min_mm, currentPanel.alu_breedte_max_mm],
-          hoogte: [currentPanel.alu_hoogte_min_mm, currentPanel.alu_hoogte_max_mm],
-        },
-        currentPanel.beschikbaar_hout && {
-          label: 'Hout',
-          breedte: [currentPanel.hout_breedte_min_mm, currentPanel.hout_breedte_max_mm],
-          hoogte: [currentPanel.hout_hoogte_min_mm, currentPanel.hout_hoogte_max_mm],
-        },
-      ].filter(Boolean)
-    : []
-
   const handleFormChange = (field: string, value: any) => {
     setFormData((prev: any) => ({
       ...prev,
@@ -207,18 +186,18 @@ const EkolineConfigurator: React.FC = () => {
                     required
                   >
                     <option value="">Kies materiaal</option>
-                    {[
-                      currentPanel.beschikbaar_pvc && { value: 'kunststof', label: 'Kunststof' },
-                      currentPanel.beschikbaar_alu && { value: 'aluminium', label: 'Aluminium' },
-                      currentPanel.beschikbaar_hout && { value: 'hout', label: 'Hout' },
-                    ]
-                      .filter(Boolean)
-                      .map((m: any) => (
-                        <option key={m.value} value={m.value}>{m.label}</option>
-                      ))}
+                    {currentPanel.beschikbaar_pvc && (
+                      <option value="kunststof">Kunststof</option>
+                    )}
+                    {currentPanel.beschikbaar_alu && (
+                      <option value="aluminium">Aluminium</option>
+                    )}
+                    {currentPanel.beschikbaar_hout && (
+                      <option value="hout">Hout</option>
+                    )}
                   </select>
                 </div>
-                {/* Maten */}
+                {/* Dynamische maatvelden */}
                 {formData.materiaal && (
                   <div className="grid grid-cols-2 gap-4">
                     <div>
@@ -234,7 +213,7 @@ const EkolineConfigurator: React.FC = () => {
                             ? currentPanel.alu_breedte_min_mm
                             : formData.materiaal === 'hout'
                             ? currentPanel.hout_breedte_min_mm
-                            : 400
+                            : undefined
                         }
                         max={
                           formData.materiaal === 'kunststof'
@@ -243,25 +222,17 @@ const EkolineConfigurator: React.FC = () => {
                             ? currentPanel.alu_breedte_max_mm
                             : formData.materiaal === 'hout'
                             ? currentPanel.hout_breedte_max_mm
-                            : 3000
+                            : undefined
                         }
-                        placeholder={`Tussen ${
+                        placeholder={
                           formData.materiaal === 'kunststof'
-                            ? currentPanel.pvc_breedte_min_mm
+                            ? `Tussen ${currentPanel.pvc_breedte_min_mm} en ${currentPanel.pvc_breedte_max_mm} mm`
                             : formData.materiaal === 'aluminium'
-                            ? currentPanel.alu_breedte_min_mm
+                            ? `Tussen ${currentPanel.alu_breedte_min_mm} en ${currentPanel.alu_breedte_max_mm} mm`
                             : formData.materiaal === 'hout'
-                            ? currentPanel.hout_breedte_min_mm
-                            : 400
-                        } en ${
-                          formData.materiaal === 'kunststof'
-                            ? currentPanel.pvc_breedte_max_mm
-                            : formData.materiaal === 'aluminium'
-                            ? currentPanel.alu_breedte_max_mm
-                            : formData.materiaal === 'hout'
-                            ? currentPanel.hout_breedte_max_mm
-                            : 3000
-                        } mm`}
+                            ? `Tussen ${currentPanel.hout_breedte_min_mm} en ${currentPanel.hout_breedte_max_mm} mm`
+                            : ''
+                        }
                         className="w-full border border-gray-300 rounded-lg p-3"
                         required
                       />
@@ -279,7 +250,7 @@ const EkolineConfigurator: React.FC = () => {
                             ? currentPanel.alu_hoogte_min_mm
                             : formData.materiaal === 'hout'
                             ? currentPanel.hout_hoogte_min_mm
-                            : 400
+                            : undefined
                         }
                         max={
                           formData.materiaal === 'kunststof'
@@ -288,25 +259,17 @@ const EkolineConfigurator: React.FC = () => {
                             ? currentPanel.alu_hoogte_max_mm
                             : formData.materiaal === 'hout'
                             ? currentPanel.hout_hoogte_max_mm
-                            : 3000
+                            : undefined
                         }
-                        placeholder={`Tussen ${
+                        placeholder={
                           formData.materiaal === 'kunststof'
-                            ? currentPanel.pvc_hoogte_min_mm
+                            ? `Tussen ${currentPanel.pvc_hoogte_min_mm} en ${currentPanel.pvc_hoogte_max_mm} mm`
                             : formData.materiaal === 'aluminium'
-                            ? currentPanel.alu_hoogte_min_mm
+                            ? `Tussen ${currentPanel.alu_hoogte_min_mm} en ${currentPanel.alu_hoogte_max_mm} mm`
                             : formData.materiaal === 'hout'
-                            ? currentPanel.hout_hoogte_min_mm
-                            : 400
-                        } en ${
-                          formData.materiaal === 'kunststof'
-                            ? currentPanel.pvc_hoogte_max_mm
-                            : formData.materiaal === 'aluminium'
-                            ? currentPanel.alu_hoogte_max_mm
-                            : formData.materiaal === 'hout'
-                            ? currentPanel.hout_hoogte_max_mm
-                            : 3000
-                        } mm`}
+                            ? `Tussen ${currentPanel.hout_hoogte_min_mm} en ${currentPanel.hout_hoogte_max_mm} mm`
+                            : ''
+                        }
                         className="w-full border border-gray-300 rounded-lg p-3"
                         required
                       />
@@ -496,7 +459,6 @@ const EkolineConfigurator: React.FC = () => {
                     >
                       <ChevronLeft className="h-6 w-6 text-gray-700" />
                     </button>
-
                     <div className="flex items-center justify-center gap-4 flex-1">
                       {/* Previous image preview */}
                       <div className="hidden md:flex flex-shrink-0 w-48 h-80 items-center justify-center opacity-40 transition-opacity hover:opacity-60">
@@ -508,7 +470,6 @@ const EkolineConfigurator: React.FC = () => {
                           />
                         )}
                       </div>
-
                       {/* Current image - full size and centered */}
                       <div className="flex-shrink-0 w-full md:w-96 h-[500px] flex items-center justify-center mx-auto">
                         <img
@@ -521,7 +482,6 @@ const EkolineConfigurator: React.FC = () => {
                           }}
                         />
                       </div>
-
                       {/* Next image preview */}
                       <div className="hidden md:flex flex-shrink-0 w-48 h-80 items-center justify-center opacity-40 transition-opacity hover:opacity-60">
                         {filteredPanelen[currentIndex < filteredPanelen.length - 1 ? currentIndex + 1 : 0] && (
@@ -533,7 +493,6 @@ const EkolineConfigurator: React.FC = () => {
                         )}
                       </div>
                     </div>
-
                     <button
                       onClick={goToNext}
                       className="flex-shrink-0 bg-white hover:bg-gray-50 rounded-full p-3 shadow-lg transition-all duration-300 hover:scale-110 z-20"
@@ -547,18 +506,7 @@ const EkolineConfigurator: React.FC = () => {
                   <h3 className="text-xl font-semibold text-gray-900">
                     Ekoline deur {currentPanel?.paneelnummer} - {variant === 'met' ? 'Met INOX oplegging' : 'Zonder INOX oplegging'}
                   </h3>
-                  <div className="text-gray-500 text-sm mb-2 space-y-1 mt-2">
-                    {materiaalInfo.length === 0 ? (
-                      <div>Geen materialen beschikbaar voor deze deur</div>
-                    ) : (
-                      materiaalInfo.map((m: any) => (
-                        <div key={m.label}>
-                          <span className="font-medium">{m.label}:</span>{' '}
-                          {m.breedte[0]}–{m.breedte[1]} mm breed, {m.hoogte[0]}–{m.hoogte[1]} mm hoog
-                        </div>
-                      ))
-                    )}
-                  </div>
+                  {/* Geen maten/materiaalinfo meer hier */}
                 </div>
               </div>
               <div className="text-center">
