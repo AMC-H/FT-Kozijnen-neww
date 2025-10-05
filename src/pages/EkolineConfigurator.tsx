@@ -37,10 +37,6 @@ const EkolineConfigurator: React.FC = () => {
   const [formData, setFormData] = useState<any>({})
   const [opleggingKleur, setOpleggingKleur] = useState<'inox' | 'zwart' | ''>('')
 
-  // Houd bij of alle images gecheckt zijn
-  const [loadedImages, setLoadedImages] = useState<Set<string>>(new Set())
-  const [validatingImages, setValidatingImages] = useState(true)
-
   useEffect(() => {
     loadPanelen()
   }, [])
@@ -63,35 +59,11 @@ const EkolineConfigurator: React.FC = () => {
     }
   }
 
-  // Check of plaatjes echt bestaan voordat je ze toont
-  useEffect(() => {
-    setValidatingImages(true)
-    if (panelen.length === 0) {
-      setLoadedImages(new Set())
-      setValidatingImages(false)
-      return
-    }
-    const toCheck = panelen
-      .map(p => (variant === 'met' ? p.afbeelding_met : p.afbeelding_zonder))
-      .filter(Boolean) as string[]
-
-    let loaded = new Set<string>()
-    let checks = toCheck.map(filename => new Promise<void>(resolve => {
-      const img = new window.Image()
-      img.onload = () => { loaded.add(filename); resolve() }
-      img.onerror = () => resolve()
-      img.src = SUPABASE_IMG_URL + filename
-    }))
-    Promise.all(checks).then(() => {
-      setLoadedImages(loaded)
-      setValidatingImages(false)
-    })
-  }, [panelen, variant])
-
-  // Filter: alleen panelen tonen waarvan het plaatje echt bestaat
+  // LET OP: alleen filteren op bestandsnaam, direct klaar!
   const filteredPanelen = panelen.filter((p) => {
-    const filename = variant === 'met' ? p.afbeelding_met : p.afbeelding_zonder
-    return !!filename && loadedImages.has(filename)
+    if (variant === 'met') return !!p.afbeelding_met
+    if (variant === 'zonder') return !!p.afbeelding_zonder
+    return false
   })
 
   useEffect(() => {
@@ -170,14 +142,12 @@ const EkolineConfigurator: React.FC = () => {
     }, null, 2))
   }
 
-  if (loading || validatingImages) {
+  if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">
-            {loading ? 'Ekoline panelen laden...' : 'Afbeeldingen controleren...'}
-          </p>
+          <p className="text-gray-600">Ekoline panelen laden...</p>
         </div>
       </div>
     )
