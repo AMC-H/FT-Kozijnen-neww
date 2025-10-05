@@ -201,9 +201,13 @@ const EkolineConfigurator: React.FC = () => {
             </div>
             <div className="text-center mb-5">
               <img
+                key={`${currentPanel.paneelnummer}-${variant}`}
                 src={getPanelImageUrl(currentPanel)}
                 alt={`Ekoline paneel ${currentPanel.paneelnummer} ${variant}`}
                 className="max-w-full max-h-64 mx-auto object-contain rounded-lg shadow-xl"
+                onError={(e) => {
+                  console.error('Image failed to load:', getPanelImageUrl(currentPanel));
+                }}
               />
             </div>
             <form className="space-y-6" onSubmit={handleSubmit}>
@@ -357,9 +361,15 @@ const EkolineConfigurator: React.FC = () => {
                 </button>
                 <div className="w-full flex items-center justify-center z-10">
                   <img
+                    key={`${currentPanel?.paneelnummer}-${variant}`}
                     src={getPanelImageUrl(currentPanel)}
                     alt={`Ekoline paneel ${currentPanel?.paneelnummer} ${variant}`}
                     className="max-w-full max-h-full object-contain rounded-lg shadow-xl"
+                    onError={(e) => {
+                      console.error('Image failed to load:', getPanelImageUrl(currentPanel));
+                      e.currentTarget.style.display = 'none';
+                    }}
+                    onLoad={() => console.log('Image loaded:', getPanelImageUrl(currentPanel))}
                   />
                 </div>
                 <button
