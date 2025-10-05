@@ -24,6 +24,8 @@ interface PanelConfig {
   hout_breedte_max_mm: number | null
   hout_hoogte_min_mm: number | null
   hout_hoogte_max_mm: number | null
+  heeft_variant_met: boolean
+  heeft_variant_zonder: boolean
 }
 
 const EkolineConfigurator: React.FC = () => {
@@ -59,10 +61,14 @@ const EkolineConfigurator: React.FC = () => {
     }
   }
 
-  // LET OP: alleen filteren op bestandsnaam, direct klaar!
-  const filteredPanelen = panelen.filter((p) => {
-    if (variant === 'met') return !!p.afbeelding_met
-    if (variant === 'zonder') return !!p.afbeelding_zonder
+  // Filter op variant én afbeelding, zoals je data het bedoelt
+  const filteredPanelen = panelen.filter(p => {
+    if (variant === 'met') {
+      return p.heeft_variant_met === true && !!p.afbeelding_met
+    }
+    if (variant === 'zonder') {
+      return p.heeft_variant_zonder === true && !!p.afbeelding_zonder
+    }
     return false
   })
 
