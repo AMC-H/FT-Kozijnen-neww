@@ -24,8 +24,6 @@ interface PanelConfig {
   hout_breedte_max_mm: number | null
   hout_hoogte_min_mm: number | null
   hout_hoogte_max_mm: number | null
-  heeft_variant_met?: boolean
-  heeft_variant_zonder?: boolean
 }
 
 const EkolineConfigurator: React.FC = () => {
@@ -54,11 +52,10 @@ const EkolineConfigurator: React.FC = () => {
       if (error) throw error
       setPanelen(data || [])
       setCurrentIndex(0)
-      // Debug logs - PLAK DEZE REGELS
+      // Debug logs (optioneel, mag je laten staan of weghalen)
       console.log('ALLE panelen uit Supabase:', data)
       if (data && data.length) {
         console.log('EERSTE PANEEL VOLLEDIG:', JSON.stringify(data[0], null, 2))
-        console.log('EERSTE 5 PANELEN VOLLEDIG:', JSON.stringify(data.slice(0, 5), null, 2))
       }
     } catch (e: any) {
       setError(e?.message || 'Fout bij laden panelen')
@@ -67,17 +64,12 @@ const EkolineConfigurator: React.FC = () => {
     }
   }
 
-  // Simpele filter én log elk gematcht paneel
+  // Filter puur op aanwezigheid van bestandsnaam
   const filteredPanelen = panelen.filter((p) => {
-    const match = variant === 'met'
-      ? p.heeft_variant_met === true && !!p.afbeelding_met
-      : p.heeft_variant_zonder === true && !!p.afbeelding_zonder
-    if (match) {
-      console.log('TOON PANEEL:', p.paneelnummer, variant === 'met' ? p.afbeelding_met : p.afbeelding_zonder, variant === 'met' ? p.heeft_variant_met : p.heeft_variant_zonder)
-    }
-    return match
+    if (variant === 'met') return !!p.afbeelding_met
+    if (variant === 'zonder') return !!p.afbeelding_zonder
+    return false
   })
-  console.log('GEFILTERDE panelen voor variant', variant, ':', filteredPanelen)
 
   useEffect(() => {
     if (filteredPanelen.length > 0 && currentIndex >= filteredPanelen.length) {
@@ -91,8 +83,7 @@ const EkolineConfigurator: React.FC = () => {
     if (!p) return ''
     const filename = variant === 'met' ? p.afbeelding_met : p.afbeelding_zonder
     if (!filename) return ''
-    const url = SUPABASE_IMG_URL + filename + `?v=${p.paneelnummer}`
-    return url
+    return SUPABASE_IMG_URL + filename + `?v=${p.paneelnummer}`
   }
 
   const handleVariantChange = (newVariant: 'met' | 'zonder') => {
