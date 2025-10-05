@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { ArrowLeft, ChevronLeft, ChevronRight, Check } from 'lucide-react'
 import { supabase } from '../lib/supabase'
 
-const SUPABASE_IMG_URL = `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/kozijnen-photos/`
+const SUPABASE_IMG_URL = 'https://nsmzfzdvesacindbgkdq.supabase.co/storage/v1/object/public/kozijnen-photos/'
 
 interface PanelConfig {
   paneelnummer: number
