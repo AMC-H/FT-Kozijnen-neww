@@ -36,6 +36,7 @@ const EkolineConfigurator: React.FC = () => {
   const [showConfig, setShowConfig] = useState(false)
   const [formData, setFormData] = useState<any>({})
   const [opleggingKleur, setOpleggingKleur] = useState<'inox' | 'zwart' | ''>('')
+  const [imageErrors, setImageErrors] = useState<Set<number>>(new Set())
 
   useEffect(() => {
     loadPanelen()
@@ -61,7 +62,7 @@ const EkolineConfigurator: React.FC = () => {
 
   const filteredPanelen = panelen.filter((p) => {
     const hasImage = variant === 'met' ? p.afbeelding_met : p.afbeelding_zonder
-    return hasImage !== null && hasImage !== ''
+    return hasImage !== null && hasImage !== '' && !imageErrors.has(p.paneelnummer)
   })
 
   useEffect(() => {
@@ -382,10 +383,12 @@ const EkolineConfigurator: React.FC = () => {
                       alt={`Ekoline paneel ${currentPanel?.paneelnummer} ${variant}`}
                       className="w-full h-full object-contain rounded-lg shadow-2xl bg-white p-4"
                       onError={(e) => {
-                        console.error('Image failed to load:', getPanelImageUrl(currentPanel));
-                        e.currentTarget.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Crect fill="%23f3f4f6" width="400" height="300"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" dy=".3em" fill="%236b7280" font-family="sans-serif" font-size="18"%3EAfbeelding niet beschikbaar%3C/text%3E%3C/svg%3E';
+                        if (currentPanel) {
+                          setImageErrors(prev => new Set(prev).add(currentPanel.paneelnummer));
+                          const nextIndex = (currentIndex + 1) % filteredPanelen.length;
+                          setCurrentIndex(nextIndex);
+                        }
                       }}
-                      onLoad={() => console.log('Image loaded successfully:', getPanelImageUrl(currentPanel))}
                     />
                   </div>
 
