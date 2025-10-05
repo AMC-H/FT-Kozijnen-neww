@@ -59,10 +59,10 @@ const EkolineConfigurator: React.FC = () => {
     }
   }
 
-  // Filter enkel op de gekozen kolom obv klantkeuze
+  // Filter alleen op de gekozen kolom
   const filteredPanelen = panelen.filter(p => {
-    if (variant === 'met') return !!p.afbeelding_met
-    if (variant === 'zonder') return !!p.afbeelding_zonder
+    if (variant === 'met') return !!p.afbeelding_met && p.afbeelding_met !== 'null'
+    if (variant === 'zonder') return !!p.afbeelding_zonder && p.afbeelding_zonder !== 'null'
     return false
   })
 
