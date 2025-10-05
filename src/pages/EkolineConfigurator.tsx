@@ -54,6 +54,8 @@ const EkolineConfigurator: React.FC = () => {
       if (error) throw error
       setPanelen(data || [])
       setCurrentIndex(0)
+      // LOG alle panelen direct
+      console.log("ALLE panelen uit Supabase:", data)
     } catch (e: any) {
       setError(e?.message || 'Fout bij laden panelen')
     } finally {
@@ -72,6 +74,9 @@ const EkolineConfigurator: React.FC = () => {
     return false
   })
 
+  // LOG de gefilterde panelen direct
+  console.log("GEFILTERDE panelen voor variant", variant, ":", filteredPanelen)
+
   useEffect(() => {
     if (filteredPanelen.length > 0 && currentIndex >= filteredPanelen.length) {
       setCurrentIndex(0)
@@ -80,7 +85,6 @@ const EkolineConfigurator: React.FC = () => {
 
   const currentPanel = filteredPanelen[currentIndex] || null
 
-  // ENKEL base-url + bestandsnaam uit kolom (geen submap!) + cache buster
   const getPanelImageUrl = (p: PanelConfig | null) => {
     if (!p) return ''
     const filename = variant === 'met' ? p.afbeelding_met : p.afbeelding_zonder
