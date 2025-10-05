@@ -276,6 +276,19 @@ const EkolineConfigurator: React.FC = () => {
                     </div>
                   </div>
                 )}
+                {/* --- HIER JE KLEURVELDEN, GLASOPTIE, DORPEL, SLUITWERK, ETC --- */}
+                {/* Kleur binnenzijde */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Kleur binnenzijde *</label>
+                  {/* Laat deze select zoals die in jouw configurator.tsx staat! */}
+                  {/* ... */}
+                </div>
+                {/* Kleur buitenzijde */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Kleur buitenzijde *</label>
+                  {/* Laat deze select zoals die in jouw configurator.tsx staat! */}
+                  {/* ... */}
+                </div>
                 {/* Glasoptie */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Glasoptie *</label>
@@ -506,7 +519,6 @@ const EkolineConfigurator: React.FC = () => {
                   <h3 className="text-xl font-semibold text-gray-900">
                     Ekoline deur {currentPanel?.paneelnummer} - {variant === 'met' ? 'Met INOX oplegging' : 'Zonder INOX oplegging'}
                   </h3>
-                  {/* Geen maten/materiaalinfo meer hier */}
                 </div>
               </div>
               <div className="text-center">
