@@ -36,6 +36,9 @@ const EkolineConfigurator: React.FC = () => {
   const [showConfig, setShowConfig] = useState(false)
   const [formData, setFormData] = useState<any>({})
   const [opleggingKleur, setOpleggingKleur] = useState<'inox' | 'zwart' | ''>('')
+  const [loadedImages, setLoadedImages] = useState<Set<string>>(new Set())
+  const [failedImages, setFailedImages] = useState<Set<string>>(new Set())
+  const [validating, setValidating] = useState(false)
 
   useEffect(() => {
     loadPanelen()
@@ -59,9 +62,62 @@ const EkolineConfigurator: React.FC = () => {
     }
   }
 
+  useEffect(() => {
+    if (panelen.length === 0) return
+
+    setValidating(true)
+    setLoadedImages(new Set())
+    setFailedImages(new Set())
+
+    const testImages = async () => {
+      const loaded = new Set<string>()
+      const failed = new Set<string>()
+
+      const promises = panelen.map((p) => {
+        return new Promise<void>((resolve) => {
+          const filename = variant === 'met' ? p.afbeelding_met : p.afbeelding_zonder
+          if (!filename) {
+            resolve()
+            return
+          }
+
+          const img = new Image()
+          const url = SUPABASE_IMG_URL + filename
+
+          img.onload = () => {
+            loaded.add(filename)
+            resolve()
+          }
+
+          img.onerror = () => {
+            failed.add(filename)
+            resolve()
+          }
+
+          img.src = url
+
+          setTimeout(() => {
+            failed.add(filename)
+            resolve()
+          }, 5000)
+        })
+      })
+
+      await Promise.all(promises)
+      setLoadedImages(loaded)
+      setFailedImages(failed)
+      setValidating(false)
+      setCurrentIndex(0)
+    }
+
+    testImages()
+  }, [panelen, variant])
+
   const filteredPanelen = panelen.filter((p) => {
     const filename = variant === 'met' ? p.afbeelding_met : p.afbeelding_zonder
-    return filename !== null && filename !== ''
+    if (!filename) return false
+    if (validating) return true
+    return loadedImages.has(filename) && !failedImages.has(filename)
   })
 
   useEffect(() => {
@@ -138,12 +194,12 @@ const EkolineConfigurator: React.FC = () => {
     }, null, 2))
   }
 
-  if (loading) {
+  if (loading || validating) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Ekoline panelen laden...</p>
+          <p className="text-gray-600">{loading ? 'Ekoline panelen laden...' : 'Afbeeldingen controleren...'}</p>
         </div>
       </div>
     )
