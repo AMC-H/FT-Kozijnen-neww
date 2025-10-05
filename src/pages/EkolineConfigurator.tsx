@@ -61,7 +61,7 @@ const EkolineConfigurator: React.FC = () => {
     }
   }
 
-  // Filter op variant én afbeelding, zoals je data het bedoelt
+  // Filter op variant én afbeelding, zo toon je alleen panelen die daadwerkelijk een afbeelding voor de gekozen variant hebben
   const filteredPanelen = panelen.filter(p => {
     if (variant === 'met') {
       return p.heeft_variant_met === true && !!p.afbeelding_met
