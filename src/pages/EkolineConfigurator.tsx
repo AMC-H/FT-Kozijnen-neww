@@ -38,9 +38,6 @@ const EkolineConfigurator: React.FC = () => {
   const [showConfig, setShowConfig] = useState(false)
   const [formData, setFormData] = useState<any>({})
   const [opleggingKleur, setOpleggingKleur] = useState<'inox' | 'zwart' | ''>('')
-  const [loadedImages, setLoadedImages] = useState<Set<string>>(new Set())
-  const [failedImages, setFailedImages] = useState<Set<string>>(new Set())
-  const [validating, setValidating] = useState(false)
 
   useEffect(() => {
     loadPanelen()
@@ -54,7 +51,6 @@ const EkolineConfigurator: React.FC = () => {
         .from('panelen_config')
         .select('*')
         .order('paneelnummer', { ascending: true })
-      console.log("Panelen uit Supabase:", data) // <--- Debug stap 1
       if (error) throw error
       setPanelen(data || [])
       setCurrentIndex(0)
@@ -65,82 +61,22 @@ const EkolineConfigurator: React.FC = () => {
     }
   }
 
-  useEffect(() => {
-    if (panelen.length === 0) return
-
-    setValidating(true)
-    setLoadedImages(new Set())
-    setFailedImages(new Set())
-
-    const testImages = async () => {
-      const loaded = new Set<string>()
-      const failed = new Set<string>()
-
-      const promises = panelen.map((p) => {
-        return new Promise<void>((resolve) => {
-          const filename = variant === 'met' ? p.afbeelding_met : p.afbeelding_zonder
-          if (!filename) {
-            resolve()
-            return
-          }
-
-          const img = new Image()
-          const url = SUPABASE_IMG_URL + filename
-
-          img.onload = () => {
-            loaded.add(filename)
-            resolve()
-          }
-
-          img.onerror = () => {
-            failed.add(filename)
-            resolve()
-          }
-
-          img.src = url
-
-          setTimeout(() => {
-            failed.add(filename)
-            resolve()
-          }, 5000)
-        })
-      })
-
-      await Promise.all(promises)
-      setLoadedImages(loaded)
-      setFailedImages(failed)
-      setValidating(false)
-      setCurrentIndex(0)
-      console.log("Loaded images set:", loaded) // <--- Debug stap 2
-      console.log("Failed images set:", failed) // <--- Debug stap 3
-    }
-
-    testImages()
-  }, [panelen, variant])
-
+  // Simpel filter alleen op variant en bestandsnaam!
   const filteredPanelen = panelen.filter((p) => {
-    let variantAllowed = false
-    let filename = ''
-
     if (variant === 'met') {
-      variantAllowed = p.heeft_variant_met === true
-      filename = p.afbeelding_met || ''
-    } else if (variant === 'zonder') {
-      variantAllowed = p.heeft_variant_zonder === true
-      filename = p.afbeelding_zonder || ''
+      return p.heeft_variant_met === true && p.afbeelding_met
     }
-
-    if (!variantAllowed || !filename) return false
-    if (validating) return true
-    return loadedImages.has(filename) && !failedImages.has(filename)
+    if (variant === 'zonder') {
+      return p.heeft_variant_zonder === true && p.afbeelding_zonder
+    }
+    return false
   })
-  console.log("Filtered panelen:", filteredPanelen) // <--- Debug stap 4
 
   useEffect(() => {
-    if (!validating && filteredPanelen.length > 0 && currentIndex >= filteredPanelen.length) {
+    if (filteredPanelen.length > 0 && currentIndex >= filteredPanelen.length) {
       setCurrentIndex(0)
     }
-  }, [validating, filteredPanelen.length, currentIndex])
+  }, [filteredPanelen.length, currentIndex])
 
   const currentPanel = filteredPanelen[currentIndex] || null
 
@@ -161,13 +97,13 @@ const EkolineConfigurator: React.FC = () => {
   }
 
   const goToPrevious = () => {
-    if (validating || filteredPanelen.length === 0) return
+    if (filteredPanelen.length === 0) return
     setCurrentIndex((prev) =>
       prev > 0 ? prev - 1 : filteredPanelen.length - 1
     )
   }
   const goToNext = () => {
-    if (validating || filteredPanelen.length === 0) return
+    if (filteredPanelen.length === 0) return
     setCurrentIndex((prev) =>
       prev < filteredPanelen.length - 1 ? prev + 1 : 0
     )
@@ -214,12 +150,12 @@ const EkolineConfigurator: React.FC = () => {
     }, null, 2))
   }
 
-  if (loading || validating) {
+  if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">{loading ? 'Ekoline panelen laden...' : 'Afbeeldingen controleren...'}</p>
+          <p className="text-gray-600">Ekoline panelen laden...</p>
         </div>
       </div>
     )
@@ -284,7 +220,7 @@ const EkolineConfigurator: React.FC = () => {
                 alt={`Ekoline paneel ${currentPanel.paneelnummer} ${variant}`}
                 className="max-w-full max-h-64 mx-auto object-contain rounded-lg shadow-xl"
                 onError={(e) => {
-                  console.error('Image failed to load:', getPanelImageUrl(currentPanel));
+                  e.currentTarget.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Crect fill="%23f3f4f6" width="400" height="300"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" dy=".3em" fill="%236b7280" font-family="sans-serif" font-size="18"%3EAfbeelding niet beschikbaar%3C/text%3E%3C/svg%3E';
                 }}
               />
             </div>
