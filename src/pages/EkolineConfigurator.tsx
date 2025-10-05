@@ -59,9 +59,10 @@ const EkolineConfigurator: React.FC = () => {
     }
   }
 
-  const filteredPanelen = panelen.filter((p) =>
-    variant === 'met' ? !!p.afbeelding_met : !!p.afbeelding_zonder
-  )
+  const filteredPanelen = panelen.filter((p) => {
+    const hasImage = variant === 'met' ? p.afbeelding_met : p.afbeelding_zonder
+    return hasImage !== null && hasImage !== ''
+  })
 
   useEffect(() => {
     if (currentIndex > filteredPanelen.length - 1) setCurrentIndex(0)
