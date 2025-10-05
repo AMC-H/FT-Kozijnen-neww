@@ -8,6 +8,19 @@ const SUPABASE_IMG_URL = 'https://nsmzfzdvesacindbgkdq.supabase.co/storage/v1/ob
 const UITGESLOTEN_MET = [9,11,30,55,62,72,73,74,75,109,110,111,112,134,140,141,142,143,144]
 const UITGESLOTEN_ZONDER = [59,60,61,63,64,65,66,67,68,69,70,71,93,96,120,137]
 
+const RAL_KLEUREN = [
+  { value: "ral9016", label: "RAL 9016 (wit)" },
+  { value: "ral9001", label: "RAL 9001 (crème wit)" },
+  { value: "ral7016", label: "RAL 7016 (antraciet)" },
+  // voeg eventueel meer RAL kleuren toe
+]
+const HOUT_KLEUREN = [
+  { value: "goud-eiken", label: "Goud eiken" },
+  { value: "donker-eiken", label: "Donker eiken" },
+  { value: "noten", label: "Noten" },
+  // voeg eventueel meer houtkleuren toe
+]
+
 interface PanelConfig {
   paneelnummer: number
   afbeelding_met: string | null
@@ -168,6 +181,13 @@ const EkolineConfigurator: React.FC = () => {
     return [undefined, undefined]
   }
 
+  // Helper: alleen juiste kleuren tonen per materiaal
+  function kleurOpties(materiaal: string | undefined) {
+    if (!materiaal) return []
+    if (materiaal === 'hout') return [...RAL_KLEUREN, ...HOUT_KLEUREN]
+    return RAL_KLEUREN
+  }
+
   return (
     <>
       {showConfig && currentPanel ? (
@@ -260,12 +280,34 @@ const EkolineConfigurator: React.FC = () => {
                 {/* Kleur binnenzijde */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Kleur binnenzijde *</label>
-                  {/* LAAT DIT ZOALS IN JOUW PROJECT, NIET AANPASSEN */}
+                  <select
+                    value={formData.kleur_binnen || ''}
+                    onChange={e => handleFormChange('kleur_binnen', e.target.value)}
+                    className="w-full border border-gray-300 rounded-lg p-3"
+                    required
+                    disabled={!formData.materiaal}
+                  >
+                    <option value="">{formData.materiaal ? "Kies kleur binnenzijde" : "Kies eerst materiaal"}</option>
+                    {kleurOpties(formData.materiaal).map(opt => (
+                      <option key={opt.value} value={opt.value}>{opt.label}</option>
+                    ))}
+                  </select>
                 </div>
                 {/* Kleur buitenzijde */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Kleur buitenzijde *</label>
-                  {/* LAAT DIT ZOALS IN JOUW PROJECT, NIET AANPASSEN */}
+                  <select
+                    value={formData.kleur_buiten || ''}
+                    onChange={e => handleFormChange('kleur_buiten', e.target.value)}
+                    className="w-full border border-gray-300 rounded-lg p-3"
+                    required
+                    disabled={!formData.materiaal}
+                  >
+                    <option value="">{formData.materiaal ? "Kies kleur buitenzijde" : "Kies eerst materiaal"}</option>
+                    {kleurOpties(formData.materiaal).map(opt => (
+                      <option key={opt.value} value={opt.value}>{opt.label}</option>
+                    ))}
+                  </select>
                 </div>
                 {/* Glasoptie */}
                 <div>
