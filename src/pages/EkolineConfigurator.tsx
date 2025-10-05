@@ -54,11 +54,11 @@ const EkolineConfigurator: React.FC = () => {
       if (error) throw error
       setPanelen(data || [])
       setCurrentIndex(0)
-      // Log direct wat Supabase teruggeeft
+      // Debug logs - PLAK DEZE REGELS
       console.log('ALLE panelen uit Supabase:', data)
       if (data && data.length) {
-        console.log('EERSTE PANEEL:', data[0])
-        console.log('EERSTE 5 PANELEN:', data.slice(0,5))
+        console.log('EERSTE PANEEL VOLLEDIG:', JSON.stringify(data[0], null, 2))
+        console.log('EERSTE 5 PANELEN VOLLEDIG:', JSON.stringify(data.slice(0, 5), null, 2))
       }
     } catch (e: any) {
       setError(e?.message || 'Fout bij laden panelen')
