@@ -351,7 +351,7 @@ const EkolineConfigurator: React.FC = () => {
             </div>
           </div>
           <div className="text-center mb-8">
-            <div className="relative w-full mx-auto">
+            <div className="relative w-full mx-auto max-w-7xl">
               <div className="flex items-center justify-center gap-4 px-4">
                 <button
                   onClick={goToPrevious}
@@ -361,9 +361,9 @@ const EkolineConfigurator: React.FC = () => {
                   <ChevronLeft className="h-6 w-6 text-gray-700" />
                 </button>
 
-                <div className="flex items-center gap-4 flex-1 max-w-6xl overflow-hidden">
+                <div className="flex items-center justify-center gap-4 flex-1">
                   {/* Previous image preview */}
-                  <div className="hidden md:block flex-shrink-0 w-48 h-80 opacity-40 transition-opacity hover:opacity-60">
+                  <div className="hidden md:flex flex-shrink-0 w-48 h-80 items-center justify-center opacity-40 transition-opacity hover:opacity-60">
                     {filteredPanelen[currentIndex > 0 ? currentIndex - 1 : filteredPanelen.length - 1] && (
                       <img
                         src={getPanelImageUrl(filteredPanelen[currentIndex > 0 ? currentIndex - 1 : filteredPanelen.length - 1])}
@@ -373,8 +373,8 @@ const EkolineConfigurator: React.FC = () => {
                     )}
                   </div>
 
-                  {/* Current image - full size */}
-                  <div className="flex-shrink-0 w-full md:w-96 h-[500px] flex items-center justify-center">
+                  {/* Current image - full size and centered */}
+                  <div className="flex-shrink-0 w-full md:w-96 h-[500px] flex items-center justify-center mx-auto">
                     <img
                       key={`${currentPanel?.paneelnummer}-${variant}`}
                       src={getPanelImageUrl(currentPanel)}
@@ -389,7 +389,7 @@ const EkolineConfigurator: React.FC = () => {
                   </div>
 
                   {/* Next image preview */}
-                  <div className="hidden md:block flex-shrink-0 w-48 h-80 opacity-40 transition-opacity hover:opacity-60">
+                  <div className="hidden md:flex flex-shrink-0 w-48 h-80 items-center justify-center opacity-40 transition-opacity hover:opacity-60">
                     {filteredPanelen[currentIndex < filteredPanelen.length - 1 ? currentIndex + 1 : 0] && (
                       <img
                         src={getPanelImageUrl(filteredPanelen[currentIndex < filteredPanelen.length - 1 ? currentIndex + 1 : 0])}
