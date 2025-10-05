@@ -36,7 +36,6 @@ const EkolineConfigurator: React.FC = () => {
   const [showConfig, setShowConfig] = useState(false)
   const [formData, setFormData] = useState<any>({})
   const [opleggingKleur, setOpleggingKleur] = useState<'inox' | 'zwart' | ''>('')
-  const [validatedPanelen, setValidatedPanelen] = useState<PanelConfig[]>([])
 
   useEffect(() => {
     loadPanelen()
@@ -60,37 +59,14 @@ const EkolineConfigurator: React.FC = () => {
     }
   }
 
-  useEffect(() => {
-    const validateImages = async () => {
-      const valid: PanelConfig[] = []
-      for (const p of panelen) {
-        const filename = variant === 'met' ? p.afbeelding_met : p.afbeelding_zonder
-        if (filename) {
-          try {
-            const url = SUPABASE_IMG_URL + filename
-            const response = await fetch(url, { method: 'HEAD' })
-            if (response.ok) {
-              valid.push(p)
-            }
-          } catch {
-            // Skip panels with broken images
-          }
-        }
-      }
-      setValidatedPanelen(valid)
-      setCurrentIndex(0)
-    }
-
-    if (panelen.length > 0) {
-      validateImages()
-    }
-  }, [panelen, variant])
-
-  const filteredPanelen = validatedPanelen
+  const filteredPanelen = panelen.filter((p) => {
+    const filename = variant === 'met' ? p.afbeelding_met : p.afbeelding_zonder
+    return filename !== null && filename !== ''
+  })
 
   useEffect(() => {
     if (currentIndex > filteredPanelen.length - 1) setCurrentIndex(0)
-  }, [filteredPanelen.length])
+  }, [variant, filteredPanelen.length])
 
   const currentPanel = filteredPanelen[currentIndex] || null
 
