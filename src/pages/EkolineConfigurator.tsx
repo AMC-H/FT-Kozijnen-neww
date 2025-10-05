@@ -121,8 +121,10 @@ const EkolineConfigurator: React.FC = () => {
   })
 
   useEffect(() => {
-    if (currentIndex > filteredPanelen.length - 1) setCurrentIndex(0)
-  }, [variant, filteredPanelen.length])
+    if (!validating && filteredPanelen.length > 0 && currentIndex >= filteredPanelen.length) {
+      setCurrentIndex(0)
+    }
+  }, [validating, filteredPanelen.length, currentIndex])
 
   const currentPanel = filteredPanelen[currentIndex] || null
 
@@ -143,11 +145,13 @@ const EkolineConfigurator: React.FC = () => {
   }
 
   const goToPrevious = () => {
+    if (validating || filteredPanelen.length === 0) return
     setCurrentIndex((prev) =>
       prev > 0 ? prev - 1 : filteredPanelen.length - 1
     )
   }
   const goToNext = () => {
+    if (validating || filteredPanelen.length === 0) return
     setCurrentIndex((prev) =>
       prev < filteredPanelen.length - 1 ? prev + 1 : 0
     )
