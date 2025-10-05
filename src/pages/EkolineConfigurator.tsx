@@ -24,6 +24,8 @@ interface PanelConfig {
   hout_breedte_max_mm: number | null
   hout_hoogte_min_mm: number | null
   hout_hoogte_max_mm: number | null
+  heeft_variant_met?: boolean
+  heeft_variant_zonder?: boolean
 }
 
 const EkolineConfigurator: React.FC = () => {
@@ -52,6 +54,7 @@ const EkolineConfigurator: React.FC = () => {
         .from('panelen_config')
         .select('*')
         .order('paneelnummer', { ascending: true })
+      console.log("Panelen uit Supabase:", data) // <--- Debug stap 1
       if (error) throw error
       setPanelen(data || [])
       setCurrentIndex(0)
@@ -108,27 +111,30 @@ const EkolineConfigurator: React.FC = () => {
       setFailedImages(failed)
       setValidating(false)
       setCurrentIndex(0)
+      console.log("Loaded images set:", loaded) // <--- Debug stap 2
+      console.log("Failed images set:", failed) // <--- Debug stap 3
     }
 
     testImages()
   }, [panelen, variant])
 
   const filteredPanelen = panelen.filter((p) => {
-  let variantAllowed = false
-  let filename = ''
+    let variantAllowed = false
+    let filename = ''
 
-  if (variant === 'met') {
-    variantAllowed = p.heeft_variant_met === true
-    filename = p.afbeelding_met || ''
-  } else if (variant === 'zonder') {
-    variantAllowed = p.heeft_variant_zonder === true
-    filename = p.afbeelding_zonder || ''
-  }
+    if (variant === 'met') {
+      variantAllowed = p.heeft_variant_met === true
+      filename = p.afbeelding_met || ''
+    } else if (variant === 'zonder') {
+      variantAllowed = p.heeft_variant_zonder === true
+      filename = p.afbeelding_zonder || ''
+    }
 
-  if (!variantAllowed || !filename) return false
-  if (validating) return true
-  return loadedImages.has(filename) && !failedImages.has(filename)
-})
+    if (!variantAllowed || !filename) return false
+    if (validating) return true
+    return loadedImages.has(filename) && !failedImages.has(filename)
+  })
+  console.log("Filtered panelen:", filteredPanelen) // <--- Debug stap 4
 
   useEffect(() => {
     if (!validating && filteredPanelen.length > 0 && currentIndex >= filteredPanelen.length) {
