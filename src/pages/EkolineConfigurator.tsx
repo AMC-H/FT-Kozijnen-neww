@@ -5,6 +5,10 @@ import { supabase } from '../lib/supabase'
 
 const SUPABASE_IMG_URL = 'https://nsmzfzdvesacindbgkdq.supabase.co/storage/v1/object/public/kozijnen-photos/'
 
+// Paneel-nummers die uitgesloten moeten worden per variant:
+const UITGESLOTEN_MET = [9,11,30,55,62,72,73,74,75,109,110,111,112,134,140,141,142,143,144]
+const UITGESLOTEN_ZONDER = [59,60,61,63,64,65,66,67,68,69,70,71,93,96,120,137]
+
 interface PanelConfig {
   paneelnummer: number
   afbeelding_met: string | null
@@ -59,10 +63,13 @@ const EkolineConfigurator: React.FC = () => {
     }
   }
 
-  // Filter alleen op de gekozen kolom
   const filteredPanelen = panelen.filter(p => {
-    if (variant === 'met') return !!p.afbeelding_met && p.afbeelding_met !== 'null'
-    if (variant === 'zonder') return !!p.afbeelding_zonder && p.afbeelding_zonder !== 'null'
+    if (variant === 'met') {
+      return !!p.afbeelding_met && p.afbeelding_met !== 'null' && !UITGESLOTEN_MET.includes(p.paneelnummer)
+    }
+    if (variant === 'zonder') {
+      return !!p.afbeelding_zonder && p.afbeelding_zonder !== 'null' && !UITGESLOTEN_ZONDER.includes(p.paneelnummer)
+    }
     return false
   })
 
