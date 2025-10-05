@@ -73,7 +73,9 @@ const EkolineConfigurator: React.FC = () => {
   // ENKEL base-url + bestandsnaam uit kolom (geen submap!) + cache buster
   const getPanelImageUrl = (p: PanelConfig | null) => {
     if (!p) return ''
-    return '/ekoline-panels-overview.png'
+    const filename = variant === 'met' ? p.afbeelding_met : p.afbeelding_zonder
+    const url = SUPABASE_IMG_URL + filename + `?v=${p.paneelnummer}`
+    return url
   }
 
   const handleVariantChange = (newVariant: 'met' | 'zonder') => {
