@@ -69,11 +69,12 @@ const EkolineConfigurator: React.FC = () => {
 
   const currentPanel = filteredPanelen[currentIndex] || null
 
-  // ENKEL base-url + bestandsnaam uit kolom (geen submap!)
+  // ENKEL base-url + bestandsnaam uit kolom (geen submap!) + cache buster
   const getPanelImageUrl = (p: PanelConfig | null) =>
     p
       ? SUPABASE_IMG_URL +
-        (variant === 'met' ? p.afbeelding_met : p.afbeelding_zonder)
+        (variant === 'met' ? p.afbeelding_met : p.afbeelding_zonder) +
+        `?v=${p.paneelnummer}`
       : ''
 
   const handleVariantChange = (newVariant: 'met' | 'zonder') => {
