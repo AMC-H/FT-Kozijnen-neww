@@ -37,6 +37,9 @@ const EkolineConfigurator: React.FC = () => {
   const [formData, setFormData] = useState<any>({})
   const [opleggingKleur, setOpleggingKleur] = useState<'inox' | 'zwart' | ''>('')
 
+  // Hier: state om te weten welke plaatjes echt bestaan
+  const [loadedImages, setLoadedImages] = useState<Set<string>>(new Set())
+
   useEffect(() => {
     loadPanelen()
   }, [])
@@ -52,11 +55,6 @@ const EkolineConfigurator: React.FC = () => {
       if (error) throw error
       setPanelen(data || [])
       setCurrentIndex(0)
-      // Debug logs (optioneel, mag je laten staan of weghalen)
-      console.log('ALLE panelen uit Supabase:', data)
-      if (data && data.length) {
-        console.log('EERSTE PANEEL VOLLEDIG:', JSON.stringify(data[0], null, 2))
-      }
     } catch (e: any) {
       setError(e?.message || 'Fout bij laden panelen')
     } finally {
@@ -64,11 +62,27 @@ const EkolineConfigurator: React.FC = () => {
     }
   }
 
-  // Filter puur op aanwezigheid van bestandsnaam
+  // Controleer na het laden van panelen/variant welke plaatjes echt bestaan
+  useEffect(() => {
+    if (panelen.length === 0) return
+    const toCheck = panelen
+      .map(p => (variant === 'met' ? p.afbeelding_met : p.afbeelding_zonder))
+      .filter(Boolean) as string[]
+
+    let loaded = new Set<string>()
+    let checks = toCheck.map(filename => new Promise<void>(resolve => {
+      const img = new window.Image()
+      img.onload = () => { loaded.add(filename); resolve() }
+      img.onerror = () => resolve()
+      img.src = SUPABASE_IMG_URL + filename
+    }))
+    Promise.all(checks).then(() => setLoadedImages(loaded))
+  }, [panelen, variant])
+
+  // Filter: alleen panelen tonen waarvan het plaatje echt bestaat
   const filteredPanelen = panelen.filter((p) => {
-    if (variant === 'met') return !!p.afbeelding_met
-    if (variant === 'zonder') return !!p.afbeelding_zonder
-    return false
+    const filename = variant === 'met' ? p.afbeelding_met : p.afbeelding_zonder
+    return !!filename && loadedImages.has(filename)
   })
 
   useEffect(() => {
