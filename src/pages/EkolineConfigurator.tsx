@@ -351,31 +351,58 @@ const EkolineConfigurator: React.FC = () => {
             </div>
           </div>
           <div className="text-center mb-8">
-            <div className="relative w-full max-w-4xl mx-auto h-96 overflow-hidden">
-              <div className="flex items-center justify-center h-full relative">
+            <div className="relative w-full mx-auto">
+              <div className="flex items-center justify-center gap-4 px-4">
                 <button
                   onClick={goToPrevious}
-                  className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-90 hover:bg-opacity-100 rounded-full p-3 shadow-lg transition-all duration-300 z-20 hover:scale-110"
+                  className="flex-shrink-0 bg-white hover:bg-gray-50 rounded-full p-3 shadow-lg transition-all duration-300 hover:scale-110 z-20"
                   aria-label="Vorig paneel"
                 >
                   <ChevronLeft className="h-6 w-6 text-gray-700" />
                 </button>
-                <div className="w-full flex items-center justify-center z-10">
-                  <img
-                    key={`${currentPanel?.paneelnummer}-${variant}`}
-                    src={getPanelImageUrl(currentPanel)}
-                    alt={`Ekoline paneel ${currentPanel?.paneelnummer} ${variant}`}
-                    className="max-w-full max-h-full object-contain rounded-lg shadow-xl bg-white"
-                    onError={(e) => {
-                      console.error('Image failed to load:', getPanelImageUrl(currentPanel));
-                      e.currentTarget.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Crect fill="%23f3f4f6" width="400" height="300"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" dy=".3em" fill="%236b7280" font-family="sans-serif" font-size="18"%3EAfbeelding niet beschikbaar%3C/text%3E%3C/svg%3E';
-                    }}
-                    onLoad={() => console.log('Image loaded successfully:', getPanelImageUrl(currentPanel))}
-                  />
+
+                <div className="flex items-center gap-4 flex-1 max-w-6xl overflow-hidden">
+                  {/* Previous image preview */}
+                  <div className="hidden md:block flex-shrink-0 w-48 h-80 opacity-40 transition-opacity hover:opacity-60">
+                    {filteredPanelen[currentIndex > 0 ? currentIndex - 1 : filteredPanelen.length - 1] && (
+                      <img
+                        src={getPanelImageUrl(filteredPanelen[currentIndex > 0 ? currentIndex - 1 : filteredPanelen.length - 1])}
+                        alt="Vorige"
+                        className="w-full h-full object-contain rounded-lg"
+                      />
+                    )}
+                  </div>
+
+                  {/* Current image - full size */}
+                  <div className="flex-shrink-0 w-full md:w-96 h-[500px] flex items-center justify-center">
+                    <img
+                      key={`${currentPanel?.paneelnummer}-${variant}`}
+                      src={getPanelImageUrl(currentPanel)}
+                      alt={`Ekoline paneel ${currentPanel?.paneelnummer} ${variant}`}
+                      className="w-full h-full object-contain rounded-lg shadow-2xl bg-white p-4"
+                      onError={(e) => {
+                        console.error('Image failed to load:', getPanelImageUrl(currentPanel));
+                        e.currentTarget.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Crect fill="%23f3f4f6" width="400" height="300"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" dy=".3em" fill="%236b7280" font-family="sans-serif" font-size="18"%3EAfbeelding niet beschikbaar%3C/text%3E%3C/svg%3E';
+                      }}
+                      onLoad={() => console.log('Image loaded successfully:', getPanelImageUrl(currentPanel))}
+                    />
+                  </div>
+
+                  {/* Next image preview */}
+                  <div className="hidden md:block flex-shrink-0 w-48 h-80 opacity-40 transition-opacity hover:opacity-60">
+                    {filteredPanelen[currentIndex < filteredPanelen.length - 1 ? currentIndex + 1 : 0] && (
+                      <img
+                        src={getPanelImageUrl(filteredPanelen[currentIndex < filteredPanelen.length - 1 ? currentIndex + 1 : 0])}
+                        alt="Volgende"
+                        className="w-full h-full object-contain rounded-lg"
+                      />
+                    )}
+                  </div>
                 </div>
+
                 <button
                   onClick={goToNext}
-                  className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-90 hover:bg-opacity-100 rounded-full p-3 shadow-lg transition-all duration-300 z-20 hover:scale-110"
+                  className="flex-shrink-0 bg-white hover:bg-gray-50 rounded-full p-3 shadow-lg transition-all duration-300 hover:scale-110 z-20"
                   aria-label="Volgend paneel"
                 >
                   <ChevronRight className="h-6 w-6 text-gray-700" />
