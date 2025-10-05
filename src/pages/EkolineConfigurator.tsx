@@ -147,6 +147,27 @@ const EkolineConfigurator: React.FC = () => {
     }, null, 2))
   }
 
+  // Helper: geef min/max op basis van gekozen materiaal
+  function getMaatRange(materiaal: string | undefined, panel: PanelConfig, type: "breedte" | "hoogte") {
+    if (!materiaal || !panel) return [undefined, undefined]
+    if (materiaal === 'kunststof') {
+      return type === "breedte"
+        ? [panel.pvc_breedte_min_mm, panel.pvc_breedte_max_mm]
+        : [panel.pvc_hoogte_min_mm, panel.pvc_hoogte_max_mm]
+    }
+    if (materiaal === 'aluminium') {
+      return type === "breedte"
+        ? [panel.alu_breedte_min_mm, panel.alu_breedte_max_mm]
+        : [panel.alu_hoogte_min_mm, panel.alu_hoogte_max_mm]
+    }
+    if (materiaal === 'hout') {
+      return type === "breedte"
+        ? [panel.hout_breedte_min_mm, panel.hout_breedte_max_mm]
+        : [panel.hout_hoogte_min_mm, panel.hout_hoogte_max_mm]
+    }
+    return [undefined, undefined]
+  }
+
   return (
     <>
       {showConfig && currentPanel ? (
@@ -197,97 +218,54 @@ const EkolineConfigurator: React.FC = () => {
                     )}
                   </select>
                 </div>
-                {/* Dynamische maatvelden */}
-                {formData.materiaal && (
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Breedte (mm) *</label>
-                      <input
-                        type="number"
-                        value={formData.breedte || ''}
-                        onChange={e => handleFormChange('breedte', e.target.value)}
-                        min={
-                          formData.materiaal === 'kunststof'
-                            ? currentPanel.pvc_breedte_min_mm
-                            : formData.materiaal === 'aluminium'
-                            ? currentPanel.alu_breedte_min_mm
-                            : formData.materiaal === 'hout'
-                            ? currentPanel.hout_breedte_min_mm
-                            : undefined
-                        }
-                        max={
-                          formData.materiaal === 'kunststof'
-                            ? currentPanel.pvc_breedte_max_mm
-                            : formData.materiaal === 'aluminium'
-                            ? currentPanel.alu_breedte_max_mm
-                            : formData.materiaal === 'hout'
-                            ? currentPanel.hout_breedte_max_mm
-                            : undefined
-                        }
-                        placeholder={
-                          formData.materiaal === 'kunststof'
-                            ? `Tussen ${currentPanel.pvc_breedte_min_mm} en ${currentPanel.pvc_breedte_max_mm} mm`
-                            : formData.materiaal === 'aluminium'
-                            ? `Tussen ${currentPanel.alu_breedte_min_mm} en ${currentPanel.alu_breedte_max_mm} mm`
-                            : formData.materiaal === 'hout'
-                            ? `Tussen ${currentPanel.hout_breedte_min_mm} en ${currentPanel.hout_breedte_max_mm} mm`
-                            : ''
-                        }
-                        className="w-full border border-gray-300 rounded-lg p-3"
-                        required
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Hoogte (mm) *</label>
-                      <input
-                        type="number"
-                        value={formData.hoogte || ''}
-                        onChange={e => handleFormChange('hoogte', e.target.value)}
-                        min={
-                          formData.materiaal === 'kunststof'
-                            ? currentPanel.pvc_hoogte_min_mm
-                            : formData.materiaal === 'aluminium'
-                            ? currentPanel.alu_hoogte_min_mm
-                            : formData.materiaal === 'hout'
-                            ? currentPanel.hout_hoogte_min_mm
-                            : undefined
-                        }
-                        max={
-                          formData.materiaal === 'kunststof'
-                            ? currentPanel.pvc_hoogte_max_mm
-                            : formData.materiaal === 'aluminium'
-                            ? currentPanel.alu_hoogte_max_mm
-                            : formData.materiaal === 'hout'
-                            ? currentPanel.hout_hoogte_max_mm
-                            : undefined
-                        }
-                        placeholder={
-                          formData.materiaal === 'kunststof'
-                            ? `Tussen ${currentPanel.pvc_hoogte_min_mm} en ${currentPanel.pvc_hoogte_max_mm} mm`
-                            : formData.materiaal === 'aluminium'
-                            ? `Tussen ${currentPanel.alu_hoogte_min_mm} en ${currentPanel.alu_hoogte_max_mm} mm`
-                            : formData.materiaal === 'hout'
-                            ? `Tussen ${currentPanel.hout_hoogte_min_mm} en ${currentPanel.hout_hoogte_max_mm} mm`
-                            : ''
-                        }
-                        className="w-full border border-gray-300 rounded-lg p-3"
-                        required
-                      />
-                    </div>
+                {/* Breedte en Hoogte altijd zichtbaar */}
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Breedte (mm) *</label>
+                    <input
+                      type="number"
+                      value={formData.breedte || ''}
+                      onChange={e => handleFormChange('breedte', e.target.value)}
+                      min={getMaatRange(formData.materiaal, currentPanel, "breedte")[0]}
+                      max={getMaatRange(formData.materiaal, currentPanel, "breedte")[1]}
+                      placeholder={
+                        formData.materiaal
+                          ? `Tussen ${getMaatRange(formData.materiaal, currentPanel, "breedte")[0]} en ${getMaatRange(formData.materiaal, currentPanel, "breedte")[1]} mm`
+                          : "Kies eerst materiaal"
+                      }
+                      className="w-full border border-gray-300 rounded-lg p-3"
+                      required
+                      disabled={!formData.materiaal}
+                    />
                   </div>
-                )}
-                {/* --- HIER JE KLEURVELDEN, GLASOPTIE, DORPEL, SLUITWERK, ETC --- */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Hoogte (mm) *</label>
+                    <input
+                      type="number"
+                      value={formData.hoogte || ''}
+                      onChange={e => handleFormChange('hoogte', e.target.value)}
+                      min={getMaatRange(formData.materiaal, currentPanel, "hoogte")[0]}
+                      max={getMaatRange(formData.materiaal, currentPanel, "hoogte")[1]}
+                      placeholder={
+                        formData.materiaal
+                          ? `Tussen ${getMaatRange(formData.materiaal, currentPanel, "hoogte")[0]} en ${getMaatRange(formData.materiaal, currentPanel, "hoogte")[1]} mm`
+                          : "Kies eerst materiaal"
+                      }
+                      className="w-full border border-gray-300 rounded-lg p-3"
+                      required
+                      disabled={!formData.materiaal}
+                    />
+                  </div>
+                </div>
                 {/* Kleur binnenzijde */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Kleur binnenzijde *</label>
-                  {/* Laat deze select zoals die in jouw configurator.tsx staat! */}
-                  {/* ... */}
+                  {/* LAAT DIT ZOALS IN JOUW PROJECT, NIET AANPASSEN */}
                 </div>
                 {/* Kleur buitenzijde */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Kleur buitenzijde *</label>
-                  {/* Laat deze select zoals die in jouw configurator.tsx staat! */}
-                  {/* ... */}
+                  {/* LAAT DIT ZOALS IN JOUW PROJECT, NIET AANPASSEN */}
                 </div>
                 {/* Glasoptie */}
                 <div>
