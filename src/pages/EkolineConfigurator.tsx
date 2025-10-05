@@ -37,8 +37,9 @@ const EkolineConfigurator: React.FC = () => {
   const [formData, setFormData] = useState<any>({})
   const [opleggingKleur, setOpleggingKleur] = useState<'inox' | 'zwart' | ''>('')
 
-  // Hier: state om te weten welke plaatjes echt bestaan
+  // Houd bij of alle images gecheckt zijn
   const [loadedImages, setLoadedImages] = useState<Set<string>>(new Set())
+  const [validatingImages, setValidatingImages] = useState(true)
 
   useEffect(() => {
     loadPanelen()
@@ -62,9 +63,14 @@ const EkolineConfigurator: React.FC = () => {
     }
   }
 
-  // Controleer na het laden van panelen/variant welke plaatjes echt bestaan
+  // Check of plaatjes echt bestaan voordat je ze toont
   useEffect(() => {
-    if (panelen.length === 0) return
+    setValidatingImages(true)
+    if (panelen.length === 0) {
+      setLoadedImages(new Set())
+      setValidatingImages(false)
+      return
+    }
     const toCheck = panelen
       .map(p => (variant === 'met' ? p.afbeelding_met : p.afbeelding_zonder))
       .filter(Boolean) as string[]
@@ -76,7 +82,10 @@ const EkolineConfigurator: React.FC = () => {
       img.onerror = () => resolve()
       img.src = SUPABASE_IMG_URL + filename
     }))
-    Promise.all(checks).then(() => setLoadedImages(loaded))
+    Promise.all(checks).then(() => {
+      setLoadedImages(loaded)
+      setValidatingImages(false)
+    })
   }, [panelen, variant])
 
   // Filter: alleen panelen tonen waarvan het plaatje echt bestaat
@@ -161,12 +170,14 @@ const EkolineConfigurator: React.FC = () => {
     }, null, 2))
   }
 
-  if (loading) {
+  if (loading || validatingImages) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Ekoline panelen laden...</p>
+          <p className="text-gray-600">
+            {loading ? 'Ekoline panelen laden...' : 'Afbeeldingen controleren...'}
+          </p>
         </div>
       </div>
     )
