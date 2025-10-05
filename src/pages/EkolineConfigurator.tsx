@@ -36,7 +36,7 @@ const EkolineConfigurator: React.FC = () => {
   const [showConfig, setShowConfig] = useState(false)
   const [formData, setFormData] = useState<any>({})
   const [opleggingKleur, setOpleggingKleur] = useState<'inox' | 'zwart' | ''>('')
-  const [imageErrors, setImageErrors] = useState<Set<number>>(new Set())
+  const [validatedPanelen, setValidatedPanelen] = useState<PanelConfig[]>([])
 
   useEffect(() => {
     loadPanelen()
@@ -60,14 +60,37 @@ const EkolineConfigurator: React.FC = () => {
     }
   }
 
-  const filteredPanelen = panelen.filter((p) => {
-    const hasImage = variant === 'met' ? p.afbeelding_met : p.afbeelding_zonder
-    return hasImage !== null && hasImage !== '' && !imageErrors.has(p.paneelnummer)
-  })
+  useEffect(() => {
+    const validateImages = async () => {
+      const valid: PanelConfig[] = []
+      for (const p of panelen) {
+        const filename = variant === 'met' ? p.afbeelding_met : p.afbeelding_zonder
+        if (filename) {
+          try {
+            const url = SUPABASE_IMG_URL + filename
+            const response = await fetch(url, { method: 'HEAD' })
+            if (response.ok) {
+              valid.push(p)
+            }
+          } catch {
+            // Skip panels with broken images
+          }
+        }
+      }
+      setValidatedPanelen(valid)
+      setCurrentIndex(0)
+    }
+
+    if (panelen.length > 0) {
+      validateImages()
+    }
+  }, [panelen, variant])
+
+  const filteredPanelen = validatedPanelen
 
   useEffect(() => {
     if (currentIndex > filteredPanelen.length - 1) setCurrentIndex(0)
-  }, [variant, filteredPanelen.length])
+  }, [filteredPanelen.length])
 
   const currentPanel = filteredPanelen[currentIndex] || null
 
@@ -383,11 +406,7 @@ const EkolineConfigurator: React.FC = () => {
                       alt={`Ekoline paneel ${currentPanel?.paneelnummer} ${variant}`}
                       className="w-full h-full object-contain rounded-lg shadow-2xl bg-white p-4"
                       onError={(e) => {
-                        if (currentPanel) {
-                          setImageErrors(prev => new Set(prev).add(currentPanel.paneelnummer));
-                          const nextIndex = (currentIndex + 1) % filteredPanelen.length;
-                          setCurrentIndex(nextIndex);
-                        }
+                        e.currentTarget.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Crect fill="%23f3f4f6" width="400" height="300"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" dy=".3em" fill="%236b7280" font-family="sans-serif" font-size="18"%3EAfbeelding niet beschikbaar%3C/text%3E%3C/svg%3E';
                       }}
                     />
                   </div>
