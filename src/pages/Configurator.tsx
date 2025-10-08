@@ -1001,8 +1001,8 @@ const Configurator: React.FC = () => {
                     <div className="bg-indigo-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-indigo-200 transition-colors">
                       <Door className="h-8 w-8 text-indigo-600" />
                     </div>
-                    <h3 className="text-lg font-semibold text-gray-900 group-hover:text-indigo-600 transition-colors">ET Panelen</h3>
-                    <p className="text-sm text-gray-600 mt-2">Exclusieve ET collectie panelen</p>
+                    <h3 className="text-lg font-semibold text-gray-900 group-hover:text-indigo-600 transition-colors">Despiro Deuren</h3>
+<p className="text-sm text-gray-600 mt-2">Exclusieve Despiro collectie deuren</p>
                   </div>
                 </div>
               </div>
