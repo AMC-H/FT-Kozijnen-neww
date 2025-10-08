@@ -8,6 +8,9 @@ const SUPABASE_IMG_URL = 'https://nsmzfzdvesacindbgkdq.supabase.co/storage/v1/ob
 const UITGESLOTEN_MET = [9,11,30,55,62,72,73,74,75,109,110,111,112,134,140,141,142,143,144]
 const UITGESLOTEN_ZONDER = [59,60,61,63,64,65,66,67,68,69,70,71,93,96,120,137]
 
+// Panelen die NIET in hout beschikbaar zijn:
+const PANELEN_ZONDER_HOUT = [62, 99, 134, 140, 141, 142, 143, 144];
+
 // ===== STANDAARD HOUTKLEUREN MET HEX (geschat) =====
 const STANDARD_WOOD_COLORS = {
   "Stone Pine":        { label: "Standaard houtkleur", hex: "#C3B091" },
@@ -123,7 +126,6 @@ const KNOWN_RAL_HEX: Record<string, string> = {
   "RAL 9023": "#7E8182",
 };
 
-// Alle RAL codes als array:
 const RAL_CODES = Object.keys(KNOWN_RAL_HEX);
 
 const GLASOPTIES = [
@@ -145,7 +147,6 @@ const DORPELOPTIES = [
   { value: "nee", label: "Nee" }
 ];
 
-// ======= Kleur opties generator =======
 const allWoodColorOptions = [
   ...Object.entries(STANDARD_WOOD_COLORS).map(([name, obj]) => ({
     value: name, label: `${name} (${obj.label})`, hex: obj.hex
@@ -166,7 +167,6 @@ const allColorGroups = [
   { label: "Houtkleuren", options: allWoodColorOptions }
 ];
 
-// ======= ColorPickerSelect component =======
 function ColorPickerSelect({ value, onChange, groups, placeholder = 'Kies kleur', disabled }) {
   const [open, setOpen] = useState(false);
   const flat = groups.flatMap(g => g.options);
@@ -220,7 +220,6 @@ function ColorPickerSelect({ value, onChange, groups, placeholder = 'Kies kleur'
   );
 }
 
-// PanelConfig interface
 interface PanelConfig {
   paneelnummer: number
   afbeelding_met: string | null
@@ -406,7 +405,8 @@ const EkolineConfigurator: React.FC = () => {
                     {currentPanel.beschikbaar_alu && (
                       <option value="aluminium">Aluminium</option>
                     )}
-                    {currentPanel.beschikbaar_hout && (
+                    {/* Hout alleen tonen als het paneelnummer NIET in PANELEN_ZONDER_HOUT staat */}
+                    {currentPanel.beschikbaar_hout && !PANELEN_ZONDER_HOUT.includes(currentPanel.paneelnummer) && (
                       <option value="hout">Hout</option>
                     )}
                   </select>
