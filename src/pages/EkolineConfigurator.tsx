@@ -8,18 +8,125 @@ const SUPABASE_IMG_URL = 'https://nsmzfzdvesacindbgkdq.supabase.co/storage/v1/ob
 const UITGESLOTEN_MET = [9,11,30,55,62,72,73,74,75,109,110,111,112,134,140,141,142,143,144]
 const UITGESLOTEN_ZONDER = [59,60,61,63,64,65,66,67,68,69,70,71,93,96,120,137]
 
-const RAL_KLEUREN = [
-  { value: "ral9016", label: "RAL 9016 (wit)" },
-  { value: "ral9001", label: "RAL 9001 (crème wit)" },
-  { value: "ral7016", label: "RAL 7016 (antraciet)" },
-  // voeg eventueel meer RAL kleuren toe
-]
-const HOUT_KLEUREN = [
-  { value: "goud-eiken", label: "Goud eiken" },
-  { value: "donker-eiken", label: "Donker eiken" },
-  { value: "noten", label: "Noten" },
-  // voeg eventueel meer houtkleuren toe
-]
+// RAL & houtkleuren - volledige lijst
+const RAL_CODES = [
+  'RAL 1000','RAL 1001','RAL 1002','RAL 1003','RAL 1004','RAL 1005','RAL 1006','RAL 1007',
+  'RAL 1016','RAL 1017','RAL 1019','RAL 1020','RAL 1023','RAL 1024','RAL 1026','RAL 1027','RAL 1028',
+  'RAL 1032','RAL 1033','RAL 1034','RAL 1035','RAL 1036','RAL 1037',
+  'RAL 2000','RAL 2001','RAL 2002','RAL 2003','RAL 2004','RAL 2005','RAL 2007',
+  'RAL 3000','RAL 3001','RAL 3002','RAL 3003','RAL 3004','RAL 3005','RAL 3007','RAL 3009','RAL 3011',
+  'RAL 3012','RAL 3013','RAL 3014','RAL 3015','RAL 3016','RAL 3017','RAL 3018','RAL 3020','RAL 3022',
+  'RAL 3027','RAL 3028','RAL 3031',
+  'RAL 4001','RAL 4002','RAL 4003','RAL 4004','RAL 4005','RAL 4006','RAL 4007','RAL 4008','RAL 4009','RAL 4010',
+  'RAL 5000','RAL 5001','RAL 5002','RAL 5003','RAL 5004','RAL 5005','RAL 5007','RAL 5008','RAL 5009','RAL 5010',
+  'RAL 5011','RAL 5012','RAL 5013','RAL 5014','RAL 5015','RAL 5017','RAL 5018','RAL 5019','RAL 5020','RAL 5021',
+  'RAL 5022','RAL 5023','RAL 5024',
+  'RAL 6000','RAL 6001','RAL 6002','RAL 6003','RAL 6004','RAL 6005','RAL 6006','RAL 6007','RAL 6008','RAL 6009',
+  'RAL 6010','RAL 6011','RAL 6012','RAL 6013','RAL 6014','RAL 6015','RAL 6016','RAL 6017','RAL 6018','RAL 6019',
+  'RAL 6020','RAL 6021','RAL 6022','RAL 6024','RAL 6025','RAL 6026','RAL 6027','RAL 6028','RAL 6029','RAL 6032',
+  'RAL 6033','RAL 6034','RAL 6035','RAL 6036',
+  'RAL 7000','RAL 7001','RAL 7002','RAL 7003','RAL 7004','RAL 7005','RAL 7006','RAL 7008','RAL 7009','RAL 7010',
+  'RAL 7011','RAL 7012','RAL 7013','RAL 7015','RAL 7016','RAL 7019','RAL 7021','RAL 7022','RAL 7023','RAL 7024',
+  'RAL 7026','RAL 7030','RAL 7031','RAL 7032','RAL 7033','RAL 7034','RAL 7035','RAL 7038','RAL 7040','RAL 7042',
+  'RAL 7043','RAL 7044','RAL 7045','RAL 7046','RAL 7047','RAL 7048',
+  'RAL 8000','RAL 8001','RAL 8002','RAL 8003','RAL 8004','RAL 8007','RAL 8008','RAL 8016','RAL 8017','RAL 8019',
+  'RAL 8022','RAL 8023','RAL 8024','RAL 8025','RAL 8028','RAL 8029',
+  'RAL 9001','RAL 9002','RAL 9003','RAL 9004','RAL 9005','RAL 9006','RAL 9007','RAL 9010','RAL 9016','RAL 9017',
+  'RAL 9022','RAL 9023'
+];
+
+const KNOWN_RAL_HEX: Record<string, string> = {
+  'RAL 9005': '#0A0A0A','RAL 9016': '#F2F2F2','RAL 9010': '#F5F1DF','RAL 9001': '#E6DCC7',
+  'RAL 7016': '#373F43','RAL 7035': '#D7D7D7','RAL 7039': '#6D6F6A','RAL 8017': '#3B2B20',
+  'RAL 8019': '#3E3B39','RAL 9006': '#A7A9AC','RAL 9007': '#8F8F8F'
+};
+
+const WOOD_NAMES = [
+  'Stone Pine','Walnut','Wenge','Oak','Dark Chestnut','Cypress','Afromosia',
+  'Cherry Tree','Forest Green','Framire','Light Green','Mahogany','Old Pine',
+  'Sapelli','Golden Sun','Chestnut','Iroko','Acajou','Ash Gray','Brown Chocolate',
+  'Beige','Tan','Calvados','Dark Brown','Milky White','Mocha','Frosty White','Kempas'
+];
+
+function stringToHsl(seed: string) {
+  let h = 0; for (let i = 0; i < seed.length; i++) h = (h * 31 + seed.charCodeAt(i)) >>> 0
+  return `hsl(${h % 360},55%,55%)`
+}
+
+function buildGroupedColorOptions() {
+  const ral = RAL_CODES.map(code => ({
+    value: code,
+    label: code,
+    swatch: KNOWN_RAL_HEX[code] || stringToHsl(code)
+  }));
+  const wood = WOOD_NAMES.map(name => ({
+    value: name,
+    label: `${name} (houtkleur)`,
+    swatch: stringToHsl(name)
+  }));
+  return [
+    { label: 'RAL-kleuren', options: ral },
+    { label: 'Houtkleuren', options: wood }
+  ];
+}
+
+function ColorPickerSelect({
+  value, onChange, groups, placeholder = 'Kies kleur'
+}: {
+  value?: string,
+  onChange: (v: string) => void,
+  groups: { label: string, options: { value: string, label: string, swatch: string }[] }[],
+  placeholder?: string
+}) {
+  const [open, setOpen] = useState(false);
+  const flat = groups.flatMap(g => g.options);
+  const current = flat.find(o => o.value === value);
+  return (
+    <div className="relative">
+      <button
+        type="button"
+        onClick={() => setOpen(o => !o)}
+        className="w-full border border-gray-300 rounded-lg p-3 flex items-center justify-between hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        aria-haspopup="listbox"
+        aria-expanded={open}
+      >
+        <div className="flex items-center gap-3">
+          <span
+            aria-hidden
+            className="inline-block w-6 h-6 rounded border border-gray-300"
+            style={{ background: current?.swatch || '#eee' }}
+          />
+          <span className={current ? 'text-gray-900' : 'text-gray-500'}>
+            {current ? current.label : placeholder}
+          </span>
+        </div>
+        <svg className={`w-4 h-4 text-gray-500 transition-transform ${open ? 'rotate-180' : ''}`} viewBox="0 0 20 20" fill="currentColor"><path d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.25a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z"/></svg>
+      </button>
+      {open && (
+        <div role="listbox" className="absolute z-20 mt-2 w-full max-h-72 overflow-auto rounded-lg border border-gray-200 bg-white shadow-lg">
+          {groups.map(g => (
+            <div key={g.label}>
+              <div className="px-3 py-2 text-xs font-semibold text-gray-500 sticky top-0 bg-white">{g.label}</div>
+              {g.options.map(o => (
+                <button
+                  type="button"
+                  key={o.value}
+                  role="option"
+                  aria-selected={o.value === value}
+                  onClick={() => { onChange(o.value); setOpen(false) }}
+                  className={`w-full px-3 py-2 flex items-center gap-3 text-left ${o.value === value ? 'font-medium bg-blue-50' : ''}`}
+                >
+                  <span className="inline-block w-5 h-5 rounded border border-gray-300" style={{ background: o.swatch }} />
+                  <span className="text-sm text-gray-900">{o.label}</span>
+                </button>
+              ))}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
 
 interface PanelConfig {
   paneelnummer: number
@@ -160,7 +267,6 @@ const EkolineConfigurator: React.FC = () => {
     }, null, 2))
   }
 
-  // Helper: geef min/max op basis van gekozen materiaal
   function getMaatRange(materiaal: string | undefined, panel: PanelConfig, type: "breedte" | "hoogte") {
     if (!materiaal || !panel) return [undefined, undefined]
     if (materiaal === 'kunststof') {
@@ -179,13 +285,6 @@ const EkolineConfigurator: React.FC = () => {
         : [panel.hout_hoogte_min_mm, panel.hout_hoogte_max_mm]
     }
     return [undefined, undefined]
-  }
-
-  // Helper: alleen juiste kleuren tonen per materiaal
-  function kleurOpties(materiaal: string | undefined) {
-    if (!materiaal) return []
-    if (materiaal === 'hout') return [...RAL_KLEUREN, ...HOUT_KLEUREN]
-    return RAL_KLEUREN
   }
 
   return (
@@ -280,34 +379,22 @@ const EkolineConfigurator: React.FC = () => {
                 {/* Kleur binnenzijde */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Kleur binnenzijde *</label>
-                  <select
-                    value={formData.kleur_binnen || ''}
-                    onChange={e => handleFormChange('kleur_binnen', e.target.value)}
-                    className="w-full border border-gray-300 rounded-lg p-3"
-                    required
-                    disabled={!formData.materiaal}
-                  >
-                    <option value="">{formData.materiaal ? "Kies kleur binnenzijde" : "Kies eerst materiaal"}</option>
-                    {kleurOpties(formData.materiaal).map(opt => (
-                      <option key={opt.value} value={opt.value}>{opt.label}</option>
-                    ))}
-                  </select>
+                  <ColorPickerSelect
+                    value={formData.kleur_binnen}
+                    onChange={v => handleFormChange('kleur_binnen', v)}
+                    groups={buildGroupedColorOptions()}
+                    placeholder="Kies kleur binnenzijde"
+                  />
                 </div>
                 {/* Kleur buitenzijde */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Kleur buitenzijde *</label>
-                  <select
-                    value={formData.kleur_buiten || ''}
-                    onChange={e => handleFormChange('kleur_buiten', e.target.value)}
-                    className="w-full border border-gray-300 rounded-lg p-3"
-                    required
-                    disabled={!formData.materiaal}
-                  >
-                    <option value="">{formData.materiaal ? "Kies kleur buitenzijde" : "Kies eerst materiaal"}</option>
-                    {kleurOpties(formData.materiaal).map(opt => (
-                      <option key={opt.value} value={opt.value}>{opt.label}</option>
-                    ))}
-                  </select>
+                  <ColorPickerSelect
+                    value={formData.kleur_buiten}
+                    onChange={v => handleFormChange('kleur_buiten', v)}
+                    groups={buildGroupedColorOptions()}
+                    placeholder="Kies kleur buitenzijde"
+                  />
                 </div>
                 {/* Glasoptie */}
                 <div>
