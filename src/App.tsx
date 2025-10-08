@@ -26,7 +26,7 @@ import Debug from './pages/Debug'
 import EkolineConfigurator from './pages/EkolineConfigurator'
 import EkoVitreSelector from './pages/configurator/ekovitre/Selector'
 import ClassicLineSelector from './pages/configurator/classicline/Selector'
-import EtSelector from './pages/configurator/Et/Selector'   // ✅ ET selector toegevoegd
+import DespiroConfigurator from './pages/DespiroConfigurator' // <-- NIEUW: Despiro/ET configurator
 import BuitendeurenSelector from './pages/configurator/buitendeuren/Selector'
 
 function AppContent() {
@@ -73,12 +73,12 @@ function AppContent() {
               </ProtectedRoute>
             } 
           />
-          {/* ✅ nieuwe ET route */}
+          {/* ✅ NIEUW: DespiroConfigurator (voorheen ET) */}
           <Route 
             path="/configurator/et" 
             element={
               <ProtectedRoute>
-                <EtSelector />
+                <DespiroConfigurator />
               </ProtectedRoute>
             } 
           />
