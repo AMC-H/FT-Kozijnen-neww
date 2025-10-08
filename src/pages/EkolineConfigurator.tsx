@@ -377,15 +377,17 @@ const EkolineConfigurator: React.FC = () => {
                   <ArrowLeft className="h-5 w-5 inline" /> Terug naar deuren
                 </button>
               </div>
+              {/* GROTERE AFBEELDING */}
               <div className="text-center mb-5">
                 <img
                   key={`${currentPanel.paneelnummer}-${variant}`}
                   src={getPanelImageUrl(currentPanel)}
                   alt={`Ekoline deur ${currentPanel.paneelnummer} ${variant}`}
-                  className="max-w-full max-h-64 mx-auto object-contain rounded-lg shadow-xl"
+                  className="mx-auto rounded-lg shadow-xl w-[400px] h-[600px] object-contain"
                   onError={(e) => {
                     e.currentTarget.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Crect fill="%23f3f4f6" width="400" height="300"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" dy=".3em" fill="%236b7280" font-family="sans-serif" font-size="18"%3EAfbeelding niet beschikbaar%3C/text%3E%3C/svg%3E';
                   }}
+                  style={{ maxWidth: '100%', maxHeight: '80vh' }}
                 />
               </div>
               <form className="space-y-6" onSubmit={handleSubmit}>
