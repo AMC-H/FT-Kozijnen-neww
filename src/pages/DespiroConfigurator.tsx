@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { ChevronLeft, ChevronRight, ArrowLeft, Check } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 
-const SUPABASE_IMG_URL = 'https://nsmzfzdvesacindbgkdq.supabase.co/storage/v1/object/public/'
+const SUPABASE_IMG_URL = "https://nsmzfzdvesacindbgkdq.supabase.co/storage/v1/object/public/"
 
 type ConfigOptions = {
   Handgreep?: string[]
@@ -49,7 +49,7 @@ const standaardKleuren = [
   { value: "RAL 9010", label: "RAL 9010" }
 ]
 
-export default function DespiroConfigurator() {
+const DespiroConfigurator: React.FC = () => {
   const navigate = useNavigate()
   const [panelen, setPanelen] = useState<DespiroPaneel[]>([])
   const [currentIndex, setCurrentIndex] = useState(0)
@@ -80,7 +80,6 @@ export default function DespiroConfigurator() {
 
   const getPanelImageUrl = (panel: DespiroPaneel | null) => {
     if (!panel || !panel.image_path) return ''
-    // Je image_path is bijvoorbeeld "kozijnen-photos/DP01-Aida-ET.jpg"
     return SUPABASE_IMG_URL + panel.image_path
   }
 
@@ -109,7 +108,6 @@ export default function DespiroConfigurator() {
     setCurrentIndex(prev => (prev < panelen.length - 1 ? prev + 1 : 0))
   }
 
-  // Helper
   const asOptions = (arr?: string[]) => arr?.map(v => ({ value: v, label: v })) || []
 
   return (
@@ -135,12 +133,11 @@ export default function DespiroConfigurator() {
                   alt={`Despiro deur ${currentPanel.naam}`}
                   className="mx-auto rounded-lg shadow-xl w-[400px] h-[600px] object-contain"
                   onError={e => {
-                    e.currentTarget.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Crect fill="%23f3f4f6" width="400" height="300"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" dy=".3em" fill="%236b7280" font-family="sans-serif" font-size="18"%3EAfbeelding niet beschikbaar%3C/text%3E%3C/svg%3E';
+                    (e.target as HTMLImageElement).src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Crect fill="%23f3f4f6" width="400" height="300"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" dy=".3em" fill="%236b7280" font-family="sans-serif" font-size="18"%3EAfbeelding niet beschikbaar%3C/text%3E%3C/svg%3E';
                   }}
                   style={{ maxWidth: '100%', maxHeight: '80vh' }}
                 />
               </div>
-
               <div className="mb-4 text-gray-700">
                 <div><strong>Design kenmerk:</strong> {currentPanel.design_kenmerk || '-'}</div>
                 <div><strong>Beglazing standaard:</strong> {currentPanel.beglazing_standaard || '-'}</div>
@@ -150,7 +147,6 @@ export default function DespiroConfigurator() {
                   {' '}Hoogte {currentPanel.min_hoogte} - {currentPanel.max_hoogte} mm
                 </div>
               </div>
-
               <form className="space-y-6" onSubmit={handleSubmit}>
                 {/* Materiaal */}
                 <div>
@@ -348,7 +344,7 @@ export default function DespiroConfigurator() {
                           alt={`Despiro deur ${currentPanel?.naam}`}
                           className="w-full h-full object-contain rounded-lg shadow-2xl bg-white p-4"
                           onError={e => {
-                            e.currentTarget.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Crect fill="%23f3f4f6" width="400" height="300"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" dy=".3em" fill="%236b7280" font-family="sans-serif" font-size="18"%3EAfbeelding niet beschikbaar%3C/text%3E%3C/svg%3E';
+                            (e.target as HTMLImageElement).src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Crect fill="%23f3f4f6" width="400" height="300"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" dy=".3em" fill="%236b7280" font-family="sans-serif" font-size="18"%3EAfbeelding niet beschikbaar%3C/text%3E%3C/svg%3E';
                           }}
                         />
                       </div>
@@ -364,7 +360,7 @@ export default function DespiroConfigurator() {
                 </div>
                 <div className="mt-4">
                   <h3 className="text-xl font-semibold text-gray-900">
-                    Despiro deur {currentPanel?.naam}
+                    Despiro deur {currentPanel?.naam} ({currentIndex+1} van {panelen.length})
                   </h3>
                 </div>
               </div>
@@ -384,3 +380,5 @@ export default function DespiroConfigurator() {
     </>
   )
 }
+
+export default DespiroConfigurator
