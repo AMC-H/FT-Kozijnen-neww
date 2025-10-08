@@ -3,45 +3,53 @@ import { useNavigate } from 'react-router-dom'
 import { ChevronLeft, ChevronRight, ArrowLeft, Check } from 'lucide-react'
 import { supabase } from '../lib/supabase'
 
-// PAS DIT AAN als je base url anders is!
-const SUPABASE_IMG_URL = 'https://nsmzfzdvesacindbgkdq.supabase.co/storage/v1/object/public/despiro-photos/'
+const SUPABASE_IMG_URL = 'https://nsmzfzdvesacindbgkdq.supabase.co/storage/v1/object/public/'
+
+type ConfigOptions = {
+  Handgreep?: string[]
+  Glas_Opties?: string[]
+  Scharnieren?: string[]
+  Kleur_Omkadering?: string[]
+}
 
 interface DespiroPaneel {
   id: number
   naam: string
+  slug: string
   image_path: string | null
-  kleurmogelijkheden: string | null // bijvoorbeeld: "RAL, Hout"
-  materiaal: string | null // bijvoorbeeld: "Kunststof, Aluminium"
-  min_breedte_mm: number | null
-  max_breedte_mm: number | null
-  min_hoogte_mm: number | null
-  max_hoogte_mm: number | null
-  glasopties: string | null // bijvoorbeeld: "HR++, mat, triple"
-  // Voeg meer velden toe als je tabel meer info bevat
+  min_breedte: number | null
+  max_breedte: number | null
+  min_hoogte: number | null
+  max_hoogte: number | null
+  design_kenmerk: string | null
+  beglazing_standaard: string | null
+  config_options: ConfigOptions | null
 }
 
-const GLASOPTIES = [
-  { value: "hr++", label: "HR++ glas" },
-  { value: "mat", label: "Mat glas" },
-  { value: "triple", label: "Triple glas" }
-]
+function parseConfigOptions(json: any): ConfigOptions {
+  if (!json) return {}
+  if (typeof json === "object") return json
+  try {
+    return JSON.parse(json)
+  } catch {
+    return {}
+  }
+}
 
-const MATERIALEN = [
-  { value: "kunststof", label: "Kunststof" },
+const standaardMaterialen = [
   { value: "aluminium", label: "Aluminium" },
-  { value: "hout", label: "Hout" },
+  { value: "kunststof", label: "Kunststof" }
 ]
 
-const RAL_KLEUREN = [
-  "RAL 9016", "RAL 9005", "RAL 7016", "RAL 9001", "RAL 9010"
-  // ... vul verder aan als je wilt
-]
-const HOUT_KLEUREN = [
-  "Eiken", "Mahonie", "Walnut"
-  // ... vul verder aan als je wilt
+const standaardKleuren = [
+  { value: "RAL 9016", label: "RAL 9016" },
+  { value: "RAL 9005", label: "RAL 9005" },
+  { value: "RAL 7016", label: "RAL 7016" },
+  { value: "RAL 9001", label: "RAL 9001" },
+  { value: "RAL 9010", label: "RAL 9010" }
 ]
 
-function DespiroConfigurator() {
+export default function DespiroConfigurator() {
   const navigate = useNavigate()
   const [panelen, setPanelen] = useState<DespiroPaneel[]>([])
   const [currentIndex, setCurrentIndex] = useState(0)
@@ -59,7 +67,10 @@ function DespiroConfigurator() {
         .select('*')
         .order('id', { ascending: true })
       if (error) setError(error.message)
-      setPanelen((data || []) as DespiroPaneel[])
+      setPanelen((data || []).map((row: any) => ({
+        ...row,
+        config_options: parseConfigOptions(row.config_options)
+      })))
       setLoading(false)
     }
     loadPanelen()
@@ -69,6 +80,7 @@ function DespiroConfigurator() {
 
   const getPanelImageUrl = (panel: DespiroPaneel | null) => {
     if (!panel || !panel.image_path) return ''
+    // Je image_path is bijvoorbeeld "kozijnen-photos/DP01-Aida-ET.jpg"
     return SUPABASE_IMG_URL + panel.image_path
   }
 
@@ -96,6 +108,9 @@ function DespiroConfigurator() {
     if (panelen.length === 0) return
     setCurrentIndex(prev => (prev < panelen.length - 1 ? prev + 1 : 0))
   }
+
+  // Helper
+  const asOptions = (arr?: string[]) => arr?.map(v => ({ value: v, label: v })) || []
 
   return (
     <>
@@ -125,6 +140,17 @@ function DespiroConfigurator() {
                   style={{ maxWidth: '100%', maxHeight: '80vh' }}
                 />
               </div>
+
+              <div className="mb-4 text-gray-700">
+                <div><strong>Design kenmerk:</strong> {currentPanel.design_kenmerk || '-'}</div>
+                <div><strong>Beglazing standaard:</strong> {currentPanel.beglazing_standaard || '-'}</div>
+                <div>
+                  <strong>Afmetingen:</strong>
+                  {' '}Breedte {currentPanel.min_breedte} - {currentPanel.max_breedte} mm,
+                  {' '}Hoogte {currentPanel.min_hoogte} - {currentPanel.max_hoogte} mm
+                </div>
+              </div>
+
               <form className="space-y-6" onSubmit={handleSubmit}>
                 {/* Materiaal */}
                 <div>
@@ -136,10 +162,7 @@ function DespiroConfigurator() {
                     required
                   >
                     <option value="">Kies materiaal</option>
-                    {MATERIALEN.filter(m =>
-                      !currentPanel.materiaal ||
-                      currentPanel.materiaal.toLowerCase().includes(m.value)
-                    ).map(m => (
+                    {standaardMaterialen.map(m => (
                       <option key={m.value} value={m.value}>{m.label}</option>
                     ))}
                   </select>
@@ -152,11 +175,11 @@ function DespiroConfigurator() {
                       type="number"
                       value={formData.breedte || ''}
                       onChange={e => handleFormChange('breedte', e.target.value)}
-                      min={currentPanel.min_breedte_mm || 500}
-                      max={currentPanel.max_breedte_mm || 1500}
+                      min={currentPanel.min_breedte || 500}
+                      max={currentPanel.max_breedte || 1400}
                       placeholder={
-                        currentPanel.min_breedte_mm && currentPanel.max_breedte_mm ?
-                          `Tussen ${currentPanel.min_breedte_mm} en ${currentPanel.max_breedte_mm} mm`
+                        currentPanel.min_breedte && currentPanel.max_breedte ?
+                          `Tussen ${currentPanel.min_breedte} en ${currentPanel.max_breedte} mm`
                           : "Geef breedte op"
                       }
                       className="w-full border border-gray-300 rounded-lg p-3"
@@ -169,11 +192,11 @@ function DespiroConfigurator() {
                       type="number"
                       value={formData.hoogte || ''}
                       onChange={e => handleFormChange('hoogte', e.target.value)}
-                      min={currentPanel.min_hoogte_mm || 1500}
-                      max={currentPanel.max_hoogte_mm || 2500}
+                      min={currentPanel.min_hoogte || 1900}
+                      max={currentPanel.max_hoogte || 2600}
                       placeholder={
-                        currentPanel.min_hoogte_mm && currentPanel.max_hoogte_mm ?
-                          `Tussen ${currentPanel.min_hoogte_mm} en ${currentPanel.max_hoogte_mm} mm`
+                        currentPanel.min_hoogte && currentPanel.max_hoogte ?
+                          `Tussen ${currentPanel.min_hoogte} en ${currentPanel.max_hoogte} mm`
                           : "Geef hoogte op"
                       }
                       className="w-full border border-gray-300 rounded-lg p-3"
@@ -191,37 +214,76 @@ function DespiroConfigurator() {
                     required
                   >
                     <option value="">Kies kleur</option>
-                    {/* Toon alleen kleuren die passen bij de panelen */}
-                    {(!currentPanel.kleurmogelijkheden || currentPanel.kleurmogelijkheden.toLowerCase().includes('ral')) &&
-                      RAL_KLEUREN.map(k => (
-                        <option key={k} value={k}>{k}</option>
-                      ))
-                    }
-                    {currentPanel.kleurmogelijkheden && currentPanel.kleurmogelijkheden.toLowerCase().includes('hout') &&
-                      HOUT_KLEUREN.map(k => (
-                        <option key={k} value={k}>{k}</option>
-                      ))
-                    }
-                  </select>
-                </div>
-                {/* Glasoptie */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Glasoptie *</label>
-                  <select
-                    value={formData.glasoptie || ''}
-                    onChange={e => handleFormChange('glasoptie', e.target.value)}
-                    className="w-full border border-gray-300 rounded-lg p-3"
-                    required
-                  >
-                    <option value="">Kies glasoptie</option>
-                    {GLASOPTIES.filter(opt =>
-                      !currentPanel.glasopties ||
-                      currentPanel.glasopties.toLowerCase().includes(opt.value)
-                    ).map(opt => (
-                      <option key={opt.value} value={opt.value}>{opt.label}</option>
+                    {standaardKleuren.map(k => (
+                      <option key={k.value} value={k.value}>{k.label}</option>
                     ))}
                   </select>
                 </div>
+                {/* Dynamische opties uit config_options */}
+                {currentPanel.config_options?.Handgreep &&
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Handgreep *</label>
+                    <select
+                      value={formData.handgreep || ''}
+                      onChange={e => handleFormChange('handgreep', e.target.value)}
+                      className="w-full border border-gray-300 rounded-lg p-3"
+                      required
+                    >
+                      <option value="">Kies handgreep</option>
+                      {asOptions(currentPanel.config_options.Handgreep).map(o => (
+                        <option key={o.value} value={o.value}>{o.label}</option>
+                      ))}
+                    </select>
+                  </div>
+                }
+                {currentPanel.config_options?.Glas_Opties &&
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Glas optie *</label>
+                    <select
+                      value={formData.glas_optie || ''}
+                      onChange={e => handleFormChange('glas_optie', e.target.value)}
+                      className="w-full border border-gray-300 rounded-lg p-3"
+                      required
+                    >
+                      <option value="">Kies glas optie</option>
+                      {asOptions(currentPanel.config_options.Glas_Opties).map(o => (
+                        <option key={o.value} value={o.value}>{o.label}</option>
+                      ))}
+                    </select>
+                  </div>
+                }
+                {currentPanel.config_options?.Scharnieren &&
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Scharnieren *</label>
+                    <select
+                      value={formData.scharnieren || ''}
+                      onChange={e => handleFormChange('scharnieren', e.target.value)}
+                      className="w-full border border-gray-300 rounded-lg p-3"
+                      required
+                    >
+                      <option value="">Kies scharnieren</option>
+                      {asOptions(currentPanel.config_options.Scharnieren).map(o => (
+                        <option key={o.value} value={o.value}>{o.label}</option>
+                      ))}
+                    </select>
+                  </div>
+                }
+                {currentPanel.config_options?.Kleur_Omkadering &&
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Kleur omkadering *</label>
+                    <select
+                      value={formData.kleur_omkadering || ''}
+                      onChange={e => handleFormChange('kleur_omkadering', e.target.value)}
+                      className="w-full border border-gray-300 rounded-lg p-3"
+                      required
+                    >
+                      <option value="">Kies kleur omkadering</option>
+                      {asOptions(currentPanel.config_options.Kleur_Omkadering).map(o => (
+                        <option key={o.value} value={o.value}>{o.label}</option>
+                      ))}
+                    </select>
+                  </div>
+                }
                 {/* Opmerkingen */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Opmerkingen</label>
@@ -322,5 +384,3 @@ function DespiroConfigurator() {
     </>
   )
 }
-
-export default DespiroConfigurator
