@@ -231,19 +231,7 @@ const DespiroConfigurator: React.FC = () => {
                   ? `Despiro deur ${currentPanel.slug.toUpperCase()}`
                   : currentPanel?.naam}
               </h2>
-              <div className="text-gray-700 text-base mb-1">
-                <span className="font-semibold">Design:</span>{' '}
-                {currentPanel?.design_kenmerk || '-'}
-              </div>
-              <div className="text-gray-700 text-base mb-1">
-                <span className="font-semibold">Beglazing:</span>{' '}
-                {currentPanel?.beglazing_standaard || '-'}
-              </div>
-              <div className="text-gray-700 text-base">
-                <span className="font-semibold">Afmetingen:</span>{' '}
-                {currentPanel?.min_breedte}-{currentPanel?.max_breedte} mm breed,
-                {currentPanel?.min_hoogte}-{currentPanel?.max_hoogte} mm hoog
-              </div>
+              {/* Geen extra info tonen hier! */}
             </div>
             <div className="text-center">
               <button
@@ -274,6 +262,30 @@ const DespiroConfigurator: React.FC = () => {
           </button>
         </div>
         <div className="bg-white rounded-xl shadow-lg p-6 md:p-8">
+          {/* Titel + info */}
+          <div className="text-center mb-6">
+            <h2 className="text-lg md:text-xl font-bold text-gray-900 mb-2">
+              {currentPanel?.slug
+                ? `Despiro deur ${currentPanel.slug.toUpperCase()}`
+                : currentPanel?.naam}
+            </h2>
+            <div className="mb-4 text-gray-700 text-center">
+              <div>
+                <strong>Design kenmerk:</strong> {currentPanel?.design_kenmerk || '-'}
+              </div>
+              <div>
+                <strong>Beglazing standaard:</strong>{' '}
+                {currentPanel?.beglazing_standaard || '-'}
+              </div>
+              <div>
+                <strong>Afmetingen:</strong>
+                {' '}
+                Breedte {currentPanel?.min_breedte} - {currentPanel?.max_breedte} mm,
+                {' '}
+                Hoogte {currentPanel?.min_hoogte} - {currentPanel?.max_hoogte} mm
+              </div>
+            </div>
+          </div>
           <div className="text-center mb-5">
             <img
               src={getPanelImageUrl(currentPanel)}
@@ -285,22 +297,6 @@ const DespiroConfigurator: React.FC = () => {
               }}
               style={{ maxWidth: '100%', maxHeight: '80vh' }}
             />
-          </div>
-          <div className="mb-4 text-gray-700 text-center">
-            <div>
-              <strong>Design kenmerk:</strong> {currentPanel?.design_kenmerk || '-'}
-            </div>
-            <div>
-              <strong>Beglazing standaard:</strong>{' '}
-              {currentPanel?.beglazing_standaard || '-'}
-            </div>
-            <div>
-              <strong>Afmetingen:</strong>
-              {' '}
-              Breedte {currentPanel?.min_breedte} - {currentPanel?.max_breedte} mm,
-              {' '}
-              Hoogte {currentPanel?.min_hoogte} - {currentPanel?.max_hoogte} mm
-            </div>
           </div>
           <form className="space-y-6" onSubmit={handleSubmit}>
             {/* Materiaal */}
