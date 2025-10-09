@@ -10,11 +10,12 @@ const alleKleuren = [
   "RAL 9007", "RAL 9006", "RAL 1015", "RAL 7012", "RAL 7021", "RAL 7024", "RAL 7035",
   "RAL 7037", "RAL 7042", "RAL 8019", "RAL 8022", "RAL 9018", "RAL 7030", "RAL 5010",
   "RAL 6005", "RAL 7001", "RAL 7015", "RAL 7038", "RAL 9002", "RAL 7047", "RAL 8003",
-  "RAL 8011", "RAL 8023" // voeg hier alle kleuren toe die je aanbiedt
+  "RAL 8011", "RAL 8023"
 ];
 
-const SUPABASE_IMG_URL =
-  "https://nsmzfzdvesacindbgkdq.supabase.co/storage/v1/object/public/";
+// Let op: afbeelding komt uit storage bucket "kozijnen-photos" en wordt afgeleid uit slug
+const SUPABASE_STORAGE_URL =
+  "https://nsmzfzdvesacindbgkdq.supabase.co/storage/v1/object/public/kozijnen-photos/";
 
 interface DespiroPaneel {
   id: number;
@@ -73,9 +74,10 @@ const DespiroConfigurator: React.FC = () => {
   const prevPanel = panelen[(currentIndex - 1 + panelen.length) % panelen.length];
   const nextPanel = panelen[(currentIndex + 1) % panelen.length];
 
+  // Afbeelding uit Supabase storage bucket "kozijnen-photos", bestandsnaam = slug + ".jpg"
   const getPanelImageUrl = (panel: DespiroPaneel | null) => {
-    if (!panel || !panel.image_path) return "";
-    return SUPABASE_IMG_URL + panel.image_path;
+    if (!panel || !panel.slug) return "";
+    return `${SUPABASE_STORAGE_URL}${panel.slug}.jpg`;
   };
 
   const handleFormChange = (field: string, value: any) => {
@@ -218,7 +220,6 @@ const DespiroConfigurator: React.FC = () => {
                   ? `Despiro deur ${currentPanel.slug.toUpperCase()}`
                   : currentPanel?.naam}
               </h2>
-              {/* Geen extra info tonen hier! */}
             </div>
             <div className="text-center">
               <button
