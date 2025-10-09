@@ -195,11 +195,8 @@ const DespiroConfigurator: React.FC = () => {
               />
               {/* Hoofdafbeelding */}
               <div
-                className="bg-white rounded-2xl shadow-xl flex flex-col items-center justify-center"
+                className="bg-white rounded-2xl shadow-xl flex flex-col items-center justify-center w-[340px] h-[420px]"
                 style={{
-                  padding: '2.5rem 2rem',
-                  minWidth: 340, // GROOT!
-                  minHeight: 410,
                   maxWidth: 380,
                   maxHeight: 470,
                 }}
@@ -207,8 +204,8 @@ const DespiroConfigurator: React.FC = () => {
                 <img
                   src={getPanelImageUrl(currentPanel)}
                   alt={currentPanel?.naam}
-                  className="w-60 h-96 object-contain"
-                  style={{ margin: '0 auto', maxWidth: 320, maxHeight: 400 }}
+                  className="h-full w-auto object-contain"
+                  style={{ margin: '0 auto', maxWidth: 340, maxHeight: 420 }}
                 />
               </div>
               <img
