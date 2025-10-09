@@ -112,6 +112,7 @@ const DespiroConfigurator: React.FC = () => {
 
   const asOptions = (arr?: string[]) => arr?.map(v => ({ value: v, label: v })) || []
 
+  // Custom carousel style based on your Ekoline screenshot!
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -145,57 +146,89 @@ const DespiroConfigurator: React.FC = () => {
     return (
       <div className="min-h-screen bg-gray-50 py-8">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <button
-            onClick={() => navigate('/configurator/buitendeuren')}
-            className="mb-8 px-6 py-3 rounded-lg bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold"
-          >
-            ← Terug naar deuren
-          </button>
-
-          <div className="bg-white rounded-xl shadow-lg p-8">
-            <h1 className="text-2xl md:text-3xl font-bold text-center mb-2">Kies uw Despiro deur</h1>
-            <p className="text-center text-gray-600 mb-8">
-              Scroll en selecteer de gewenste deur uit onze exclusieve Despiro collectie.
+          <div className="flex items-center justify-between mb-6">
+            <div></div>
+            <button
+              onClick={() => navigate('/configurator/buitendeuren')}
+              className="text-gray-600 hover:text-gray-900 text-sm font-medium flex items-center gap-1 bg-transparent border-none px-0 py-0"
+              style={{marginBottom: "0.5rem"}}
+            >
+              <span style={{fontSize: "1.2rem"}}>&larr;</span>
+              Terug naar deuren
+            </button>
+          </div>
+          <div className="bg-white rounded-xl shadow-lg px-4 md:px-12 py-8">
+            <h1 className="text-3xl font-bold text-center mb-2">Despiro Deuren</h1>
+            <p className="text-center text-gray-600 mb-10">
+              Kies uw gewenste deur design uit onze exclusieve Despiro collectie.
             </p>
-            <div className="flex items-center justify-center gap-6 mb-8">
+            <div className="flex items-center justify-center gap-2 md:gap-6 mb-8">
               {/* Vorige thumbnail */}
+              <button
+                onClick={goToPrevious}
+                aria-label="Vorige deur"
+                className="rounded-full bg-white shadow-sm hover:bg-gray-100 transition p-2 mr-2"
+                style={{marginRight: "-1.5rem", zIndex: 2}}
+              >
+                <ChevronLeft className="h-6 w-6 text-gray-500" />
+              </button>
               <img
                 src={getPanelImageUrl(prevPanel)}
                 alt={prevPanel?.naam || "Vorige"}
-                className="w-16 h-24 object-contain opacity-60 hover:opacity-100 cursor-pointer transition"
-                onClick={goToPrevious}
-                style={{border: "2px solid #D1D5DB", borderRadius: 8}}
+                className="w-20 h-36 object-contain opacity-40 grayscale pointer-events-none select-none"
+                draggable={false}
+                style={{boxShadow: "0 2px 8px #0001", background: "#f8f8f8", borderRadius: 16}}
               />
               {/* Hoofdafbeelding */}
-              <img
-                src={getPanelImageUrl(currentPanel)}
-                alt={currentPanel?.naam}
-                className="w-52 h-80 object-contain rounded-lg shadow-2xl border-4 border-green-500"
-              />
-              {/* Volgende thumbnail */}
+              <div
+                className="bg-white rounded-2xl shadow-xl flex flex-col items-center justify-center"
+                style={{padding: "2rem 1rem", minWidth: 270, minHeight: 315}}
+              >
+                <img
+                  src={getPanelImageUrl(currentPanel)}
+                  alt={currentPanel?.naam}
+                  className="w-44 h-72 object-contain"
+                  style={{margin: "0 auto"}}
+                />
+              </div>
               <img
                 src={getPanelImageUrl(nextPanel)}
                 alt={nextPanel?.naam || "Volgende"}
-                className="w-16 h-24 object-contain opacity-60 hover:opacity-100 cursor-pointer transition"
-                onClick={goToNext}
-                style={{border: "2px solid #D1D5DB", borderRadius: 8}}
+                className="w-20 h-36 object-contain opacity-40 grayscale pointer-events-none select-none"
+                draggable={false}
+                style={{boxShadow: "0 2px 8px #0001", background: "#f8f8f8", borderRadius: 16}}
               />
+              <button
+                onClick={goToNext}
+                aria-label="Volgende deur"
+                className="rounded-full bg-white shadow-sm hover:bg-gray-100 transition p-2 ml-2"
+                style={{marginLeft: "-1.5rem", zIndex: 2}}
+              >
+                <ChevronRight className="h-6 w-6 text-gray-500" />
+              </button>
             </div>
             <div className="text-center mb-6">
-              <h2 className="text-xl font-semibold text-gray-900">{currentPanel?.naam}</h2>
-              <div className="text-gray-600 mt-2">
-                <div><b>Design:</b> {currentPanel?.design_kenmerk || '-'}</div>
-                <div><b>Beglazing:</b> {currentPanel?.beglazing_standaard || '-'}</div>
-                <div>
-                  <b>Afmetingen:</b> {currentPanel?.min_breedte}–{currentPanel?.max_breedte} mm breed,
-                  {currentPanel?.min_hoogte}–{currentPanel?.max_hoogte} mm hoog
-                </div>
+              <h2 className="text-lg md:text-xl font-semibold text-gray-900 mb-2">
+                {currentPanel?.naam ? `Despiro ${currentPanel.naam}` : ""}
+              </h2>
+              <div className="text-gray-700 text-base mb-1">
+                <span className="font-semibold">Design:</span>{" "}
+                {currentPanel?.design_kenmerk || '-'}
+              </div>
+              <div className="text-gray-700 text-base mb-1">
+                <span className="font-semibold">Beglazing:</span>{" "}
+                {currentPanel?.beglazing_standaard || '-'}
+              </div>
+              <div className="text-gray-700 text-base">
+                <span className="font-semibold">Afmetingen:</span>{" "}
+                {currentPanel?.min_breedte}-{currentPanel?.max_breedte} mm breed,
+                {currentPanel?.min_hoogte}-{currentPanel?.max_hoogte} mm hoog
               </div>
             </div>
             <div className="text-center">
               <button
                 onClick={() => setShowConfig(true)}
-                className="bg-green-600 hover:bg-green-700 text-white font-semibold py-4 px-8 rounded-lg transition-all duration-300 transform hover:scale-105 flex items-center space-x-2 mx-auto"
+                className="bg-green-600 hover:bg-green-700 text-white font-semibold py-4 px-8 rounded-lg transition-all duration-300 transform hover:scale-105 flex items-center space-x-2 mx-auto text-lg"
               >
                 <Check className="h-5 w-5" />
                 <span>Configureer deze deur</span>
@@ -211,12 +244,15 @@ const DespiroConfigurator: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
-        <button
-          onClick={() => setShowConfig(false)}
-          className="mb-8 px-6 py-3 rounded-lg bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold"
-        >
-          ← Terug naar deuren
-        </button>
+        <div className="flex justify-between items-center mb-6">
+          <button
+            onClick={() => setShowConfig(false)}
+            className="text-gray-600 hover:text-gray-900 text-sm font-medium flex items-center gap-1 bg-transparent border-none px-0 py-0"
+          >
+            <span style={{fontSize: "1.2rem"}}>&larr;</span>
+            Terug naar deuren
+          </button>
+        </div>
         <div className="bg-white rounded-xl shadow-lg p-6 md:p-8">
           <div className="text-center mb-5">
             <img
@@ -229,7 +265,7 @@ const DespiroConfigurator: React.FC = () => {
               style={{ maxWidth: '100%', maxHeight: '80vh' }}
             />
           </div>
-          <div className="mb-4 text-gray-700">
+          <div className="mb-4 text-gray-700 text-center">
             <div><strong>Design kenmerk:</strong> {currentPanel?.design_kenmerk || '-'}</div>
             <div><strong>Beglazing standaard:</strong> {currentPanel?.beglazing_standaard || '-'}</div>
             <div>
