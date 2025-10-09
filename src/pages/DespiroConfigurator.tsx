@@ -159,12 +159,12 @@ const DespiroConfigurator: React.FC = () => {
           <div className="flex items-center justify-between mb-6">
             <div></div>
             <button
-              onClick={() => navigate('/configurator/buitendeuren')}
+              onClick={() => navigate('/configurator')}
               className="text-gray-600 hover:text-gray-900 text-sm font-medium flex items-center gap-1 bg-transparent border-none px-0 py-0"
               style={{ marginBottom: '0.5rem' }}
             >
               <span style={{ fontSize: '1.2rem' }}>&larr;</span>
-              Terug naar deuren
+              Terug naar configuratie
             </button>
           </div>
           <div className="bg-white rounded-xl shadow-lg px-4 md:px-12 py-8">
@@ -196,13 +196,19 @@ const DespiroConfigurator: React.FC = () => {
               {/* Hoofdafbeelding */}
               <div
                 className="bg-white rounded-2xl shadow-xl flex flex-col items-center justify-center"
-                style={{ padding: '2rem 1rem', minWidth: 270, minHeight: 315 }}
+                style={{
+                  padding: '2.5rem 2rem',
+                  minWidth: 340, // GROOT!
+                  minHeight: 410,
+                  maxWidth: 380,
+                  maxHeight: 470,
+                }}
               >
                 <img
                   src={getPanelImageUrl(currentPanel)}
                   alt={currentPanel?.naam}
-                  className="w-44 h-72 object-contain"
-                  style={{ margin: '0 auto' }}
+                  className="w-60 h-96 object-contain"
+                  style={{ margin: '0 auto', maxWidth: 320, maxHeight: 400 }}
                 />
               </div>
               <img
@@ -258,7 +264,7 @@ const DespiroConfigurator: React.FC = () => {
             className="text-gray-600 hover:text-gray-900 text-sm font-medium flex items-center gap-1 bg-transparent border-none px-0 py-0"
           >
             <span style={{ fontSize: '1.2rem' }}>&larr;</span>
-            Terug naar deuren
+            Terug naar configuratie
           </button>
         </div>
         <div className="bg-white rounded-xl shadow-lg p-6 md:p-8">
@@ -290,7 +296,7 @@ const DespiroConfigurator: React.FC = () => {
             <img
               src={getPanelImageUrl(currentPanel)}
               alt={`Despiro deur ${currentPanel?.naam}`}
-              className="mx-auto rounded-lg shadow-xl w-72 h-96 object-contain"
+              className="mx-auto rounded-lg shadow-xl w-[320px] h-[400px] object-contain"
               onError={(e) => {
                 ;(e.target as HTMLImageElement).src =
                   'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Crect fill="%23f3f4f6" width="400" height="300"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" dy=".3em" fill="%236b7280" font-family="sans-serif" font-size="18"%3EAfbeelding niet beschikbaar%3C/text%3E%3C/svg%3E'
