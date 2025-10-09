@@ -195,17 +195,17 @@ const DespiroConfigurator: React.FC = () => {
               />
               {/* Hoofdafbeelding */}
               <div
-                className="bg-white rounded-2xl shadow-xl flex flex-col items-center justify-center w-[340px] h-[420px]"
+                className="bg-white rounded-2xl shadow-xl flex flex-col items-center justify-center w-[400px] h-[500px]"
                 style={{
-                  maxWidth: 380,
-                  maxHeight: 470,
+                  maxWidth: 500,
+                  maxHeight: 600,
                 }}
               >
                 <img
                   src={getPanelImageUrl(currentPanel)}
                   alt={currentPanel?.naam}
                   className="h-full w-auto object-contain"
-                  style={{ margin: '0 auto', maxWidth: 340, maxHeight: 420 }}
+                  style={{ margin: '0 auto', maxWidth: 400, maxHeight: 500 }}
                 />
               </div>
               <img
@@ -293,7 +293,7 @@ const DespiroConfigurator: React.FC = () => {
             <img
               src={getPanelImageUrl(currentPanel)}
               alt={`Despiro deur ${currentPanel?.naam}`}
-              className="mx-auto rounded-lg shadow-xl w-[320px] h-[400px] object-contain"
+              className="mx-auto rounded-lg shadow-xl w-[400px] h-[500px] object-contain"
               onError={(e) => {
                 ;(e.target as HTMLImageElement).src =
                   'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Crect fill="%23f3f4f6" width="400" height="300"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" dy=".3em" fill="%236b7280" font-family="sans-serif" font-size="18"%3EAfbeelding niet beschikbaar%3C/text%3E%3C/svg%3E'
