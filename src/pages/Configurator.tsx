@@ -6,20 +6,6 @@ import { supabase } from '../lib/supabase'
 import PhotoUpload from '../components/PhotoUpload'
 import modellen from '../data/modellen.json'
 
-interface DespiroPanel {
-  id: number
-  slug: string
-  naam: string
-  image_path: string | null
-  min_breedte: number | null
-  max_breedte: number | null
-  min_hoogte: number | null
-  max_hoogte: number | null
-  design_kenmerk: string | null
-  beglazing_standaard: string | null
-  config_options: any
-}
-
 import ImageWithFallback from '../components/ImageWithFallback'
 
 /* ---------------------------
