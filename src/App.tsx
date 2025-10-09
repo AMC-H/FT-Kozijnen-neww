@@ -26,7 +26,6 @@ import Debug from './pages/Debug'
 import EkolineConfigurator from './pages/EkolineConfigurator'
 import EkoVitreSelector from './pages/configurator/ekovitre/Selector'
 import ClassicLineSelector from './pages/configurator/classicline/Selector'
-import DespiroConfigurator from './pages/DespiroConfigurator' // <-- ET/Despiro route hersteld
 import BuitendeurenSelector from './pages/configurator/buitendeuren/Selector'
 
 function AppContent() {
