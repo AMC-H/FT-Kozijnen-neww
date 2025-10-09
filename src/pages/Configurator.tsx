@@ -233,40 +233,6 @@ const Configurator: React.FC = () => {
         type: 'classicline',
         velden: ['materiaal', 'breedte', 'hoogte', 'kleurBinnen', 'kleurBuiten', 'glasoptie', 'dorpel', 'draairichting', 'hangEnSluitwerk', 'aanslag', 'opmerkingen', 'fotoUpload']
       })
-    } else if (despiroPanelSlug) {
-      loadDespiroPanel(despiroPanelSlug)
-    } else if (preSelectedCategory) {
-      setSelectedCategory(preSelectedCategory)
-    }
-  }, [searchParams, location.state])
-
-  const loadDespiroPanel = async (slug: string) => {
-    try {
-      const { data, error } = await supabase
-        .from('despiro_panelen')
-        .select('*')
-        .eq('slug', slug)
-        .single()
-
-      if (error) {
-        console.error('Error loading Despiro panel:', error)
-        return
-      }
-
-      if (data) {
-        setDespiroPanel(data)
-        setSelectedCategory('buitendeuren')
-        setSelectedModel({
-          naam: data.naam,
-          afbeelding: data.image_path ? `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/${data.image_path}` : '',
-          type: 'despiro',
-          velden: ['materiaal', 'breedte', 'hoogte', 'kleurBinnen', 'kleurBuiten', 'glasoptie', 'dorpel', 'draairichting', 'hangEnSluitwerk', 'aanslag', 'opmerkingen', 'fotoUpload']
-        })
-      }
-    } catch (error) {
-      console.error('Error loading Despiro panel:', error)
-    }
-  }
 
   // Get available models for selected category
   const availableModels = useMemo(() => {
