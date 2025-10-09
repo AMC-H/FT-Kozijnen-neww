@@ -13,7 +13,7 @@ const alleKleuren = [
   "RAL 8011", "RAL 8023"
 ];
 
-// Let op: afbeelding komt uit storage bucket "kozijnen-photos" en wordt afgeleid uit slug
+// Afbeelding uit storage bucket "kozijnen-photos", bestandsnaam op basis van slug
 const SUPABASE_STORAGE_URL =
   "https://nsmzfzdvesacindbgkdq.supabase.co/storage/v1/object/public/kozijnen-photos/";
 
