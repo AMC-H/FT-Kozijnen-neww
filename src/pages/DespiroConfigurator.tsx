@@ -6,13 +6,6 @@ import { supabase } from '../lib/supabase'
 const SUPABASE_IMG_URL =
   'https://nsmzfzdvesacindbgkdq.supabase.co/storage/v1/object/public/'
 
-type ConfigOptions = {
-  Handgreep?: string[]
-  Glas_Opties?: string[]
-  Scharnieren?: string[]
-  Kleur_Omkadering?: string[]
-}
-
 interface DespiroPaneel {
   id: number
   naam: string
@@ -24,10 +17,10 @@ interface DespiroPaneel {
   max_hoogte: number | null
   design_kenmerk: string | null
   beglazing_standaard: string | null
-  config_options: ConfigOptions | null
+  config_options: { [key: string]: string[] } | null
 }
 
-function parseConfigOptions(json: any): ConfigOptions {
+function parseConfigOptions(json: any): { [key: string]: string[] } {
   if (!json) return {}
   if (typeof json === 'object') return json
   try {
@@ -114,9 +107,6 @@ const DespiroConfigurator: React.FC = () => {
     if (panelen.length === 0) return
     setCurrentIndex((prev) => (prev < panelen.length - 1 ? prev + 1 : 0))
   }
-
-  const asOptions = (arr?: string[]) =>
-    arr?.map((v) => ({ value: v, label: v })) || []
 
   // --- CARROUSEL ---
   if (loading) {
@@ -229,7 +219,6 @@ const DespiroConfigurator: React.FC = () => {
                   ? `Despiro deur ${currentPanel.slug.toUpperCase()}`
                   : currentPanel?.naam}
               </h2>
-              {/* Geen extra info tonen hier! */}
             </div>
             <div className="text-center">
               <button
@@ -358,90 +347,44 @@ const DespiroConfigurator: React.FC = () => {
               </select>
             </div>
             {/* Dynamische opties uit config_options */}
-            {currentPanel?.config_options?.Handgreep && (
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Handgreep *
-                </label>
-                <select
-                  value={formData.handgreep || ''}
-                  onChange={(e) => handleFormChange('handgreep', e.target.value)}
-                  className="w-full border border-gray-300 rounded-lg p-3"
-                  required
-                >
-                  <option value="">Kies handgreep</option>
-                  {asOptions(currentPanel.config_options.Handgreep).map((o) => (
-                    <option key={o.value} value={o.value}>
-                      {o.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            )}
-            {currentPanel?.config_options?.Glas_Opties && (
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Glas optie *
-                </label>
-                <select
-                  value={formData.glas_optie || ''}
-                  onChange={(e) => handleFormChange('glas_optie', e.target.value)}
-                  className="w-full border border-gray-300 rounded-lg p-3"
-                  required
-                >
-                  <option value="">Kies glas optie</option>
-                  {asOptions(currentPanel.config_options.Glas_Opties).map((o) => (
-                    <option key={o.value} value={o.value}>
-                      {o.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            )}
-            {currentPanel?.config_options?.Scharnieren && (
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Scharnieren *
-                </label>
-                <select
-                  value={formData.scharnieren || ''}
-                  onChange={(e) => handleFormChange('scharnieren', e.target.value)}
-                  className="w-full border border-gray-300 rounded-lg p-3"
-                  required
-                >
-                  <option value="">Kies scharnieren</option>
-                  {asOptions(currentPanel.config_options.Scharnieren).map((o) => (
-                    <option key={o.value} value={o.value}>
-                      {o.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            )}
-            {currentPanel?.config_options?.Kleur_Omkadering && (
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Kleur omkadering *
-                </label>
-                <select
-                  value={formData.kleur_omkadering || ''}
-                  onChange={(e) =>
-                    handleFormChange('kleur_omkadering', e.target.value)
-                  }
-                  className="w-full border border-gray-300 rounded-lg p-3"
-                  required
-                >
-                  <option value="">Kies kleur omkadering</option>
-                  {asOptions(currentPanel.config_options.Kleur_Omkadering).map(
-                    (o) => (
-                      <option key={o.value} value={o.value}>
-                        {o.label}
-                      </option>
-                    )
-                  )}
-                </select>
-              </div>
-            )}
+            {currentPanel?.config_options &&
+              Object.entries(currentPanel.config_options).map(
+                ([key, values]) =>
+                  Array.isArray(values) && values.length > 1 ? (
+                    <div key={key}>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        {key.replace(/_/g, ' ')} *
+                      </label>
+                      <select
+                        value={formData[key] || ''}
+                        onChange={(e) => handleFormChange(key, e.target.value)}
+                        className="w-full border border-gray-300 rounded-lg p-3"
+                        required
+                      >
+                        <option value="">
+                          Kies {key.replace(/_/g, ' ').toLowerCase()}
+                        </option>
+                        {values.map((v: string) => (
+                          <option key={v} value={v}>
+                            {v}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  ) : Array.isArray(values) && values.length === 1 ? (
+                    <div key={key}>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        {key.replace(/_/g, ' ')} *
+                      </label>
+                      <input
+                        type="text"
+                        value={values[0]}
+                        readOnly
+                        className="w-full border border-gray-200 bg-gray-100 rounded-lg p-3 text-gray-600"
+                      />
+                    </div>
+                  ) : null
+              )}
             {/* Opmerkingen */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
