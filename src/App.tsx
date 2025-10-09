@@ -72,15 +72,6 @@ function AppContent() {
               </ProtectedRoute>
             } 
           />
-          {/* Hersteld: DespiroConfigurator (voorheen ET) */}
-          <Route 
-            path="/configurator/et" 
-            element={
-              <ProtectedRoute>
-                <DespiroConfigurator />
-              </ProtectedRoute>
-            } 
-          />
           <Route 
             path="/configurator/buitendeuren" 
             element={
