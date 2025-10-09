@@ -66,6 +66,7 @@ const DespiroConfigurator: React.FC = () => {
         .from('despiro_panelen')
         .select('*')
         .order('id', { ascending: true })
+      console.log("Supabase panelen response:", { data, error }); // DEBUG
       if (error) setError(error.message)
       setPanelen((data || []).map((row: any) => ({
         ...row,
@@ -75,6 +76,11 @@ const DespiroConfigurator: React.FC = () => {
     }
     loadPanelen()
   }, [])
+
+  useEffect(() => {
+    console.log("Panelen state:", panelen)
+    console.log("Current panel:", panelen[currentIndex])
+  }, [panelen, currentIndex])
 
   const currentPanel = panelen[currentIndex] || null
 
