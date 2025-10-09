@@ -37,11 +37,6 @@ function parseConfigOptions(json: any): ConfigOptions {
   }
 }
 
-const standaardMaterialen = [
-  { value: 'aluminium', label: 'Aluminium' },
-  { value: 'kunststof', label: 'Kunststof' },
-]
-
 const standaardKleuren = [
   { value: 'RAL 9016', label: 'RAL 9016' },
   { value: 'RAL 9005', label: 'RAL 9005' },
@@ -302,25 +297,6 @@ const DespiroConfigurator: React.FC = () => {
             />
           </div>
           <form className="space-y-6" onSubmit={handleSubmit}>
-            {/* Materiaal */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Materiaal *
-              </label>
-              <select
-                value={formData.materiaal || ''}
-                onChange={(e) => handleFormChange('materiaal', e.target.value)}
-                className="w-full border border-gray-300 rounded-lg p-3"
-                required
-              >
-                <option value="">Kies materiaal</option>
-                {standaardMaterialen.map((m) => (
-                  <option key={m.value} value={m.value}>
-                    {m.label}
-                  </option>
-                ))}
-              </select>
-            </div>
             {/* Breedte en Hoogte */}
             <div className="grid grid-cols-2 gap-4">
               <div>
