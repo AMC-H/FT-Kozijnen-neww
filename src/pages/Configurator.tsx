@@ -185,6 +185,15 @@ function ColorPickerSelect({
   )
 }
 
+interface DespiroPanel {
+  min_breedte: number
+  max_breedte: number
+  min_hoogte: number
+  max_hoogte: number
+  design_kenmerk?: string
+  beglazing_standaard?: string
+}
+
 const Configurator: React.FC = () => {
   const { user } = useAuth()
   const navigate = useNavigate()
@@ -233,6 +242,19 @@ const Configurator: React.FC = () => {
         type: 'classicline',
         velden: ['materiaal', 'breedte', 'hoogte', 'kleurBinnen', 'kleurBuiten', 'glasoptie', 'dorpel', 'draairichting', 'hangEnSluitwerk', 'aanslag', 'opmerkingen', 'fotoUpload']
       })
+    } else if (despiroPanelSlug) {
+      // Handle Despiro panel
+      setSelectedCategory('buitendeuren')
+      setSelectedModel({
+        naam: `Despiro Paneel ${despiroPanelSlug}`,
+        afbeelding: `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/kozijnen-photos/despiro-${despiroPanelSlug}.jpg`,
+        type: 'despiro',
+        velden: ['materiaal', 'breedte', 'hoogte', 'kleurBinnen', 'kleurBuiten', 'glasoptie', 'dorpel', 'draairichting', 'hangEnSluitwerk', 'aanslag', 'opmerkingen', 'fotoUpload']
+      })
+    } else if (preSelectedCategory) {
+      setSelectedCategory(preSelectedCategory)
+    }
+  }, [searchParams, location.state])
 
   // Get available models for selected category
   const availableModels = useMemo(() => {
@@ -954,7 +976,7 @@ const Configurator: React.FC = () => {
                       <Door className="h-8 w-8 text-indigo-600" />
                     </div>
                     <h3 className="text-lg font-semibold text-gray-900 group-hover:text-indigo-600 transition-colors">Despiro Deuren</h3>
-<p className="text-sm text-gray-600 mt-2">Exclusieve Despiro collectie deuren</p>
+                    <p className="text-sm text-gray-600 mt-2">Exclusieve Despiro collectie deuren</p>
                   </div>
                 </div>
               </div>
